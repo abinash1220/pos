@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "319151783560",
+    "project_id": "posa-fc355",
+    "storage_bucket": "posa-fc355.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319151783560:android:17aa061a704f0cdb61293d",
+        "android_client_info": {
+          "package_name": "com.example.pos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319151783560-4cng4qcu2rgvbfvrkqc9e7ba3du5jcis.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwoXHhi1uPZosE5TEc6e6To8SgzaEvrIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319151783560-4cng4qcu2rgvbfvrkqc9e7ba3du5jcis.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
