@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart' as dio;
+import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,9 @@ class InvoiceController extends GetxController{
   List<InvoiceModel> invoiceProtectList = [];
 
   RxString totolamount = "0".obs;
+  RxString subtotal = "0".obs;
+  RxString iva = "0".obs;
+  RxString discount = "0".obs;
 
  
  totalAmountCal(){
@@ -30,9 +34,43 @@ class InvoiceController extends GetxController{
     tempTolAmt = tempTolAmt+double.parse(value.totalValue);
   }
 
-  totolamount(tempTolAmt.toStringAsFixed(1));
+  totolamount(tempTolAmt.toStringAsFixed(2));
+  subTotalCal();
+  ivaCal();
    
    update();
+ }
+
+ subTotalCal(){
+  
+  double subtot = 0.0;
+  double subtot2 = 0.0;
+
+  for(var value in invoiceProtectList){
+    subtot = double.parse(value.unitPrice) * double.parse(value.qty.toString());
+    subtot2 = subtot2+double.parse(subtot.toString());
+  }
+  
+  subtotal(subtot2.toStringAsFixed(2));
+
+  update();
+
+ }
+
+ ivaCal(){
+  double gst = 0.0;
+  double subtot1 = 0.0;
+  double gst1 = 0.0;
+
+  for(var value in invoiceProtectList){
+    subtot1 = double.parse(value.unitPrice) * double.parse(value.qty.toString());
+    gst1 = double.parse(value.cva) / double.parse(100.toString()) * double.parse(subtot1.toString());
+    gst = gst+double.parse(gst1.toString());
+  }
+
+  iva(gst.toStringAsFixed(2));
+
+  update();
  }
 
 
@@ -713,14 +751,11 @@ class InvoiceController extends GetxController{
         }
 
 
-
-    
-
-
-
-
-
+   
   }
+
+   
+   
 
 
 }

@@ -5,6 +5,7 @@ import 'package:pos/src/const/app_fonts.dart';
 import 'package:pos/src/controllers/login_api_controllers/login_api_controller.dart';
 import 'package:pos/src/views/home_view/home_navigation_bar.dart';
 import 'package:pos/src/views/home_view/home_view.dart';
+import 'package:pos/src/views/test_printer.dart';
 import 'package:pos/src/widgets/snackbar_widgets/fill_the_fields.dart';
 
 class LoginView extends StatefulWidget {
@@ -141,10 +142,17 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
               )),
+              
               ),
               const SizedBox(
                 height: 70,
               ),
+              InkWell(
+                onTap: (){
+                  Get.to(const TestPrinting());
+                },
+                child: Icon(Icons.print)),
+              
             ],
           ),
         ),

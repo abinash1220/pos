@@ -4,7 +4,9 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
+  flutter_pos_printer_platform
   flutter_tts
+  network_info_plus_windows
   permission_handler_windows
   printing
   share_plus

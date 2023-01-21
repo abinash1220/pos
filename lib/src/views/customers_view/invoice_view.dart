@@ -9,6 +9,7 @@ import 'package:pos/src/controllers/customer_api_controller/customer_api_control
 import 'package:pos/src/controllers/customer_api_controller/items_api_controllers/items_api_controller.dart';
 import 'package:pos/src/controllers/invoice_controllers/invoice_controller.dart';
 import 'package:pos/src/models/items_api_models/invoice_model.dart';
+import 'package:pos/src/views/test_printer.dart';
 import 'package:pos/src/widgets/customer_widgets/invoice_dropdown_widget.dart';
 import 'package:pos/src/widgets/customer_widgets/invoice_row_widget.dart';
 import 'package:pos/src/widgets/customer_widgets/invoice_total_row.dart';
@@ -236,7 +237,8 @@ String? selectedValue;
                     SizedBox(width: 15,),
                   InkWell(
                     onTap: (){
-                      invoicecontroller.printposInvoice();
+                      Get.to(const TestPrinting());
+                      //invoicecontroller.printposInvoice();
                       // invoicecontroller.saveController(
                       //   tipodoc: "", context: context, serie: "", entidade: "", tipoEntidade: "", dataDoc: "", dataVenc: "", horaDefinida: "", calculoManual: "");
                     },
@@ -716,13 +718,16 @@ String? selectedValue;
                       
                       child: TextField(
                         onChanged: (value) {
-                          double a = double.parse(invoicecontroller.invoiceProtectList[i].unitPrice) * int.parse(value);
+                          
+                            double a = double.parse(invoicecontroller.invoiceProtectList[i].unitPrice) * int.parse(value);
                           double b = double.parse(invoicecontroller.invoiceProtectList[i].discount) / double.parse(100.toString()) * double.parse(a.toString());
                           double c = double.parse(invoicecontroller.invoiceProtectList[i].cva) / double.parse(100.toString()) * double.parse(a.toString());
                           double d = a - b + c;
                           invoicecontroller.invoiceProtectList[0].totalValue = d.toString();
+                          invoicecontroller.invoiceProtectList[0].qty = int.parse(value);
                           invoicecontroller.totalAmountCal();
                           invoicecontroller.update();
+                          
                         },
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
@@ -917,7 +922,7 @@ String? selectedValue;
                             double c = double.parse(itemsApiController.itemdata![index]!.vat.toString()) / double.parse(100.toString()) * double.parse(a.toString());
                             double d = a - b + c;
 
-                             InvoiceModel invoiceModel = InvoiceModel(items: itemsApiController.itemdata![index]!.item!,cva: itemsApiController.itemdata![index]!.vat.toString(),qty: 1,totalValue:d.toString(),unitPrice:pricelist.first!.price.toString(),discount: pricelist.first!.discount.toString() );
+                             InvoiceModel invoiceModel = InvoiceModel(items: itemsApiController.itemdata![index]!.item!, description: itemsApiController.itemdata![index]!.description.toString(), cva: itemsApiController.itemdata![index]!.vat.toString(),qty: 1,totalValue:d.toString(),unitPrice:pricelist.first!.price.toString(),discount: pricelist.first!.discount.toString() );
 
                             invoicecontroller.invoiceProtectList.insert(itemIndex,invoiceModel);
                            

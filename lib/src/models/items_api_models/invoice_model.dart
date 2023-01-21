@@ -2,6 +2,7 @@ class InvoiceModel {
    
    InvoiceModel({
        required this.items,
+       required this.description,
        required this.qty,
        required this.unitPrice,
        required this.cva,
@@ -10,6 +11,7 @@ class InvoiceModel {
    });
 
    String items;
+   String description;
    int qty;
    String unitPrice;
    String cva;
