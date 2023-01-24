@@ -1,14 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
 import 'package:pos/src/services/base_url.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ItemPriceListService extends BaseApiService{
+class ListUserSerieService extends BaseApiService{
 
-   Future itempricelist ({
-    required String client,
-    required String wareHouse
-   }) async {
+   Future listuserSerieService () async {
 
      dynamic responseJson;
 
@@ -17,8 +13,9 @@ class ItemPriceListService extends BaseApiService{
        var dio = Dio();
        final prefs = await SharedPreferences.getInstance();
        String? authtoken = prefs.getString("auth_token");
+       String? username = prefs.getString("username");
 
-       var response = await dio.get(priceListUrl,
+       var response = await dio.get(listUserSerieUrl,
         options: Options(
           
           headers: {
@@ -30,13 +27,12 @@ class ItemPriceListService extends BaseApiService{
               return status! <= 500;
             }),
             queryParameters: {
-              'listId' : 'F3D4E8AC-905D-11ED-814A-502B73C832B0',
-              'listParameters' : "$client,$wareHouse"
+              'listId' : '25F5B245-A6F1-4874-9E8B-EA1701465B9D',
+              'listParameters' : "$username"
             }
        );
 
      responseJson = response;
-     Get.snackbar(client, wareHouse);
     } catch (e) {
       print(e);
     }

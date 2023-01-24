@@ -14,10 +14,10 @@ import '../../../models/items_api_models/product_list_model.dart';
 
 class CreateItemsApiController extends GetxController{
   CreateItemsApiServices createItemsApiServices = CreateItemsApiServices();
-  ListItemsApiService listItemsApiService = ListItemsApiService();
+  //ListItemsApiService listItemsApiService = ListItemsApiService();
   ItemPriceListService itemPriceListService = ItemPriceListService();
 
- List<ItemData?>? itemdata = [];
+ //List<ItemData?>? itemdata = [];
 
  List<ItemPrice?>? pricelist = [];
 
@@ -61,35 +61,41 @@ class CreateItemsApiController extends GetxController{
     }
   }
 
-  listitems({
-    required BuildContext context,
-  }) async {
-       dio.Response<dynamic> response = await listItemsApiService.listItemsdata();
+  // listitems({
+  //   required BuildContext context,
+  // }) async {
+  //      dio.Response<dynamic> response = await listItemsApiService.listItemsdata();
 
-       if(response.statusCode == 200){
+  //      if(response.statusCode == 200){
 
-         ProductList itemlist = ProductList.fromJson(response.data);
-         itemdata = itemlist.data;
+  //        ProductList itemlist = ProductList.fromJson(response.data);
+  //        itemdata = itemlist.data;
 
-         update();
+  //        update();
 
-       }else{
-        //ScaffoldMessenger.of(context).showSnackBar(incorrect);
-       }
-  }
+  //      }else{
+  //       //ScaffoldMessenger.of(context).showSnackBar(incorrect);
+  //      }
+  // }
 
  Future<List<ItemPrice?>?> listOfitems({
     required String client,
-    required String itemId
+    required String wareHouse
   }) async {
 
         
-        dio.Response<dynamic> response = await itemPriceListService.itempricelist(client: client,itemId: itemId);
-
+        dio.Response<dynamic> response = await itemPriceListService.itempricelist(client: client,wareHouse: wareHouse);
+         
+          print(response.statusCode.toString());
         
-
+          Get.snackbar(response.data["data"],"");
           PriceList itempricelists = PriceList.fromJson(response.data);
           pricelist = itempricelists.data;
+
+          print("::::::::::::::::printing price list::::::::::::::");
+          print(pricelist);
+          
+          
       
         return pricelist;
   }

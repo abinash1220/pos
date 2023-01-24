@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart'as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos/src/models/list_user_model.dart';
+import 'package:pos/src/services/login_api_sevices/list_user_serie_api_service.dart';
 import 'package:pos/src/services/login_api_sevices/login_api_service.dart';
 import 'package:pos/src/views/home_view/home_navigation_bar.dart';
 import 'package:pos/src/widgets/snackbar_widgets/invalid.dart';
@@ -25,7 +27,8 @@ class LoginApiController extends GetxController{
     print(response.statusCode);
     loder(false);
     if(response.statusCode == 200){
-
+        
+        await prefs.setString("username", username);
         await prefs.setString("auth_token", response.data["access_token"]);
 
       Get.offAll(HomePageWithNavigation());
@@ -38,6 +41,38 @@ class LoginApiController extends GetxController{
     }
   }
 
+  //list user serie controller
+
+  ListUserSerieService listuserService = ListUserSerieService();
+
+  List<ListUserData> listUserData = [];
+
+  listUserSerie() async {
+
+     final prefs = await SharedPreferences.getInstance();
+
+     dio.Response<dynamic> response = await listuserService.listuserSerieService();
+
+      print(response.statusCode);
+      
+      if(response.statusCode == 200){
+          
+          ListUserModel listUserModel = ListUserModel.fromJson(response.data);
+          listUserData = listUserModel.data;
+
+          update();
+       
+      }else if(response.statusCode == 500){
+        print("An error has occurred.");
+
+      }else 
+      {
+       print("Something went wrong");
+
+      }
+
+
+  }
   
 
 }

@@ -1,65 +1,109 @@
-// // To parse this JSON data, do
-// //
-// //     final itemList = itemListFromJson(jsonString);
+// To parse this JSON data, do
+//
+//     final priceList = priceListFromJson(jsonString);
 
-// import 'dart:convert';
+import 'dart:convert';
 
-// ItemList itemListFromJson(String str) => ItemList.fromJson(json.decode(str));
+PriceList priceListFromJson(String str) => PriceList.fromJson(json.decode(str));
 
-// String itemListToJson(ItemList data) => json.encode(data.toJson());
+String priceListToJson(PriceList data) => json.encode(data.toJson());
 
-// class ItemList {
-//     ItemList({
-//         required this.dataSet,
-//         required this.query,
-//     });
+class PriceList {
+    PriceList({
+        required this.fields,
+        required this.data,
+    });
 
-//     DataSet dataSet;
-//     String query;
+    List<Field> fields;
+    List<ItemPrice> data;
 
-//     factory ItemList.fromJson(Map<String, dynamic> json) => ItemList(
-//         dataSet: DataSet.fromJson(json["DataSet"]),
-//         query: json["Query"],
-//     );
+    factory PriceList.fromJson(Map<String, dynamic> json) => PriceList(
+        fields: List<Field>.from(json["Fields"].map((x) => Field.fromJson(x))),
+        data: List<ItemPrice>.from(json["Data"].map((x) => ItemPrice.fromJson(x))),
+    );
 
-//     Map<String, dynamic> toJson() => {
-//         "DataSet": dataSet.toJson(),
-//         "Query": query,
-//     };
-// }
+    Map<String, dynamic> toJson() => {
+        "Fields": List<dynamic>.from(fields.map((x) => x.toJson())),
+        "Data": List<dynamic>.from(data.map((x) => x.toJson())),
+    };
+}
 
-// class DataSet {
-//     DataSet({
-//         required this.table,
-//     });
+class ItemPrice {
+    ItemPrice({
+        required this.artigo,
+        required this.descricao,
+        this.marca,
+         this.price,
+        required this.iva,
+         this.discount,
+        this.validade,
+        required this.lote,
+         this.stock,
+        required this.categ,
+        required this.unidadeBase,
+    });
 
-//     List<ItemsData> table;
+    String artigo;
+    String descricao;
+    String? marca;
+    dynamic price;
+    String iva;
+    dynamic discount;
+    dynamic validade;
+    String lote;
+    dynamic stock;
+    String categ;
+    String unidadeBase;
 
-//     factory DataSet.fromJson(Map<String, dynamic> json) => DataSet(
-//         table: List<ItemsData>.from(json["Table"].map((x) => ItemsData.fromJson(x))),
-//     );
+    factory ItemPrice.fromJson(Map<String, dynamic> json) => ItemPrice(
+        artigo: json["Artigo"]??"",
+        descricao: json["Descricao"]??"",
+        marca: json["Marca"]??"",
+        price: json["Price"],
+        iva: json["iva"]??"",
+        discount: json["Discount"],
+        validade: json["Validade"]??"",
+        lote: json["Lote"]??"",
+        stock: json["Stock"],
+        categ: json["Categ"]??"",
+        unidadeBase: json["UnidadeBase"]??"",
+    );
 
-//     Map<String, dynamic> toJson() => {
-//         "Table": List<dynamic>.from(table.map((x) => x.toJson())),
-//     };
-// }
+    Map<String, dynamic> toJson() => {
+        "Artigo": artigo,
+        "Descricao": descricao,
+        "Marca": marca,
+        "Price": price,
+        "iva": iva,
+        "Discount": discount,
+        "Validade": validade,
+        "Lote": lote,
+        "Stock": stock,
+        "Categ": categ,
+        "UnidadeBase": unidadeBase,
+    };
+}
 
-// class ItemsData {
-//     ItemsData({
-//         required this.artigo,
-//         required this.descricao,
-//     });
+class Field {
+    Field({
+        required this.name,
+        required this.alias,
+        required this.isDrillDown,
+    });
 
-//     String artigo;
-//     String descricao;
+    String name;
+    String alias;
+    bool isDrillDown;
 
-//     factory ItemsData.fromJson(Map<String, dynamic> json) => ItemsData(
-//         artigo: json["Artigo"],
-//         descricao: json["Descricao"],
-//     );
+    factory Field.fromJson(Map<String, dynamic> json) => Field(
+        name: json["Name"],
+        alias: json["Alias"],
+        isDrillDown: json["IsDrillDown"],
+    );
 
-//     Map<String, dynamic> toJson() => {
-//         "Artigo": artigo,
-//         "Descricao": descricao,
-//     };
-// }
+    Map<String, dynamic> toJson() => {
+        "Name": name,
+        "Alias": alias,
+        "IsDrillDown": isDrillDown,
+    };
+}

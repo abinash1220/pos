@@ -147,12 +147,6 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(
                 height: 70,
               ),
-              InkWell(
-                onTap: (){
-                  Get.to(const TestPrinting());
-                },
-                child: Icon(Icons.print)),
-              
             ],
           ),
         ),

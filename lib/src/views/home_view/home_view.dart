@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/const/app_fonts.dart';
 import 'package:pos/src/controllers/home_controllers.dart';
+import 'package:pos/src/controllers/login_api_controllers/login_api_controller.dart';
 import 'package:pos/src/views/home_view/home_navigation_bar.dart';
 import 'package:pos/src/views/item_details_view/item_details_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -19,6 +20,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final homeController = Get.find<HomeController>();
 
+  final loginApiController = Get.find<LoginApiController>();
+
   List<_SalesData> data = [
     _SalesData('Mon', 5000),
     _SalesData('Tue', 3000),
@@ -26,6 +29,13 @@ class _HomeViewState extends State<HomeView> {
     _SalesData('Thu', 7000),
     _SalesData('Fri', 3000)
   ];
+  
+ @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loginApiController.listUserSerie();
+  }
 
   @override
   Widget build(BuildContext context) {

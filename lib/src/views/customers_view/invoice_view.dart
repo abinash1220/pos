@@ -8,7 +8,9 @@ import 'package:pos/src/const/app_fonts.dart';
 import 'package:pos/src/controllers/customer_api_controller/customer_api_controller.dart';
 import 'package:pos/src/controllers/customer_api_controller/items_api_controllers/items_api_controller.dart';
 import 'package:pos/src/controllers/invoice_controllers/invoice_controller.dart';
+import 'package:pos/src/controllers/login_api_controllers/login_api_controller.dart';
 import 'package:pos/src/models/items_api_models/invoice_model.dart';
+import 'package:pos/src/models/items_api_models/items_list_api_model.dart';
 import 'package:pos/src/views/test_printer.dart';
 import 'package:pos/src/widgets/customer_widgets/invoice_dropdown_widget.dart';
 import 'package:pos/src/widgets/customer_widgets/invoice_row_widget.dart';
@@ -166,6 +168,12 @@ String speakLang = "You have recieved";
 
   final invoicecontroller = Get.find<InvoiceController>();
 
+  final loginApiController = Get.find<LoginApiController>();
+
+  final customerApiController = Get.find<CustomerApiController>();
+
+  //final createitemApiController = Get.find<CreateItemsApiController>();
+
 
    final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
 
@@ -196,7 +204,9 @@ String? selectedValue;
   void initState() {
     // TODO: implement initState
     super.initState();
-    itemsApiController.listitems(context: context);
+    itemsApiController.listOfitems(
+      client: widget.client,
+      wareHouse: loginApiController.listUserData.first.warehouse == "CAR1" ? "SAADMIN" : loginApiController.listUserData.first.warehouse);
      dropdownValue = list.first;
     setState(() {
       speakLang = "you have received";
@@ -787,9 +797,9 @@ String? selectedValue;
                 color: Colors.grey.withOpacity(0.2),
                 total: invoicecontroller.totolamount.toString(),
               ),
-              
             ],
           );
+          
         }
       ),
      floatingActionButton: Builder(
@@ -892,6 +902,7 @@ String? selectedValue;
             ],
           ),
         ),
+        
       
     );
   }
@@ -908,21 +919,21 @@ String? selectedValue;
               builder: (_) {
                 return ListView.builder(
                       shrinkWrap: true,
-                      itemCount: itemsApiController.itemdata!.length,
+                      itemCount: itemsApiController.pricelist!.length,
                       itemBuilder:  (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: InkWell(
                           onTap: () async {
 
-                            List<ItemPrice?>? pricelist = await itemsApiController.listOfitems(client: widget.client , itemId: itemsApiController.itemdata![index]!.item!);
+                            List<ItemPrice?>? pricelist = await itemsApiController.listOfitems(client: widget.client , wareHouse: loginApiController.listUserData[index].warehouse);
                              
                             double a = double.parse(pricelist!.first!.price.toString()) * 1;
                             double b = double.parse(pricelist.first!.discount.toString()) / double.parse(100.toString()) * double.parse(a.toString());
-                            double c = double.parse(itemsApiController.itemdata![index]!.vat.toString()) / double.parse(100.toString()) * double.parse(a.toString());
+                            double c = double.parse(itemsApiController.pricelist![index]!.iva.toString()) / double.parse(100.toString()) * double.parse(a.toString());
                             double d = a - b + c;
 
-                             InvoiceModel invoiceModel = InvoiceModel(items: itemsApiController.itemdata![index]!.item!, description: itemsApiController.itemdata![index]!.description.toString(), cva: itemsApiController.itemdata![index]!.vat.toString(),qty: 1,totalValue:d.toString(),unitPrice:pricelist.first!.price.toString(),discount: pricelist.first!.discount.toString() );
+                             InvoiceModel invoiceModel = InvoiceModel(items: itemsApiController.pricelist![index]!.artigo, description: itemsApiController.pricelist![index]!.descricao.toString(), cva: itemsApiController.pricelist![index]!.iva.toString(),qty: 1,totalValue:d.toString(),unitPrice:pricelist.first!.price.toString(),discount: pricelist.first!.discount.toString() );
 
                             invoicecontroller.invoiceProtectList.insert(itemIndex,invoiceModel);
                            
@@ -942,7 +953,7 @@ String? selectedValue;
                                 child: Row(
                                   children: [
                                            Text(
-                                              itemsApiController.itemdata![index]!.item!.toString(),
+                                              itemsApiController.pricelist![index]!.artigo.toString(),
                                               textDirection: TextDirection.ltr,
                                               style: primaryFont.copyWith(
                                                   fontSize: 13, fontWeight: FontWeight.w600),
@@ -951,7 +962,7 @@ String? selectedValue;
                                             Container(
                                               width: 150,
                                               child: Text(
-                                                itemsApiController.itemdata![index]!.description!.toString(),
+                                                itemsApiController.pricelist![index]!.descricao.toString(),
                                                 overflow: TextOverflow.ellipsis,
                                                 textDirection: TextDirection.ltr,
                                                 style: primaryFont.copyWith(

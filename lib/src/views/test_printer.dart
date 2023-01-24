@@ -187,7 +187,7 @@ class _TestPrintingState extends State<TestPrinting> {
     bytes += generator.hr();
     for(var value in invoiceController.invoiceProtectList){
     bytes += generator.text('${value.items}  ${value.description}');
-    bytes += generator.text('${value.qty.toString()}, ${value.unitPrice}  ${value.discount}  ${value.cva}   ${value.totalValue}');
+    bytes += generator.text('${value.qty.toString()}, x ${value.unitPrice}  ${value.discount}  ${value.cva}   ${value.totalValue}');
     }
     bytes += generator.hr();
     bytes += generator.text('Cred. Develucoes   :         0,00');
