@@ -96,8 +96,8 @@ class Field {
     bool isDrillDown;
 
     factory Field.fromJson(Map<String, dynamic> json) => Field(
-        name: json["Name"],
-        alias: json["Alias"],
+        name: json["Name"] ?? "",
+        alias: json["Alias"] ?? "",
         isDrillDown: json["IsDrillDown"],
     );
 

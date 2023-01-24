@@ -88,7 +88,7 @@ class CreateItemsApiController extends GetxController{
          
           print(response.statusCode.toString());
         
-          Get.snackbar(response.data["data"],"");
+          print(response.data["data"]);
           PriceList itempricelists = PriceList.fromJson(response.data);
           pricelist = itempricelists.data;
 
