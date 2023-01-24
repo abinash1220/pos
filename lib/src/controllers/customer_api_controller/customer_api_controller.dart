@@ -5,6 +5,7 @@ import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pos/src/const/api_cachekey.dart';
 import 'package:pos/src/models/customer_api_models/customer_api_model.dart';
 import 'package:pos/src/services/customer_api_services/customer_api_service.dart';
@@ -26,10 +27,12 @@ class CustomerApiController extends GetxController{
      required BuildContext context,
    }) async {
 
-    var isChacheExist = await APICacheManager().isAPICacheKeyExist(customerlistkey);
+    bool result = await InternetConnectionChecker().hasConnection;
 
-    
-      
+    if(result){
+       
+       Get.snackbar("", "available internet");
+        
        dio.Response<dynamic> response = await customerapiservice.customerList();
      
      if(response.statusCode == 200){
@@ -60,15 +63,18 @@ class CustomerApiController extends GetxController{
            backgroundColor: Colors.red[300]);
        // ScaffoldMessenger.of(context).showSnackBar(somethingwrong);
      }
-  //  }else{
-  //   var cacheData = await APICacheManager().getCacheData(customerlistkey);
+   }else{
+   
+   Get.snackbar("", "no internet");
 
-  //    ListCustomer listCustomer = ListCustomer.fromJson(json.decode(cacheData.syncData));
-  //      customerdatalist = listCustomer.dataSet.table;
+    var cacheData = await APICacheManager().getCacheData(customerlistkey);
+
+     ListCustomer listCustomer = ListCustomer.fromJson(json.decode(cacheData.syncData));
+       customerdatalist = listCustomer.dataSet.table;
       
-  //      update();
+       update();
 
-  //  }
+   }
 
      }
 

@@ -934,14 +934,16 @@ String? selectedValue;
                         padding: const EdgeInsets.all(5.0),
                         child: InkWell(
                           onTap: () async {
-
+                            
+                            
                             //List<ItemPrice?>? pricelist = await itemsApiController.listOfitems(client: widget.client , wareHouse: loginApiController.listUserData[index].warehouse);
                              
                             double a = double.parse(itemsApiController.pricelist![index]!.price.toString()) * 1;
                             double b = double.parse(itemsApiController.pricelist![index]!.discount.toString()) / double.parse(100.toString()) * double.parse(a.toString());
                             double c = double.parse(itemsApiController.pricelist![index]!.iva.toString()) / double.parse(100.toString()) * double.parse(a.toString());
                             double d = a - b + c;
-
+                               
+                               
                              InvoiceModel invoiceModel = InvoiceModel(
                               items: itemsApiController.pricelist![index]!.artigo,
                                description: itemsApiController.pricelist![index]!.descricao.toString(), 

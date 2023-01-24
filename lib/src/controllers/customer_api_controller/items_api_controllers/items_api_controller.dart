@@ -91,7 +91,7 @@ class CreateItemsApiController extends GetxController {
 
       if (response.statusCode == 200) {
         APICacheDBModel cacheDBModel = new APICacheDBModel(
-            key: customerlistkey, syncData: jsonEncode(response.data));
+            key: pricelistKey, syncData: jsonEncode(response.data));
 
         await APICacheManager().addCacheData(cacheDBModel);
 
