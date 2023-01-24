@@ -18,7 +18,8 @@ class CustomerCardWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15, right: 15),
       child: InkWell(
         onTap: () {
-          Get.to(() => InvoiceView(client: clientId,));
+          print("client id: $clientId");
+          Get.to(() => InvoiceView(client: clientId));
         },
         child: Container(
           height: 70,

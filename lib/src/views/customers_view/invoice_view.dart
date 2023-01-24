@@ -697,7 +697,7 @@ String? selectedValue;
               ),
               //
               
-             for(int i = 1;i < invoicecontroller.invoiceProtectList.length+1; i++)
+             for(int i = 1 ;i < invoicecontroller.invoiceProtectList.length + 1; i++)
               Container(
                 height: 50,
                 color: i.isOdd ? Colors.grey[200]: Colors.white,
@@ -934,16 +934,12 @@ String? selectedValue;
                         padding: const EdgeInsets.all(5.0),
                         child: InkWell(
                           onTap: () async {
-                            
-                            
                             //List<ItemPrice?>? pricelist = await itemsApiController.listOfitems(client: widget.client , wareHouse: loginApiController.listUserData[index].warehouse);
-                             
+                              
                             double a = double.parse(itemsApiController.pricelist![index]!.price.toString()) * 1;
                             double b = double.parse(itemsApiController.pricelist![index]!.discount.toString()) / double.parse(100.toString()) * double.parse(a.toString());
                             double c = double.parse(itemsApiController.pricelist![index]!.iva.toString()) / double.parse(100.toString()) * double.parse(a.toString());
                             double d = a - b + c;
-                               
-                               
                              InvoiceModel invoiceModel = InvoiceModel(
                               items: itemsApiController.pricelist![index]!.artigo,
                                description: itemsApiController.pricelist![index]!.descricao.toString(), 
@@ -951,8 +947,8 @@ String? selectedValue;
                                qty: 1,totalValue:d.toString(),
                                unitPrice:itemsApiController.pricelist![index]!.price.toString(),
                                discount: itemsApiController.pricelist![index]!.discount.toString(),
-                               armazen: loginApiController.listUserData[index].warehouse,
-                               localizacao: loginApiController.listUserData[index].warehouse
+                               armazen: loginApiController.listUserData.first.warehouse,
+                               localizacao: loginApiController.listUserData.first.warehouse
                                 );
 
                             invoicecontroller.invoiceProtectList.insert(itemIndex,invoiceModel);
@@ -971,6 +967,7 @@ String? selectedValue;
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 5,),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                            Text(
                                               itemsApiController.pricelist![index]!.artigo.toString(),
@@ -980,7 +977,7 @@ String? selectedValue;
                                             ),
                                             SizedBox(width: 10,),
                                             Container(
-                                              width: 150,
+                                              width: 130,
                                               child: Text(
                                                 itemsApiController.pricelist![index]!.descricao.toString(),
                                                 overflow: TextOverflow.ellipsis,
@@ -989,6 +986,16 @@ String? selectedValue;
                                                     fontSize: 13, fontWeight: FontWeight.w600),
                                               ),
                                             ),
+                                            Text(
+                                            itemsApiController
+                                                .pricelist![index]!.stock
+                                                .toString(),
+                                            overflow: TextOverflow.ellipsis,
+                                            textDirection: TextDirection.ltr,
+                                            style: primaryFont.copyWith(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w600),
+                                          )
                                   ],
                                 ),
                               ),
