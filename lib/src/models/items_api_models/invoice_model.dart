@@ -7,7 +7,9 @@ class InvoiceModel {
        required this.unitPrice,
        required this.cva,
        required this.totalValue,
-       required this.discount
+       required this.discount,
+       required this.armazen,
+       required this.localizacao
    });
 
    String items;
@@ -17,5 +19,7 @@ class InvoiceModel {
    String cva;
    String totalValue;
    String discount;
+   String armazen;
+   String localizacao;
 
 }

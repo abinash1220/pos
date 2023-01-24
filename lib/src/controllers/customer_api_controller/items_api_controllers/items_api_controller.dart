@@ -1,7 +1,12 @@
+import 'dart:convert';
+
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:pos/src/const/api_cachekey.dart';
 import 'package:pos/src/models/items_api_models/items_list_api_model.dart';
 import 'package:pos/src/services/items_api_services/create_items_api_service.dart';
 import 'package:pos/src/services/items_api_services/item_pricelist_api_service.dart';
@@ -82,22 +87,43 @@ class CreateItemsApiController extends GetxController{
     required String client,
     required String wareHouse
   }) async {
+        
+        var isChacheExist = await APICacheManager().isAPICacheKeyExist(pricelistKey);
 
-        
-        dio.Response<dynamic> response = await itemPriceListService.itempricelist(client: client,wareHouse: wareHouse);
+        if(!isChacheExist){
+
+           dio.Response<dynamic> response = await itemPriceListService.itempricelist(client: client,wareHouse: wareHouse);
          
-          print(response.statusCode.toString());
-        
-          print(response.data["data"]);
+         if(response.statusCode == 200){
+
+          APICacheDBModel cacheDBModel = new APICacheDBModel(
+          key: customerlistkey, 
+          syncData: jsonEncode(response.data));
+
+        await APICacheManager().addCacheData(cacheDBModel);
+
           PriceList itempricelists = PriceList.fromJson(response.data);
           pricelist = itempricelists.data;
 
           print("::::::::::::::::printing price list::::::::::::::");
-          print(pricelist);
-          
+          print(response.statusCode);
           
       
         return pricelist;
+         }
+  }else{
+
+    var cacheData = await APICacheManager().getCacheData(pricelistKey);
+
+       PriceList itempricelists = PriceList.fromJson(json.decode(cacheData.syncData));
+       pricelist = itempricelists.data;
+      
+       update();
+
   }
+
+        }
+        
+       
 
 }

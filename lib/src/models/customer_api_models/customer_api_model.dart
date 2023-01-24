@@ -48,16 +48,16 @@ class CustomerData {
     CustomerData({
         required this.cliente,
         required this.nome,
-        required this.facMor,
-        required this.pais,
-        required this.numContrib,
+         this.facMor,
+         this.pais,
+         this.numContrib,
     });
 
     String cliente;
     String nome;
-    String facMor;
-    String pais;
-    String numContrib;
+    dynamic facMor;
+    dynamic pais;
+    dynamic numContrib;
 
     factory CustomerData.fromJson(Map<String, dynamic> json) => CustomerData(
         cliente: json["Cliente"],

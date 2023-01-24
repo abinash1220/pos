@@ -1,6 +1,11 @@
+import 'dart:convert';
+
+import 'package:api_cache_manager/api_cache_manager.dart';
+import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:dio/dio.dart'as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos/src/const/api_cachekey.dart';
 import 'package:pos/src/models/list_user_model.dart';
 import 'package:pos/src/services/login_api_sevices/list_user_serie_api_service.dart';
 import 'package:pos/src/services/login_api_sevices/login_api_service.dart';
@@ -49,13 +54,23 @@ class LoginApiController extends GetxController{
 
   listUserSerie() async {
 
-     final prefs = await SharedPreferences.getInstance();
+     var isChacheExist = await APICacheManager().isAPICacheKeyExist(listuserSerieKey);
+
+     if(!isChacheExist){
+
+      final prefs = await SharedPreferences.getInstance();
 
      dio.Response<dynamic> response = await listuserService.listuserSerieService();
 
       print(response.statusCode);
       
       if(response.statusCode == 200){
+
+        APICacheDBModel cacheDBModel = new APICacheDBModel(
+        key: customerlistkey, 
+        syncData: jsonEncode(response.data));
+
+        await APICacheManager().addCacheData(cacheDBModel);
           
           ListUserModel listUserModel = ListUserModel.fromJson(response.data);
           listUserData = listUserModel.data;
@@ -70,9 +85,18 @@ class LoginApiController extends GetxController{
        print("Something went wrong");
 
       }
+  }else{
+    var cacheData = await APICacheManager().getCacheData(listuserSerieKey);
 
+       ListUserModel listUserModel = ListUserModel.fromJson(json.decode(cacheData.syncData));
+       listUserData = listUserModel.data;
+      
+       update();
 
   }
+  }
+
+     
   
 
 }

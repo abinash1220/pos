@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -8,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pos/src/const/api_cachekey.dart';
 import 'package:pos/src/models/items_api_models/invoice_model.dart';
 import 'package:pos/src/services/invoice_api_services/invoice_save_api_service.dart';
 import 'package:pos/src/widgets/snackbar_widgets/incorrect.dart';
@@ -714,8 +716,8 @@ class InvoiceController extends GetxController{
        required String tipoEntidade,
        required String dataDoc,
        required String dataVenc,
-       required String horaDefinida,
-       required String calculoManual}) async{
+       required String condPag,
+       required String modoPag}) async{
     List<dynamic> templist = [];
 
    for(var value in invoiceProtectList){
@@ -725,20 +727,26 @@ class InvoiceController extends GetxController{
       "Quantidade": value.qty.toString(),
       "PrecUnit": value.unitPrice,
       "Desconto1": value.discount,
-      "TaxaIva": value.cva
+      "TaxaIva": value.cva,
+      "Armazem":value.armazen,
+      "Localizacao":value.localizacao
        },
      );
    }
 
-      dio.Response<dynamic> response = await invoiceSaveApiService.invoiceSave(
+      var isChacheExist = await APICacheManager().isAPICacheKeyExist(saveinvoiceKey);
+
+      if(!isChacheExist){
+        
+        dio.Response<dynamic> response = await invoiceSaveApiService.invoiceSave(
         tipodoc: tipodoc, 
         serie: serie, 
         entidade: entidade, 
         tipoEntidade: tipoEntidade, 
         dataDoc: dataDoc, 
         dataVenc: dataVenc, 
-        horaDefinida: horaDefinida, 
-        calculoManual: calculoManual, 
+        condPag: condPag, 
+        modoPag: modoPag, 
         products: templist);
         
         if(response.statusCode == 200){
@@ -746,13 +754,17 @@ class InvoiceController extends GetxController{
            ScaffoldMessenger.of(context).showSnackBar(invoicesave);
 
         }else{
-
-          ScaffoldMessenger.of(context).showSnackBar(incorrect);
+           Get.snackbar("", response.statusCode.toString());
+          //ScaffoldMessenger.of(context).showSnackBar(incorrect);
         }
-
-
-   
+  }else{
+    
   }
+
+      }
+
+
+      
 
    
    

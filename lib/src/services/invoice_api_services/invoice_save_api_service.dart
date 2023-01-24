@@ -6,13 +6,13 @@ class InvoiceSaveApiService extends BaseApiService{
 
    Future invoiceSave ({
        required String tipodoc,
-       required String serie,
-       required String entidade,
+       required String condPag,
+       required String modoPag,
        required String tipoEntidade,
        required String dataDoc,
        required String dataVenc,
-       required String horaDefinida,
-       required String calculoManual,
+       required String entidade,
+       required String serie,
        required List<dynamic> products
    }) async {
 
@@ -36,15 +36,16 @@ class InvoiceSaveApiService extends BaseApiService{
             }),
             data: 
              {
-           "Linhas": products,
+           
                 "Tipodoc": tipodoc,
-                "Serie": serie,
-                "Entidade": entidade,
+                "CondPag": condPag,
+                "ModoPag": modoPag,
                 "TipoEntidade": tipoEntidade,
                 "DataDoc":dataDoc,
                 "DataVenc":dataVenc,
-                "HoraDefinida" : horaDefinida,
-                "CalculoManual": calculoManual
+                "Entidade" : entidade,
+                "Serie": serie,
+                "Linhas": products,
 
 
             }

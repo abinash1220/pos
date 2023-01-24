@@ -241,7 +241,15 @@ String? selectedValue;
                   InkWell(
                     onTap: (){
                       invoicecontroller.saveController(
-                        tipodoc: "", context: context, serie: "", entidade: "", tipoEntidade: "", dataDoc: "", dataVenc: "", horaDefinida: "", calculoManual: "");
+                        tipodoc: "FA", 
+                        context: context, 
+                        serie: "2022A", 
+                        entidade: customerApiController.customerdatalist.first.cliente, 
+                        tipoEntidade: "C", 
+                        dataDoc: "2022-12-31T15:20:00", 
+                        dataVenc: "${dt.year}-${dt.month}-${dt.day}".toUpperCase(),
+                        condPag: "1", 
+                        modoPag: "MB");
                     },
                     child: Icon(Icons.save)),
                     SizedBox(width: 15,),
@@ -441,7 +449,7 @@ String? selectedValue;
                                   )),
                               alignment: Alignment.center,
                               child: Text(
-                                "2023",
+                                loginApiController.listUserData.first.serie,
                                 style: primaryFont.copyWith(
                                     fontWeight: FontWeight.w600),
                               ),
@@ -449,7 +457,7 @@ String? selectedValue;
                       ],
                     ),
                   ),
-                  Container(
+                   Container(
                     height: 45,
                     width: size.width * 0.4,
                     child: Row(
@@ -510,7 +518,7 @@ String? selectedValue;
                       ),
                     ),
                     Container(
-                      height: 40,
+                      height: 50,
                       width: 1,
                       color: Colors.grey.withOpacity(0.7),
                     ),
@@ -573,10 +581,12 @@ String? selectedValue;
                     Container(
                       width: 80,
                       alignment: Alignment.center,
-                      child: Text(
-                        "Total Value",
-                        style: primaryFont.copyWith(
-                            fontSize: 14, fontWeight: FontWeight.w600),
+                      child: Center(
+                        child: Text(
+                          "Total Value",
+                          style: primaryFont.copyWith(
+                              fontSize: 14, fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ),
                   ],
@@ -728,13 +738,12 @@ String? selectedValue;
                       
                       child: TextField(
                         onChanged: (value) {
-                          
-                            double a = double.parse(invoicecontroller.invoiceProtectList[i].unitPrice) * int.parse(value);
+                          double a = double.parse(invoicecontroller.invoiceProtectList[i].unitPrice) * int.parse(value);
                           double b = double.parse(invoicecontroller.invoiceProtectList[i].discount) / double.parse(100.toString()) * double.parse(a.toString());
                           double c = double.parse(invoicecontroller.invoiceProtectList[i].cva) / double.parse(100.toString()) * double.parse(a.toString());
                           double d = a - b + c;
-                          invoicecontroller.invoiceProtectList[0].totalValue = d.toString();
-                          invoicecontroller.invoiceProtectList[0].qty = int.parse(value);
+                          invoicecontroller.invoiceProtectList[i].totalValue = d.toString();
+                          invoicecontroller.invoiceProtectList[i].qty = int.parse(value);
                           invoicecontroller.totalAmountCal();
                           invoicecontroller.update();
                           
@@ -917,7 +926,7 @@ String? selectedValue;
             width: 100,
             child: GetBuilder<CreateItemsApiController>(
               builder: (_) {
-                return ListView.builder(
+                return itemsApiController.pricelist!.isEmpty ? const Center(child: Text("No Data")) : ListView.builder(
                       shrinkWrap: true,
                       itemCount: itemsApiController.pricelist!.length,
                       itemBuilder:  (context, index) {
@@ -926,14 +935,23 @@ String? selectedValue;
                         child: InkWell(
                           onTap: () async {
 
-                            List<ItemPrice?>? pricelist = await itemsApiController.listOfitems(client: widget.client , wareHouse: loginApiController.listUserData[index].warehouse);
+                            //List<ItemPrice?>? pricelist = await itemsApiController.listOfitems(client: widget.client , wareHouse: loginApiController.listUserData[index].warehouse);
                              
-                            double a = double.parse(pricelist!.first!.price.toString()) * 1;
-                            double b = double.parse(pricelist.first!.discount.toString()) / double.parse(100.toString()) * double.parse(a.toString());
+                            double a = double.parse(itemsApiController.pricelist![index]!.price.toString()) * 1;
+                            double b = double.parse(itemsApiController.pricelist![index]!.discount.toString()) / double.parse(100.toString()) * double.parse(a.toString());
                             double c = double.parse(itemsApiController.pricelist![index]!.iva.toString()) / double.parse(100.toString()) * double.parse(a.toString());
                             double d = a - b + c;
 
-                             InvoiceModel invoiceModel = InvoiceModel(items: itemsApiController.pricelist![index]!.artigo, description: itemsApiController.pricelist![index]!.descricao.toString(), cva: itemsApiController.pricelist![index]!.iva.toString(),qty: 1,totalValue:d.toString(),unitPrice:pricelist.first!.price.toString(),discount: pricelist.first!.discount.toString() );
+                             InvoiceModel invoiceModel = InvoiceModel(
+                              items: itemsApiController.pricelist![index]!.artigo,
+                               description: itemsApiController.pricelist![index]!.descricao.toString(), 
+                               cva: itemsApiController.pricelist![index]!.iva.toString(),
+                               qty: 1,totalValue:d.toString(),
+                               unitPrice:itemsApiController.pricelist![index]!.price.toString(),
+                               discount: itemsApiController.pricelist![index]!.discount.toString(),
+                               armazen: loginApiController.listUserData[index].warehouse,
+                               localizacao: loginApiController.listUserData[index].warehouse
+                                );
 
                             invoicecontroller.invoiceProtectList.insert(itemIndex,invoiceModel);
                            

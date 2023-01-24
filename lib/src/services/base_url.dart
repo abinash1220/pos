@@ -8,7 +8,7 @@ abstract class BaseApiService{
    final String customerListUrl = "http://197.234.121.208:2018/WebApi/Base/Clientes/LstClientes";
 
    //create customer api url
-   final String createCustomerUrl = "http://197.234.121.208:2018/WebApi/Base/Clientes/Actualiza";
+  // final String createCustomerUrl = "http://197.234.121.208:2018/WebApi/Base/Clientes/Actualiza";
 
    //create items api url
    final String createItemsUrl = "http://197.234.121.208:2018/WebApi/Base/Artigos/Actualiza/";
@@ -20,7 +20,7 @@ abstract class BaseApiService{
    final String priceListUrl = "http://197.234.121.208:2018/WebApi/Plataforma/Listas/CarregaLista/adhoc/";
 
    //invoice save api url
-   final String invoiceUrl = "http://197.234.121.208:2018/WebApi/Vendas/Docs/CreateDocument/";
+   final String invoiceUrl = "http://197.234.121.208:2018/WebApi/POSSales/CreatePOSDocument/";
 
    //list user serie api url
    final String listUserSerieUrl = "http://197.234.121.208:2018/WebApi/Plataforma/Listas/CarregaLista/adhoc/";

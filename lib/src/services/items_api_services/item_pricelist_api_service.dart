@@ -36,7 +36,7 @@ class ItemPriceListService extends BaseApiService{
        );
 
      responseJson = response;
-     Get.snackbar(client, wareHouse);
+     //Get.snackbar(client, wareHouse);
     } catch (e) {
       print(e);
     }

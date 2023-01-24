@@ -77,7 +77,7 @@ class _InvoiceTotalRowState extends State<InvoiceTotalRow> {
           ),
          
           Container(
-            width: 50,
+            width: 51,
             alignment: Alignment.center,
             // child: TextField(
             //   textAlign: TextAlign.center,
