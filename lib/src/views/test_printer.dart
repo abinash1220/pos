@@ -445,7 +445,7 @@ class _TestPrintingState extends State<TestPrinting> {
                                       },
                                 child: const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 2, horizontal: 20),
-                                  child: Text("Print test ticket", textAlign: TextAlign.center),
+                                  child: Text("Print Bill", textAlign: TextAlign.center),
                                 ),
                               ),
                             ),

@@ -26,15 +26,17 @@ class CustomerCardWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15, right: 15),
       child: InkWell(
         onTap: () {
+          invoiceController.invoiceClientId(clientId);
           invoiceController.isUnauthClient(false);
           print("client id: $clientId");
           if("${clientId[0]}${clientId[1]}" == "FR"){
             _dialogBuilder(context);
           }else
           {
+            
             invoiceController.invoicenome(name);
-              invoiceController.invoicetaxid("c");
-              invoiceController.invoicetelephone(number);
+              invoiceController.invoicetaxid(number);
+              invoiceController.invoicetelephone("");
             Get.to(() => InvoiceView(client: clientId));
             }
         },
@@ -104,7 +106,7 @@ class CustomerCardWidget extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-           title: const Text('Please fill the fields'),
+           title: const Text('Enter Customer Details'),
           content: SizedBox(
             height: 155,
             child: Column(
@@ -123,7 +125,7 @@ class CustomerCardWidget extends StatelessWidget {
                             borderSide: BorderSide(
                           color: primaryColor,
                         )),
-                        hintText: 'Enter nome',
+                        hintText: 'Enter Nome',
                         labelStyle: primaryFont.copyWith(color: primaryColor)),
                   ),
                 ),
@@ -142,7 +144,7 @@ class CustomerCardWidget extends StatelessWidget {
                             borderSide: BorderSide(
                           color: primaryColor,
                         )),
-                        hintText: 'Enter numContribuinte',
+                        hintText: 'Enter NIF Number',
                         labelStyle: primaryFont.copyWith(color: primaryColor)),
                   ),
                 ),
@@ -161,7 +163,7 @@ class CustomerCardWidget extends StatelessWidget {
                             borderSide: BorderSide(
                           color: primaryColor,
                         )),
-                        hintText: 'Enter moradafac',
+                        hintText: 'Enter Mobile Number',
                         labelStyle: primaryFont.copyWith(color: primaryColor)),
                   ),
                 ),

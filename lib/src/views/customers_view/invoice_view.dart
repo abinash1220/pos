@@ -262,22 +262,22 @@ class _InvoiceViewState extends State<InvoiceView> {
                   ),
                   InkWell(
                       onTap: () {
-                        // invoicecontroller.saveController(
-                        //   tipodoc: "FA",
-                        //   context: context,
-                        //   serie: loginApiController.listUserData.first.serie,
-                        //   entidade: customerApiController.customerdatalist.first.cliente,
-                        //   tipoEntidade: "C",
-                        //   dataDoc: "2022-12-31T15:20:00",
-                        //   dataVenc: "${dt.year}-${dt.month}-${dt.day}",
-                        //   condPag: "1",
-                        //   nome: customerApiController.customerdatalist.first.nome,
-                        //   nomeFac: customerApiController.customerdatalist.first.nome,
-                        //   numContribuinte: customerApiController.customerdatalist.first.numContrib,
-                        //   numContribuinteFac: customerApiController.customerdatalist.first.numContrib,
-                        //   modoPag: "MB",
-                        //   moradafac: "9789087552"
-                        //   );
+                        invoicecontroller.saveController(
+                          tipodoc: "FA",
+                          context: context,
+                          serie: loginApiController.listUserData.first.serie,
+                          entidade: customerApiController.customerdatalist.first.cliente,
+                          tipoEntidade: "C",
+                          dataDoc: "2022-12-31T15:20:00",
+                          dataVenc: "${dt.year}-${dt.month}-${dt.day}",
+                          condPag: "1",
+                          nome: customerApiController.customerdatalist.first.nome,
+                          nomeFac: customerApiController.customerdatalist.first.nome,
+                          numContribuinte: customerApiController.customerdatalist.first.numContrib,
+                          numContribuinteFac: customerApiController.customerdatalist.first.numContrib,
+                          modoPag: "MB",
+                          moradafac: "9789087552"
+                          );
                         Get.to(const TestPrinting());
                         //invoicecontroller.printposInvoice();
                         // invoicecontroller.saveController(

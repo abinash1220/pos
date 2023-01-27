@@ -30,7 +30,7 @@ class CustomerApiController extends GetxController{
 
     if(result){
        
-       Get.snackbar("", "available internet");
+      //q Get.snackbar("", "available internet");
         
        dio.Response<dynamic> response = await customerapiservice.customerList();
      
@@ -64,7 +64,7 @@ class CustomerApiController extends GetxController{
      }
    }else{
    
-   Get.snackbar("", "no internet");
+  // Get.snackbar("", "no internet");
 
     var cacheData = await APICacheManager().getCacheData(customerlistkey);
 

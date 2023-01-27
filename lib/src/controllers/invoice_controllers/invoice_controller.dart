@@ -43,6 +43,7 @@ class InvoiceController extends GetxController {
   RxString invoicenome = "".obs;
   RxString invoicetaxid = "".obs;
   RxString invoicetelephone = "".obs;
+  
 
 
   totalAmountCal() {
