@@ -13,6 +13,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pos/src/const/api_cachekey.dart';
+import 'package:pos/src/models/items_api_models/invoice_data_model.dart';
 import 'package:pos/src/models/items_api_models/invoice_model.dart';
 import 'package:pos/src/services/invoice_api_services/invoice_offline_sync_api_services.dart';
 import 'package:pos/src/services/invoice_api_services/invoice_save_api_service.dart';
@@ -30,6 +31,9 @@ class InvoiceController extends GetxController {
   RxString subtotal = "0".obs;
   RxString iva = "0".obs;
   RxString discount = "0".obs;
+
+  RxString invoicevalue = "".obs;
+  RxString invoiceSerie = "".obs;
 
   totalAmountCal() {
     double tempTolAmt = 0.0;
@@ -747,6 +751,11 @@ class InvoiceController extends GetxController {
       required String dataDoc,
       required String dataVenc,
       required String condPag,
+      required String nome,
+      required String nomeFac,
+      required String numContribuinte,
+      required String numContribuinteFac,
+      required String moradafac,
       required String modoPag}) async {
     List<dynamic> templist = [];
 
@@ -765,8 +774,11 @@ class InvoiceController extends GetxController {
     }
 
     // var isChacheExist = await APICacheManager().isAPICacheKeyExist(saveinvoiceKey);
-
+ 
+    
+ 
     bool result = await InternetConnectionChecker().hasConnection;
+    
 
     if (result) {
       dio.Response<dynamic> response = await invoiceSaveApiService.invoiceSave(
@@ -778,10 +790,22 @@ class InvoiceController extends GetxController {
           dataVenc: dataVenc,
           condPag: condPag,
           modoPag: modoPag,
-          products: templist);
+          products: templist,
+          nome: nome,
+          nomeFac: nomeFac,
+          numContribuinte: numContribuinte,
+          numContribuinteFac: numContribuinteFac,
+          moradafac: moradafac
+          );
+
+          InvoiceData invoicedata = InvoiceData.fromJson(response.data);
+          invoicevalue (invoicedata.results.first.split(":").last); 
+          invoiceSerie (invoicedata.results.last[1]);
+
+
 
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(invoicesave);
+         ScaffoldMessenger.of(context).showSnackBar(invoicesave);
       } else {
         Get.snackbar("", response.statusCode.toString());
         //ScaffoldMessenger.of(context).showSnackBar(incorrect);
@@ -797,6 +821,11 @@ class InvoiceController extends GetxController {
         "DataVenc": dataVenc,
         "Entidade": entidade,
         "Serie": serie,
+        "Nome": nome,
+        "NomeFac": nomeFac,
+        "NumContribuinte":numContribuinte,
+        "NumContribuinteFac":numContribuinteFac,
+        "MoradaFac":moradafac,
         "Linhas": templist,
       });
 

@@ -22,6 +22,8 @@ class _TestPrintingState extends State<TestPrinting> {
  
   final invoiceController = Get.find<InvoiceController>();
 
+  DateTime dt = DateTime.now();
+
   // Printer Type [bluetooth, usb, network]
   var defaultPrinterType = PrinterType.bluetooth;
   var _isBle = false;
@@ -174,12 +176,12 @@ class _TestPrintingState extends State<TestPrinting> {
     bytes += generator.text('    938196375',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('    C',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.emptyLines(2);
-    bytes += generator.text('Factura FT 011 FR.23CL2/52',styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.text('Factura ${invoiceController.invoiceSerie}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('Factura/Recibo',styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text('Date: 2023-01-20',styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text('Moeda: AKZ                     Cambio: 643,41');
+    bytes += generator.text('${dt.year}-${dt.month}-${dt.day}',styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.text('Moeda: AKZ                     ');
     bytes += generator.emptyLines(2);
-    bytes += generator.text('Rec. para client                4 080,06');
+    bytes += generator.text('Rec. para client                ');
     bytes += generator.hr();
     //for(var value in invoiceProtectList){}
     bytes += generator.text('Cod. do Artigo - Descricao');
@@ -196,17 +198,18 @@ class _TestPrintingState extends State<TestPrinting> {
     bytes += generator.text('Total IEC/Contrib. :         0,00');
     bytes += generator.text('Total de IVA       :       ${invoiceController.iva}');
     bytes += generator.text('Total              :      ${invoiceController.totolamount.toString()}');
-    bytes += generator.text('Total Alternativo  :         6,34 USD');
+    //bytes += generator.text('Total Alternativo  :         6,34 USD');
     bytes += generator.emptyLines(2);
     bytes += generator.text('IVA',styles: const PosStyles(align: PosAlign.center));
     bytes += generator.hr();
     bytes += generator.text(' Taxa Incidenia   valor   motivo');
     bytes += generator.text('14,00  3 579,00   501,06  ');
     bytes += generator.emptyLines(2);
-    bytes += generator.text('Dg4s-Processado por programa validado');
-    bytes += generator.text('n.. 41/AGT/2019 | 0s bens e/ou servicos');
-    bytes += generator.text('foram colocados a disposicao na data');
-    bytes += generator.text('2023-01-20');
+    bytes += generator.text(invoiceController.invoicevalue.toString());
+    //'Dg4s-Processado por programa validado'
+    //bytes += generator.text('n.. 41/AGT/2019 | 0s bens e/ou servicos');
+    //bytes += generator.text('foram colocados a disposicao na data');
+    //bytes += generator.text('2023-01-20');
     bytes += generator.emptyLines(2);
     bytes += generator.emptyLines(2);
     bytes += generator.emptyLines(2);

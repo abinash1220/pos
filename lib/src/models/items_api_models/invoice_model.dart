@@ -9,9 +9,9 @@ class InvoiceModel {
        required this.totalValue,
        required this.discount,
        required this.armazen,
-       required this.localizacao
+       required this.localizacao,
    });
-
+   
    String items;
    String description;
    int qty;

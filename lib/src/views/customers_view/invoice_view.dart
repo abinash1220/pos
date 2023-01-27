@@ -243,18 +243,41 @@ String? selectedValue;
                       invoicecontroller.saveController(
                         tipodoc: "FA", 
                         context: context, 
-                        serie: "2022A", 
+                        serie: loginApiController.listUserData.first.serie, 
                         entidade: customerApiController.customerdatalist.first.cliente, 
                         tipoEntidade: "C", 
                         dataDoc: "2022-12-31T15:20:00", 
-                        dataVenc: "${dt.year}-${dt.month}-${dt.day}".toUpperCase(),
+                        dataVenc: "${dt.year}-${dt.month}-${dt.day}",
                         condPag: "1", 
-                        modoPag: "MB");
+                        nome: customerApiController.customerdatalist.first.nome,
+                        nomeFac: customerApiController.customerdatalist.first.nome,
+                        numContribuinte: customerApiController.customerdatalist.first.numContrib,
+                        numContribuinteFac: customerApiController.customerdatalist.first.numContrib,
+                        modoPag: "MB",
+                        moradafac: "9789087552"
+                        );
+                        //customerApiController.customerdatalist.first.cliente
                     },
-                    child: Icon(Icons.save)),
-                    SizedBox(width: 15,),
+                    child:const Icon(Icons.save)),
+                   const  SizedBox(width: 15,),
                   InkWell(
                     onTap: (){
+                      invoicecontroller.saveController(
+                        tipodoc: "FA", 
+                        context: context, 
+                        serie: loginApiController.listUserData.first.serie, 
+                        entidade: customerApiController.customerdatalist.first.cliente, 
+                        tipoEntidade: "C", 
+                        dataDoc: "2022-12-31T15:20:00", 
+                        dataVenc: "${dt.year}-${dt.month}-${dt.day}",
+                        condPag: "1", 
+                        nome: customerApiController.customerdatalist.first.nome,
+                        nomeFac: customerApiController.customerdatalist.first.nome,
+                        numContribuinte: customerApiController.customerdatalist.first.numContrib,
+                        numContribuinteFac: customerApiController.customerdatalist.first.numContrib,
+                        modoPag: "MB",
+                        moradafac: "9789087552"
+                        );
                       Get.to(const TestPrinting());
                       //invoicecontroller.printposInvoice();
                       // invoicecontroller.saveController(
@@ -746,7 +769,6 @@ String? selectedValue;
                           invoicecontroller.invoiceProtectList[i].qty = int.parse(value);
                           invoicecontroller.totalAmountCal();
                           invoicecontroller.update();
-                          
                         },
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
@@ -935,7 +957,11 @@ String? selectedValue;
                         child: InkWell(
                           onTap: () async {
                             //List<ItemPrice?>? pricelist = await itemsApiController.listOfitems(client: widget.client , wareHouse: loginApiController.listUserData[index].warehouse);
-                              
+
+                            if(itemsApiController.pricelist![index]!.stock <= 0){
+                              Get.back();
+                              dialogBuilder(context);
+                            }else{
                             double a = double.parse(itemsApiController.pricelist![index]!.price.toString()) * 1;
                             double b = double.parse(itemsApiController.pricelist![index]!.discount.toString()) / double.parse(100.toString()) * double.parse(a.toString());
                             double c = double.parse(itemsApiController.pricelist![index]!.iva.toString()) / double.parse(100.toString()) * double.parse(a.toString());
@@ -948,14 +974,16 @@ String? selectedValue;
                                unitPrice:itemsApiController.pricelist![index]!.price.toString(),
                                discount: itemsApiController.pricelist![index]!.discount.toString(),
                                armazen: loginApiController.listUserData.first.warehouse,
-                               localizacao: loginApiController.listUserData.first.warehouse
+                               localizacao: loginApiController.listUserData.first.warehouse,
                                 );
 
                             invoicecontroller.invoiceProtectList.insert(itemIndex,invoiceModel);
                            
                             invoicecontroller.totalAmountCal();
+
                             invoicecontroller.update();
                             Get.back();
+                          }
                           },
                           child: Container(
                             height: 30,
@@ -964,7 +992,7 @@ String? selectedValue;
                               color: Colors.grey[100],
                             ),
                             child:  Center(
-                              child: Padding(
+                              child: Padding(    
                                 padding: const EdgeInsets.only(left: 5,),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -989,7 +1017,8 @@ String? selectedValue;
                                             Text(
                                             itemsApiController
                                                 .pricelist![index]!.stock
-                                                .toString(),
+                                                  <= 0 ? "0": itemsApiController
+                                                .pricelist![index]!.stock.toString() ,
                                             overflow: TextOverflow.ellipsis,
                                             textDirection: TextDirection.ltr,
                                             style: primaryFont.copyWith(
@@ -1032,6 +1061,17 @@ OutlineInputBorder myinputborder() {
           width: 1,
         ));
 }
+
+Future<void> dialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          content: Text("Insuffcient stock"),
+        );
+      },
+    );
+  }
 
 }
 

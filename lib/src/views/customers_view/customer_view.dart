@@ -48,49 +48,10 @@ class _CustomerSViewState extends State<CustomerSView> {
                 ),
                 centerTitle: true,
                 actions: [
-                  // Row(
-                  //   children: [
-                  //     Padding(
-                  //       padding: const EdgeInsets.only(right: 10),
-                  //       child: InkWell(
-                  //         onTap: (){
-                  //           Get.to(()=> CustomerDetailsView(title: "New Customer"));
-                  //         },
-                  //         child: Image.asset("assets/icons/profileadd.png",height: 25,fit: BoxFit.fitHeight,)),
-                  //     ),
-                  //   ],
-                  // )
+                 
                 ],
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 15, right: 15),
-              //   child: Container(
-              //     height: 50,
-              //     width: size.width,
-              //     decoration: BoxDecoration(
-              //         color: Colors.white,
-              //         borderRadius: BorderRadius.circular(12)),
-              //     alignment: Alignment.center,
-              //     child: Row(
-              //       children: [
-              //         const Padding(
-              //           padding: EdgeInsets.only(left: 10, right: 10),
-              //           child: Icon(Icons.search),
-              //         ),
-              //         Expanded(
-              //           child: TextField(
-              //             decoration: InputDecoration.collapsed(
-              //                 hintText: "Search Customers",
-              //                 hintStyle: primaryFont.copyWith(
-              //                     fontSize: 16,
-              //                     fontWeight: FontWeight.w600,
-              //                     color: Colors.black)),
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // )
+              
             ],
           ),
         ),

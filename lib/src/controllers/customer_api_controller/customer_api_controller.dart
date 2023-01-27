@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:dio/dio.dart' as dio;

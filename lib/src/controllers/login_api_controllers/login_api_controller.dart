@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pos/src/const/api_cachekey.dart';
+import 'package:pos/src/models/items_api_models/list_user_serie_model.dart';
 import 'package:pos/src/models/list_user_model.dart';
 import 'package:pos/src/services/login_api_sevices/list_user_serie_api_service.dart';
 import 'package:pos/src/services/login_api_sevices/login_api_service.dart';

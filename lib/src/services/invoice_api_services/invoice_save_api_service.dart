@@ -13,6 +13,11 @@ class InvoiceSaveApiService extends BaseApiService{
        required String dataVenc,
        required String entidade,
        required String serie,
+       required String nome,
+       required String nomeFac,
+       required String numContribuinte,
+       required String numContribuinteFac,
+       required String moradafac,
        required List<dynamic> products
    }) async {
 
@@ -45,6 +50,11 @@ class InvoiceSaveApiService extends BaseApiService{
                 "DataVenc":dataVenc,
                 "Entidade" : entidade,
                 "Serie": serie,
+                "Nome": nome,
+                "NomeFac": nomeFac,
+                "NumContribuinte": numContribuinte,
+                "NumContribuinteFac": numContribuinteFac,
+                "MoradaFac":moradafac,
                 "Linhas": products,
 
 
