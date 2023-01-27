@@ -178,6 +178,7 @@ class CustomerCardWidget extends StatelessWidget {
               invoiceController.invoicetaxid(numContribuinteEditingController.text);
               invoiceController.invoicetelephone(moradafacEditingController.text);
               invoiceController.isUnauthClient(true);
+              invoiceController.invoiceClientId(clientId);
               nomeEditingController.clear();
               numContribuinteEditingController.clear();
               moradafacEditingController.clear();

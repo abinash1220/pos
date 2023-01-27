@@ -809,7 +809,7 @@ class InvoiceController extends GetxController {
           InvoiceData invoicedata = InvoiceData.fromJson(response.data);
           invoicevalue (invoicedata.results.first.split(":").last); 
           invoiceSerie (invoicedata.results[1]);
-          invoiceClientId (invoicedata.results[2]);
+          //invoiceClientId (invoicedata.results[2]);
 
 
      

@@ -174,8 +174,8 @@ class _TestPrintingState extends State<TestPrinting> {
     bytes += generator.emptyLines(2);
     bytes += generator.text('CIF:${invoiceController.invoiceClientId.value}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('    ${invoiceController.invoicenome.value}',styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text('    ${invoiceController.invoicetelephone.value}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('    ${invoiceController.invoicetaxid.value}',styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.text('    ${invoiceController.invoicetelephone.value}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.emptyLines(2);
     bytes += generator.text('Factura ${invoiceController.invoiceSerie}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('Factura/Recibo',styles: const PosStyles(align: PosAlign.left));
@@ -193,12 +193,12 @@ class _TestPrintingState extends State<TestPrinting> {
     bytes += generator.text('${value.qty.toString()}, x ${value.unitPrice}  ${value.discount}  ${value.cva}   ${value.totalValue}');
     }
     bytes += generator.hr();
-    bytes += generator.text('Cred. Develucoes   :         0,00');
-    bytes += generator.text('Total Iliquido     :       ${invoiceController.subtotal.toString()}');
-    bytes += generator.text('Total Descontos    :         0,00');
-    bytes += generator.text('Total IEC/Contrib. :         0,00');
-    bytes += generator.text('Total de IVA       :       ${invoiceController.iva}');
-    bytes += generator.text('Total              :      ${invoiceController.totolamount.toString()}');
+    bytes += generator.text('Cred. Develucoes   :   0.00');
+    bytes += generator.text('Total Iliquido     :   ${invoiceController.subtotal.toString()}');
+    bytes += generator.text('Total Descontos    :   0.00');
+    bytes += generator.text('Total IEC/Contrib. :   0.00');
+    bytes += generator.text('Total de IVA       :   ${invoiceController.iva}');
+    bytes += generator.text('Total              :   ${invoiceController.totolamount.toString()}');
     //bytes += generator.text('Total Alternativo  :         6,34 USD');
     bytes += generator.emptyLines(2);
     bytes += generator.text('IVA',styles: const PosStyles(align: PosAlign.center));
@@ -291,6 +291,10 @@ class _TestPrintingState extends State<TestPrinting> {
     setState(() {});
   }
 
+  back(){
+    Get.to(const CustomerSView());
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -303,207 +307,212 @@ class _TestPrintingState extends State<TestPrinting> {
           backgroundColor: primaryColor,
           title: const Text('Pos Digital Data'),
         ),
-        body: Center(
-          child: Container(
-            height: double.infinity,
-            constraints: const BoxConstraints(maxWidth: 400),
-            child: SingleChildScrollView(
-              padding: EdgeInsets.zero,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: selectedPrinter == null || _isConnected
-                                ? null
-                                : () {
-                                    _connectDevice();
-                                  },
-                            child: const Text("Connect", textAlign: TextAlign.center),
+        body: WillPopScope(
+          onWillPop: () {
+            return back();
+          },
+          child: Center(
+            child: Container(
+              height: double.infinity,
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: selectedPrinter == null || _isConnected
+                                  ? null
+                                  : () {
+                                      _connectDevice();
+                                    },
+                              child: const Text("Connect", textAlign: TextAlign.center),
+                            ),
                           ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: selectedPrinter == null || !_isConnected
+                                  ? null
+                                  : () {
+                                      if (selectedPrinter != null) printerManager.disconnect(type: selectedPrinter!.typePrinter);
+                                      setState(() {
+                                        _isConnected = false;
+                                      });
+                                    },
+                              child: const Text("Disconnect", textAlign: TextAlign.center),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    DropdownButtonFormField<PrinterType>(
+                      value: defaultPrinterType,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.print,
+                          size: 24,
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: selectedPrinter == null || !_isConnected
-                                ? null
-                                : () {
-                                    if (selectedPrinter != null) printerManager.disconnect(type: selectedPrinter!.typePrinter);
-                                    setState(() {
-                                      _isConnected = false;
-                                    });
-                                  },
-                            child: const Text("Disconnect", textAlign: TextAlign.center),
+                        labelText: "Type Printer Device",
+                        labelStyle: TextStyle(fontSize: 18.0),
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                      ),
+                      items: <DropdownMenuItem<PrinterType>>[
+                        if (Platform.isAndroid || Platform.isIOS)
+                          const DropdownMenuItem(
+                            value: PrinterType.bluetooth,
+                            child: Text("bluetooth"),
                           ),
+                        if (Platform.isAndroid || Platform.isWindows)
+                          const DropdownMenuItem(
+                            value: PrinterType.usb,
+                            child: Text("usb"),
+                          ),
+                        const DropdownMenuItem(
+                          value: PrinterType.network,
+                          child: Text("Wifi"),
                         ),
                       ],
+                      onChanged: (PrinterType? value) {
+                        setState(() {
+                          if (value != null) {
+                            setState(() {
+                              defaultPrinterType = value;
+                              selectedPrinter = null;
+                              _isBle = false;
+                              _isConnected = false;
+                              _scan();
+                            });
+                          }
+                        });
+                      },
                     ),
-                  ),
-                  DropdownButtonFormField<PrinterType>(
-                    value: defaultPrinterType,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.print,
-                        size: 24,
-                      ),
-                      labelText: "Type Printer Device",
-                      labelStyle: TextStyle(fontSize: 18.0),
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                    ),
-                    items: <DropdownMenuItem<PrinterType>>[
-                      if (Platform.isAndroid || Platform.isIOS)
-                        const DropdownMenuItem(
-                          value: PrinterType.bluetooth,
-                          child: Text("bluetooth"),
+                    Visibility(
+                      visible: defaultPrinterType == PrinterType.bluetooth && Platform.isAndroid,
+                      child: SwitchListTile.adaptive(
+                        contentPadding: const EdgeInsets.only(bottom: 20.0, left: 20),
+                        title: const Text(
+                          "This device supports ble (low energy)",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(fontSize: 19.0),
                         ),
-                      if (Platform.isAndroid || Platform.isWindows)
-                        const DropdownMenuItem(
-                          value: PrinterType.usb,
-                          child: Text("usb"),
-                        ),
-                      const DropdownMenuItem(
-                        value: PrinterType.network,
-                        child: Text("Wifi"),
-                      ),
-                    ],
-                    onChanged: (PrinterType? value) {
-                      setState(() {
-                        if (value != null) {
+                        value: _isBle,
+                        onChanged: (bool? value) {
                           setState(() {
-                            defaultPrinterType = value;
-                            selectedPrinter = null;
-                            _isBle = false;
+                            _isBle = value ?? false;
                             _isConnected = false;
+                            selectedPrinter = null;
                             _scan();
                           });
-                        }
-                      });
-                    },
-                  ),
-                  Visibility(
-                    visible: defaultPrinterType == PrinterType.bluetooth && Platform.isAndroid,
-                    child: SwitchListTile.adaptive(
-                      contentPadding: const EdgeInsets.only(bottom: 20.0, left: 20),
-                      title: const Text(
-                        "This device supports ble (low energy)",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 19.0),
+                        },
                       ),
-                      value: _isBle,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _isBle = value ?? false;
-                          _isConnected = false;
-                          selectedPrinter = null;
-                          _scan();
-                        });
-                      },
                     ),
-                  ),
-                  Visibility(
-                    visible: defaultPrinterType == PrinterType.bluetooth && Platform.isAndroid,
-                    child: SwitchListTile.adaptive(
-                      contentPadding: const EdgeInsets.only(bottom: 20.0, left: 20),
-                      title: const Text(
-                        "reconnect",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 19.0),
+                    Visibility(
+                      visible: defaultPrinterType == PrinterType.bluetooth && Platform.isAndroid,
+                      child: SwitchListTile.adaptive(
+                        contentPadding: const EdgeInsets.only(bottom: 20.0, left: 20),
+                        title: const Text(
+                          "reconnect",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(fontSize: 19.0),
+                        ),
+                        value: _reconnect,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _reconnect = value ?? false;
+                          });
+                        },
                       ),
-                      value: _reconnect,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _reconnect = value ?? false;
-                        });
-                      },
                     ),
-                  ),
-                  Column(
-                      children: devices
-                          .map(
-                            (device) => ListTile(
-                              title: Text('${device.deviceName}'),
-                              subtitle: Platform.isAndroid && defaultPrinterType == PrinterType.usb
-                                  ? null
-                                  : Visibility(visible: !Platform.isWindows, child: Text("${device.address}")),
-                              onTap: () {
-                                // do something
-                                selectDevice(device);
-                              },
-                              leading: selectedPrinter != null &&
-                                      ((device.typePrinter == PrinterType.usb && Platform.isWindows
-                                              ? device.deviceName == selectedPrinter!.deviceName
-                                              : device.vendorId != null && selectedPrinter!.vendorId == device.vendorId) ||
-                                          (device.address != null && selectedPrinter!.address == device.address))
-                                  ? const Icon(
-                                      Icons.check,
-                                      color: Colors.green,
-                                    )
-                                  : null,
-                              trailing: OutlinedButton(
-                                onPressed: selectedPrinter == null || device.deviceName != selectedPrinter?.deviceName
+                    Column(
+                        children: devices
+                            .map(
+                              (device) => ListTile(
+                                title: Text('${device.deviceName}'),
+                                subtitle: Platform.isAndroid && defaultPrinterType == PrinterType.usb
                                     ? null
-                                    : () async {
-                                        _printReceiveTest();
-                                      },
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 20),
-                                  child: Text("Print Bill", textAlign: TextAlign.center),
+                                    : Visibility(visible: !Platform.isWindows, child: Text("${device.address}")),
+                                onTap: () {
+                                  // do something
+                                  selectDevice(device);
+                                },
+                                leading: selectedPrinter != null &&
+                                        ((device.typePrinter == PrinterType.usb && Platform.isWindows
+                                                ? device.deviceName == selectedPrinter!.deviceName
+                                                : device.vendorId != null && selectedPrinter!.vendorId == device.vendorId) ||
+                                            (device.address != null && selectedPrinter!.address == device.address))
+                                    ? const Icon(
+                                        Icons.check,
+                                        color: Colors.green,
+                                      )
+                                    : null,
+                                trailing: OutlinedButton(
+                                  onPressed: selectedPrinter == null || device.deviceName != selectedPrinter?.deviceName
+                                      ? null
+                                      : () async {
+                                          _printReceiveTest();
+                                        },
+                                  child: const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+                                    child: Text("Print Bill", textAlign: TextAlign.center),
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
-                          .toList()),
-                  Visibility(
-                    visible: defaultPrinterType == PrinterType.network && Platform.isWindows,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: TextFormField(
-                        controller: _ipController,
-                        keyboardType: const TextInputType.numberWithOptions(signed: true),
-                        decoration: const InputDecoration(
-                          label: Text("Ip Address"),
-                          prefixIcon: Icon(Icons.wifi, size: 24),
-                        ),
-                        onChanged: setIpAddress,
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: defaultPrinterType == PrinterType.network && Platform.isWindows,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: TextFormField(
-                        controller: _portController,
-                        keyboardType: const TextInputType.numberWithOptions(signed: true),
-                        decoration: const InputDecoration(
-                          label: Text("Port"),
-                          prefixIcon: Icon(Icons.numbers_outlined, size: 24),
-                        ),
-                        onChanged: setPort,
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: defaultPrinterType == PrinterType.network && Platform.isWindows,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: OutlinedButton(
-                        onPressed: () async {
-                          if (_ipController.text.isNotEmpty) setIpAddress(_ipController.text);
-                          _printReceiveTest();
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 50),
-                          child: Text("Print test ticket", textAlign: TextAlign.center),
+                            )
+                            .toList()),
+                    Visibility(
+                      visible: defaultPrinterType == PrinterType.network && Platform.isWindows,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: TextFormField(
+                          controller: _ipController,
+                          keyboardType: const TextInputType.numberWithOptions(signed: true),
+                          decoration: const InputDecoration(
+                            label: Text("Ip Address"),
+                            prefixIcon: Icon(Icons.wifi, size: 24),
+                          ),
+                          onChanged: setIpAddress,
                         ),
                       ),
                     ),
-                  )
-                ],
+                    Visibility(
+                      visible: defaultPrinterType == PrinterType.network && Platform.isWindows,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: TextFormField(
+                          controller: _portController,
+                          keyboardType: const TextInputType.numberWithOptions(signed: true),
+                          decoration: const InputDecoration(
+                            label: Text("Port"),
+                            prefixIcon: Icon(Icons.numbers_outlined, size: 24),
+                          ),
+                          onChanged: setPort,
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: defaultPrinterType == PrinterType.network && Platform.isWindows,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: OutlinedButton(
+                          onPressed: () async {
+                            if (_ipController.text.isNotEmpty) setIpAddress(_ipController.text);
+                            _printReceiveTest();
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 50),
+                            child: Text("Print test ticket", textAlign: TextAlign.center),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
