@@ -19,6 +19,7 @@ import 'package:pos/src/services/invoice_api_services/invoice_offline_sync_api_s
 import 'package:pos/src/services/invoice_api_services/invoice_save_api_service.dart';
 import 'package:pos/src/widgets/snackbar_widgets/invoice_save.dart';
 import 'package:printing/printing.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InvoiceController extends GetxController {
   InvoiceSaveApiService invoiceSaveApiService = InvoiceSaveApiService();
@@ -783,11 +784,8 @@ class InvoiceController extends GetxController {
     }
 
     // var isChacheExist = await APICacheManager().isAPICacheKeyExist(saveinvoiceKey);
- 
-    
- 
+
     bool result = await InternetConnectionChecker().hasConnection;
-    
 
     if (result) {
       dio.Response<dynamic> response = await invoiceSaveApiService.invoiceSave(
@@ -813,16 +811,21 @@ class InvoiceController extends GetxController {
           invoiceClientId (invoicedata.results[2]);
 
 
-
+     
 
       if (response.statusCode == 200) {
-         ScaffoldMessenger.of(context).showSnackBar(invoicesave);
+        ScaffoldMessenger.of(context).showSnackBar(invoicesave);
       } else {
         Get.snackbar("", response.statusCode.toString());
         //ScaffoldMessenger.of(context).showSnackBar(incorrect);
       }
     } else {
-      print("String localy:::::");
+      final prefs = await SharedPreferences.getInstance();
+
+      List<String> tempDataList = [];
+
+      tempDataList = prefs.getStringList(saveinvoiceKey)!;
+
       String data = json.encode({
         "Tipodoc": tipodoc,
         "CondPag": condPag,
@@ -834,34 +837,72 @@ class InvoiceController extends GetxController {
         "Serie": serie,
         "Nome": nome,
         "NomeFac": nomeFac,
-        "NumContribuinte":numContribuinte,
-        "NumContribuinteFac":numContribuinteFac,
-        "MoradaFac":moradafac,
+        "NumContribuinte": numContribuinte,
+        "NumContribuinteFac": numContribuinteFac,
+        "MoradaFac": moradafac,
         "Linhas": templist,
       });
 
-      print(data);
+      tempDataList.add(data);
 
-      var cacheData = await APICacheManager()
-          .addCacheData(APICacheDBModel(key: saveinvoiceKey, syncData: data));
+      await prefs.setStringList(saveinvoiceKey, tempDataList);
+
+      // print("String localy:::::");
+      // String data = json.encode({
+      //   "Tipodoc": tipodoc,
+      //   "CondPag": condPag,
+      //   "ModoPag": modoPag,
+      //   "TipoEntidade": tipoEntidade,
+      //   "DataDoc": dataDoc,
+      //   "DataVenc": dataVenc,
+      //   "Entidade": entidade,
+      //   "Serie": serie,
+      //   "Nome": nome,
+      //   "NomeFac": nomeFac,
+      //   "NumContribuinte": numContribuinte,
+      //   "NumContribuinteFac": numContribuinteFac,
+      //   "MoradaFac": moradafac,
+      //   "Linhas": templist,
+      // });
+
+      // print(data);
+
+      // var cacheData = await APICacheManager()
+      //     .addCacheData(APICacheDBModel(key: saveinvoiceKey, syncData: data));
     }
   }
 
   getOfflineSavedInvoices() async {
     bool result = await InternetConnectionChecker().hasConnection;
     if (result) {
-      var cacheData = await APICacheManager().getCacheData(saveinvoiceKey);
-      print("Invoiced Saved Datas");
-      print(json.decode(cacheData.syncData));
+      final prefs = await SharedPreferences.getInstance();
 
-      var data = json.decode(cacheData.syncData);
-      dio.Response<dynamic> response =
-          await invoiceOfflineSaveApiService.invoiceOfflineSave(data);
-      print("Data backuped :::::::::::::: ${response.statusCode}");
-      if (response.statusCode == 200) {
-        await APICacheManager().deleteCache(saveinvoiceKey);
-        print("::::::::::data erased after backup::::::::::::");
+      List<String> tempDataList = [];
+
+      tempDataList = prefs.getStringList(saveinvoiceKey)!;
+
+      for (int i = 0; i < tempDataList.length; i++) {
+        var data = json.decode(tempDataList[i]);
+        dio.Response<dynamic> response =
+            await invoiceOfflineSaveApiService.invoiceOfflineSave(data);
+        print("Data backuped :::::::::::::: ${response.statusCode}");
       }
+
+      tempDataList = [];
+
+      await prefs.setStringList(saveinvoiceKey, tempDataList);
+      // var cacheData = await APICacheManager().getCacheData(saveinvoiceKey);
+      // print("Invoiced Saved Datas");
+      // print(json.decode(cacheData.syncData));
+
+      // var data = json.decode(cacheData.syncData);
+      // dio.Response<dynamic> response =
+      //     await invoiceOfflineSaveApiService.invoiceOfflineSave(data);
+      // print("Data backuped :::::::::::::: ${response.statusCode}");
+      // if (response.statusCode == 200) {
+      //   await APICacheManager().deleteCache(saveinvoiceKey);
+      //   print("::::::::::data erased after backup::::::::::::");
+      // }
     }
   }
 }
