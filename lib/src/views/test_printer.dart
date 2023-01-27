@@ -171,10 +171,10 @@ class _TestPrintingState extends State<TestPrinting> {
     bytes += generator.text('Tel: 928474747',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('Fax:',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.emptyLines(2);
-    bytes += generator.text('CIF:FR10',styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text('    MAMA TELE',styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text('    938196375',styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text('    C',styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.text('CIF:${invoiceController.invoiceClientId.value}',styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.text('    ${invoiceController.invoicenome.value}',styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.text('    ${invoiceController.invoicetelephone.value}',styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.text('    ${invoiceController.invoicetaxid.value}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.emptyLines(2);
     bytes += generator.text('Factura ${invoiceController.invoiceSerie}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('Factura/Recibo',styles: const PosStyles(align: PosAlign.left));
@@ -203,7 +203,7 @@ class _TestPrintingState extends State<TestPrinting> {
     bytes += generator.text('IVA',styles: const PosStyles(align: PosAlign.center));
     bytes += generator.hr();
     bytes += generator.text(' Taxa Incidenia   valor   motivo');
-    bytes += generator.text('14,00  3 579,00   501,06  ');
+    bytes += generator.text('${invoiceController.iva}  ${invoiceController.subtotal.toString()}   ${invoiceController.totolamount.toString()}  ');
     bytes += generator.emptyLines(2);
     bytes += generator.text(invoiceController.invoicevalue.toString());
     //'Dg4s-Processado por programa validado'

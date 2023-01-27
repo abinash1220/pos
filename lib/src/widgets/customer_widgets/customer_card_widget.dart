@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/const/app_fonts.dart';
+import 'package:pos/src/controllers/invoice_controllers/invoice_controller.dart';
 import 'package:pos/src/views/customers_view/customer_details_view.dart';
 import 'package:pos/src/views/customers_view/invoice_view.dart';
 
@@ -14,6 +15,9 @@ class CustomerCardWidget extends StatelessWidget {
 
   TextEditingController nomeEditingController = TextEditingController();
   TextEditingController numContribuinteEditingController = TextEditingController();
+  TextEditingController moradafacEditingController = TextEditingController();
+
+  final invoiceController = Get.find<InvoiceController>();
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +26,17 @@ class CustomerCardWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15, right: 15),
       child: InkWell(
         onTap: () {
+          invoiceController.isUnauthClient(false);
           print("client id: $clientId");
           if("${clientId[0]}${clientId[1]}" == "FR"){
             _dialogBuilder(context);
           }else
-          Get.to(() => InvoiceView(client: clientId));
+          {
+            invoiceController.invoicenome(name);
+              invoiceController.invoicetaxid("c");
+              invoiceController.invoicetelephone(number);
+            Get.to(() => InvoiceView(client: clientId));
+            }
         },
         child: Container(
           height: 70,
@@ -140,7 +150,7 @@ class CustomerCardWidget extends StatelessWidget {
                  Container(
                   height: 45,
                   child: TextField(
-                    controller: numContribuinteEditingController,
+                    controller: moradafacEditingController,
                     decoration: InputDecoration(
                         isDense: true,
                         enabledBorder: OutlineInputBorder(
@@ -161,6 +171,14 @@ class CustomerCardWidget extends StatelessWidget {
           actions: <Widget>[
            InkWell(
             onTap: (){
+              invoiceController.invoicenome(nomeEditingController.text);
+              invoiceController.invoicetaxid(numContribuinteEditingController.text);
+              invoiceController.invoicetelephone(moradafacEditingController.text);
+              invoiceController.isUnauthClient(true);
+              nomeEditingController.clear();
+              numContribuinteEditingController.clear();
+              moradafacEditingController.clear();
+              
               Get.to(InvoiceView(client: clientId));
             },
              child: Container(

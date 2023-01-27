@@ -34,6 +34,15 @@ class InvoiceController extends GetxController {
 
   RxString invoicevalue = "".obs;
   RxString invoiceSerie = "".obs;
+  RxString invoiceClientId = "".obs;
+  RxString invoiceNum = "".obs;
+
+  RxBool isUnauthClient = false.obs;
+
+  RxString invoicenome = "".obs;
+  RxString invoicetaxid = "".obs;
+  RxString invoicetelephone = "".obs;
+
 
   totalAmountCal() {
     double tempTolAmt = 0.0;
@@ -800,7 +809,9 @@ class InvoiceController extends GetxController {
 
           InvoiceData invoicedata = InvoiceData.fromJson(response.data);
           invoicevalue (invoicedata.results.first.split(":").last); 
-          invoiceSerie (invoicedata.results.last[1]);
+          invoiceSerie (invoicedata.results[1]);
+          invoiceClientId (invoicedata.results[2]);
+
 
 
 
