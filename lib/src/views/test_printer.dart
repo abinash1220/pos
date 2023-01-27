@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/controllers/invoice_controllers/invoice_controller.dart';
 import 'package:pos/src/models/items_api_models/invoice_model.dart';
+import 'package:pos/src/views/customers_view/customer_view.dart';
 
 
 
@@ -294,6 +295,11 @@ class _TestPrintingState extends State<TestPrinting> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: InkWell(
+            onTap: (){
+              Get.to(const CustomerSView());
+            },
+            child: const Icon(Icons.arrow_back_ios)),
           backgroundColor: primaryColor,
           title: const Text('Pos Digital Data'),
         ),

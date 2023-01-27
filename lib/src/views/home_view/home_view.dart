@@ -248,208 +248,208 @@ class _HomeViewState extends State<HomeView> {
           const SizedBox(
             height: 15,
           ),
-          Obx(
-            () => Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15),
-              child: InkWell(
-                onTap: () {
-                  homeController
-                      .isRecentShown(!homeController.isRecentShown.value);
-                },
-                child: Container(
-                  width: size.width,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: 2, color: Colors.grey.withOpacity(0.2))
-                      ],
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 15, bottom: 15),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text(
-                                "Recent Orders",
-                                style: primaryFont.copyWith(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: homeController.isRecentShown.isTrue
-                                  ? Icon(
-                                      Icons.keyboard_arrow_up_rounded,
-                                      size: 35,
-                                    )
-                                  : Icon(
-                                      Icons.keyboard_arrow_down_rounded,
-                                      size: 35,
-                                    ),
-                            )
-                          ],
-                        ),
-                        if (homeController.isRecentShown.isTrue)
-                          Column(
-                            children: [
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, right: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.person_circle_fill,
-                                          size: 33,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Zavir",
-                                          style: primaryFont.copyWith(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600),
-                                        )
-                                      ],
-                                    ),
-                                    Text(
-                                      "\$9150",
-                                      style: primaryFont.copyWith(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.w600),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, right: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.person_circle_fill,
-                                          size: 33,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Zavir",
-                                          style: primaryFont.copyWith(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600),
-                                        )
-                                      ],
-                                    ),
-                                    Text(
-                                      "\$9150",
-                                      style: primaryFont.copyWith(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.w600),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, right: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.person_circle_fill,
-                                          size: 33,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Zavir",
-                                          style: primaryFont.copyWith(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600),
-                                        )
-                                      ],
-                                    ),
-                                    Text(
-                                      "\$9150",
-                                      style: primaryFont.copyWith(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.w600),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, right: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.person_circle_fill,
-                                          size: 33,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Zavir",
-                                          style: primaryFont.copyWith(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600),
-                                        )
-                                      ],
-                                    ),
-                                    Text(
-                                      "\$9150",
-                                      style: primaryFont.copyWith(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.w600),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // Obx(
+          //   () => Padding(
+          //     padding: const EdgeInsets.only(left: 15, right: 15),
+          //     child: InkWell(
+          //       onTap: () {
+          //         homeController
+          //             .isRecentShown(!homeController.isRecentShown.value);
+          //       },
+          //       child: Container(
+          //         width: size.width,
+          //         decoration: BoxDecoration(
+          //             color: Colors.white,
+          //             boxShadow: [
+          //               BoxShadow(
+          //                   blurRadius: 2, color: Colors.grey.withOpacity(0.2))
+          //             ],
+          //             borderRadius: BorderRadius.circular(12)),
+          //         child: Padding(
+          //           padding: const EdgeInsets.only(top: 15, bottom: 15),
+          //           child: Column(
+          //             children: [
+          //               Row(
+          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                 children: [
+          //                   Padding(
+          //                     padding: const EdgeInsets.only(left: 10),
+          //                     child: Text(
+          //                       "Recent Orders",
+          //                       style: primaryFont.copyWith(
+          //                           fontSize: 18, fontWeight: FontWeight.w600),
+          //                     ),
+          //                   ),
+          //                   Padding(
+          //                     padding: const EdgeInsets.only(right: 10),
+          //                     child: homeController.isRecentShown.isTrue
+          //                         ? Icon(
+          //                             Icons.keyboard_arrow_up_rounded,
+          //                             size: 35,
+          //                           )
+          //                         : Icon(
+          //                             Icons.keyboard_arrow_down_rounded,
+          //                             size: 35,
+          //                           ),
+          //                   )
+          //                 ],
+          //               ),
+          //               if (homeController.isRecentShown.isTrue)
+          //                 Column(
+          //                   children: [
+          //                     const SizedBox(
+          //                       height: 10,
+          //                     ),
+          //                     Padding(
+          //                       padding:
+          //                           const EdgeInsets.only(left: 10, right: 10),
+          //                       child: Row(
+          //                         mainAxisAlignment:
+          //                             MainAxisAlignment.spaceBetween,
+          //                         children: [
+          //                           Row(
+          //                             children: [
+          //                               const Icon(
+          //                                 CupertinoIcons.person_circle_fill,
+          //                                 size: 33,
+          //                               ),
+          //                               const SizedBox(
+          //                                 width: 10,
+          //                               ),
+          //                               Text(
+          //                                 "Zavir",
+          //                                 style: primaryFont.copyWith(
+          //                                     fontSize: 15,
+          //                                     fontWeight: FontWeight.w600),
+          //                               )
+          //                             ],
+          //                           ),
+          //                           Text(
+          //                             "\$9150",
+          //                             style: primaryFont.copyWith(
+          //                                 color: Colors.green,
+          //                                 fontWeight: FontWeight.w600),
+          //                           )
+          //                         ],
+          //                       ),
+          //                     ),
+          //                     const SizedBox(
+          //                       height: 10,
+          //                     ),
+          //                     Padding(
+          //                       padding:
+          //                           const EdgeInsets.only(left: 10, right: 10),
+          //                       child: Row(
+          //                         mainAxisAlignment:
+          //                             MainAxisAlignment.spaceBetween,
+          //                         children: [
+          //                           Row(
+          //                             children: [
+          //                               const Icon(
+          //                                 CupertinoIcons.person_circle_fill,
+          //                                 size: 33,
+          //                               ),
+          //                               const SizedBox(
+          //                                 width: 10,
+          //                               ),
+          //                               Text(
+          //                                 "Zavir",
+          //                                 style: primaryFont.copyWith(
+          //                                     fontSize: 15,
+          //                                     fontWeight: FontWeight.w600),
+          //                               )
+          //                             ],
+          //                           ),
+          //                           Text(
+          //                             "\$9150",
+          //                             style: primaryFont.copyWith(
+          //                                 color: Colors.green,
+          //                                 fontWeight: FontWeight.w600),
+          //                           )
+          //                         ],
+          //                       ),
+          //                     ),
+          //                     const SizedBox(
+          //                       height: 10,
+          //                     ),
+          //                     Padding(
+          //                       padding:
+          //                           const EdgeInsets.only(left: 10, right: 10),
+          //                       child: Row(
+          //                         mainAxisAlignment:
+          //                             MainAxisAlignment.spaceBetween,
+          //                         children: [
+          //                           Row(
+          //                             children: [
+          //                               const Icon(
+          //                                 CupertinoIcons.person_circle_fill,
+          //                                 size: 33,
+          //                               ),
+          //                               const SizedBox(
+          //                                 width: 10,
+          //                               ),
+          //                               Text(
+          //                                 "Zavir",
+          //                                 style: primaryFont.copyWith(
+          //                                     fontSize: 15,
+          //                                     fontWeight: FontWeight.w600),
+          //                               )
+          //                             ],
+          //                           ),
+          //                           Text(
+          //                             "\$9150",
+          //                             style: primaryFont.copyWith(
+          //                                 color: Colors.green,
+          //                                 fontWeight: FontWeight.w600),
+          //                           )
+          //                         ],
+          //                       ),
+          //                     ),
+          //                     const SizedBox(
+          //                       height: 10,
+          //                     ),
+          //                     Padding(
+          //                       padding:
+          //                           const EdgeInsets.only(left: 10, right: 10),
+          //                       child: Row(
+          //                         mainAxisAlignment:
+          //                             MainAxisAlignment.spaceBetween,
+          //                         children: [
+          //                           Row(
+          //                             children: [
+          //                               const Icon(
+          //                                 CupertinoIcons.person_circle_fill,
+          //                                 size: 33,
+          //                               ),
+          //                               const SizedBox(
+          //                                 width: 10,
+          //                               ),
+          //                               Text(
+          //                                 "Zavir",
+          //                                 style: primaryFont.copyWith(
+          //                                     fontSize: 15,
+          //                                     fontWeight: FontWeight.w600),
+          //                               )
+          //                             ],
+          //                           ),
+          //                           Text(
+          //                             "\$9150",
+          //                             style: primaryFont.copyWith(
+          //                                 color: Colors.green,
+          //                                 fontWeight: FontWeight.w600),
+          //                           )
+          //                         ],
+          //                       ),
+          //                     ),
+          //                   ],
+          //                 )
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

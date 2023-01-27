@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/const/app_fonts.dart';
+import 'package:pos/src/controllers/login_api_controllers/login_api_controller.dart';
 import 'package:pos/src/views/auth_view/login_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +24,7 @@ class _ProfileViewState extends State<ProfileView> {
     Get.offAll(() => LoginView());
   }
 
-  
+  final loginApiController = Get.find<LoginApiController>();
 
   @override
   Widget build(BuildContext context) {
@@ -108,35 +109,9 @@ class _ProfileViewState extends State<ProfileView> {
           const SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: Container(
-              height: 60,
-              width: size.width,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 2, color: Colors.grey.withOpacity(0.4))
-                  ],
-                  borderRadius: BorderRadius.circular(10)),
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: TextField(
-                  style: primaryFont.copyWith(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600),
-                  decoration: InputDecoration.collapsed(
-                      hintText: "User Name",
-                      hintStyle: primaryFont.copyWith(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600)),
-                ),
-              ),
-            ),
+          const Padding(
+            padding:  EdgeInsets.only(left: 15),
+            child:  Text("User Name",style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600),),
           ),
           const SizedBox(
             height: 10,
@@ -157,12 +132,13 @@ class _ProfileViewState extends State<ProfileView> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: TextField(
+                  readOnly: true,
                   style: primaryFont.copyWith(
                       color: Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.w600),
                   decoration: InputDecoration.collapsed(
-                      hintText: "Email Id",
+                      hintText: "saadmin",
                       hintStyle: primaryFont.copyWith(
                           color: Colors.black,
                           fontSize: 15,
@@ -170,6 +146,13 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
               ),
             ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Padding(
+            padding:  EdgeInsets.only(left: 15),
+            child:  Text("Series",style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600),),
           ),
           const SizedBox(
             height: 10,
@@ -190,12 +173,13 @@ class _ProfileViewState extends State<ProfileView> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: TextField(
+                  readOnly: true,
                   style: primaryFont.copyWith(
                       color: Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.w600),
                   decoration: InputDecoration.collapsed(
-                      hintText: "Phone Number",
+                      hintText: loginApiController.listUserData.first.serie,
                       hintStyle: primaryFont.copyWith(
                           color: Colors.black,
                           fontSize: 15,
@@ -203,6 +187,13 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
               ),
             ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Padding(
+            padding:  EdgeInsets.only(left: 15),
+            child:  Text("WereHouse",style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600),),
           ),
           const SizedBox(
             height: 10,
@@ -223,12 +214,13 @@ class _ProfileViewState extends State<ProfileView> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: TextField(
+                  readOnly: true,
                   style: primaryFont.copyWith(
                       color: Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.w600),
                   decoration: InputDecoration.collapsed(
-                      hintText: "Old Password",
+                      hintText: loginApiController.listUserData.first.warehouse,
                       hintStyle: primaryFont.copyWith(
                           color: Colors.black,
                           fontSize: 15,
@@ -236,6 +228,13 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
               ),
             ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Padding(
+            padding:  EdgeInsets.only(left: 15),
+            child:  Text("Client",style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600),),
           ),
           const SizedBox(
             height: 10,
@@ -256,12 +255,13 @@ class _ProfileViewState extends State<ProfileView> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: TextField(
+                  readOnly: true,
                   style: primaryFont.copyWith(
                       color: Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.w600),
                   decoration: InputDecoration.collapsed(
-                      hintText: "New Password",
+                      hintText: loginApiController.listUserData.first.customer,
                       hintStyle: primaryFont.copyWith(
                           color: Colors.black,
                           fontSize: 15,
@@ -273,39 +273,72 @@ class _ProfileViewState extends State<ProfileView> {
           const SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: Container(
-              height: 60,
-              width: size.width,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 2, color: Colors.grey.withOpacity(0.4))
-                  ],
-                  borderRadius: BorderRadius.circular(10)),
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: TextField(
-                  style: primaryFont.copyWith(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600),
-                  decoration: InputDecoration.collapsed(
-                      hintText: "Confirm Password",
-                      hintStyle: primaryFont.copyWith(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600)),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 10, right: 10),
+          //   child: Container(
+          //     height: 60,
+          //     width: size.width,
+          //     decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         boxShadow: [
+          //           BoxShadow(
+          //               blurRadius: 2, color: Colors.grey.withOpacity(0.4))
+          //         ],
+          //         borderRadius: BorderRadius.circular(10)),
+          //     alignment: Alignment.centerLeft,
+          //     child: Padding(
+          //       padding: const EdgeInsets.only(left: 10, right: 10),
+          //       child: TextField(
+          //         style: primaryFont.copyWith(
+          //             color: Colors.black,
+          //             fontSize: 15,
+          //             fontWeight: FontWeight.w600),
+          //         decoration: InputDecoration.collapsed(
+          //             hintText: "New Password",
+          //             hintStyle: primaryFont.copyWith(
+          //                 color: Colors.black,
+          //                 fontSize: 15,
+          //                 fontWeight: FontWeight.w600)),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 10, right: 10),
+          //   child: Container(
+          //     height: 60,
+          //     width: size.width,
+          //     decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         boxShadow: [
+          //           BoxShadow(
+          //               blurRadius: 2, color: Colors.grey.withOpacity(0.4))
+          //         ],
+          //         borderRadius: BorderRadius.circular(10)),
+          //     alignment: Alignment.centerLeft,
+          //     child: Padding(
+          //       padding: const EdgeInsets.only(left: 10, right: 10),
+          //       child: TextField(
+          //         style: primaryFont.copyWith(
+          //             color: Colors.black,
+          //             fontSize: 15,
+          //             fontWeight: FontWeight.w600),
+          //         decoration: InputDecoration.collapsed(
+          //             hintText: "Confirm Password",
+          //             hintStyle: primaryFont.copyWith(
+          //                 color: Colors.black,
+          //                 fontSize: 15,
+          //                 fontWeight: FontWeight.w600)),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: InkWell(
@@ -342,7 +375,7 @@ class _ProfileViewState extends State<ProfileView> {
               ),
             ),
           ),
-          const SizedBox(height: 5,),
+          const SizedBox(height: 10,),
         ],
       ),
     );

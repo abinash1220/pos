@@ -173,6 +173,7 @@ class CustomerCardWidget extends StatelessWidget {
           actions: <Widget>[
            InkWell(
             onTap: (){
+              
               invoiceController.invoicenome(nomeEditingController.text);
               invoiceController.invoicetaxid(numContribuinteEditingController.text);
               invoiceController.invoicetelephone(moradafacEditingController.text);
@@ -180,7 +181,7 @@ class CustomerCardWidget extends StatelessWidget {
               nomeEditingController.clear();
               numContribuinteEditingController.clear();
               moradafacEditingController.clear();
-              
+              Get.back();
               Get.to(InvoiceView(client: clientId));
             },
              child: Container(
