@@ -16,6 +16,7 @@ import 'package:pos/src/widgets/customer_widgets/invoice_dropdown_widget.dart';
 import 'package:pos/src/widgets/customer_widgets/invoice_row_widget.dart';
 import 'package:pos/src/widgets/customer_widgets/invoice_total_row.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:pos/src/widgets/snackbar_widgets/out_of_stock.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/items_api_models/item_pricelist_model.dart';
@@ -41,6 +42,7 @@ class _InvoiceViewState extends State<InvoiceView> {
   bool isCurrentLanguageInstalled = false;
 
   TextEditingController textEditingController = TextEditingController();
+  TextEditingController tempTextEditingController = TextEditingController();
 
   String? _newVoiceText;
   int? _inputLength;
@@ -269,7 +271,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                           entidade: customerApiController.customerdatalist.first.cliente,
                           tipoEntidade: "C",
                           dataDoc: "2022-12-31T15:20:00",
-                          dataVenc: "${dt.year}-${dt.month}-${dt.day}",
+                          dataVenc: "${dt.day}-${dt.month}-${dt.year}",
                           condPag: "1",
                           nome: customerApiController.customerdatalist.first.nome,
                           nomeFac: customerApiController.customerdatalist.first.nome,
@@ -654,25 +656,45 @@ class _InvoiceViewState extends State<InvoiceView> {
                     alignment: Alignment.center,
                     //
                     child: TextField(
+                      controller: textEditingController,
                       onChanged: (value) {
-                        double a = double.parse(invoicecontroller
-                                .invoiceProtectList[0].unitPrice) *
-                            int.parse(value);
-                        double b = double.parse(invoicecontroller
-                                .invoiceProtectList[0].discount) /
-                            double.parse(100.toString()) *
-                            double.parse(a.toString());
-                        double c = double.parse(
-                                invoicecontroller.invoiceProtectList[0].cva) /
-                            double.parse(100.toString()) *
-                            double.parse(a.toString());
-                        double d = a - b + c;
-                        invoicecontroller.invoiceProtectList[0].totalValue =
-                            d.toString();
-                        invoicecontroller.invoiceProtectList[0].qty =
-                            int.parse(value);
-                        invoicecontroller.totalAmountCal();
-                        invoicecontroller.update();
+                        int tempqty = int.parse(value);
+
+                        var tempCalValue = double.parse(
+                                invoicecontroller.invoiceProtectList[0].stock) -
+                            tempqty;
+                        print(tempCalValue);
+                        if (tempCalValue < 0) {
+                          textEditingController.clear();
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(outOfStockSnackBar);
+                          invoicecontroller.invoiceProtectList[0].totalValue =
+                              double.parse(invoicecontroller
+                                      .invoiceProtectList[0].unitPrice)
+                                  .toString();
+                          invoicecontroller.invoiceProtectList[0].qty = 1;
+                          invoicecontroller.totalAmountCal();
+                          invoicecontroller.update();
+                        } else {
+                          double a = double.parse(invoicecontroller
+                                  .invoiceProtectList[0].unitPrice) *
+                              int.parse(value);
+                          double b = double.parse(invoicecontroller
+                                  .invoiceProtectList[0].discount) /
+                              double.parse(100.toString()) *
+                              double.parse(a.toString());
+                          double c = double.parse(
+                                  invoicecontroller.invoiceProtectList[0].cva) /
+                              double.parse(100.toString()) *
+                              double.parse(a.toString());
+                          double d = a - b + c;
+                          invoicecontroller.invoiceProtectList[0].totalValue =
+                              d.toString();
+                          invoicecontroller.invoiceProtectList[0].qty =
+                              int.parse(value);
+                          invoicecontroller.totalAmountCal();
+                          invoicecontroller.update();
+                        }
                       },
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
@@ -796,25 +818,54 @@ class _InvoiceViewState extends State<InvoiceView> {
                       width: 50,
                       alignment: Alignment.center,
                       child: TextField(
+                        controller: invoicecontroller.invoiceProtectList
+                                .asMap()
+                                .containsKey(i)
+                            ? invoicecontroller
+                                .invoiceProtectList[i].textController
+                            : tempTextEditingController,
                         onChanged: (value) {
-                          double a = double.parse(invoicecontroller
-                                  .invoiceProtectList[i].unitPrice) *
-                              int.parse(value);
-                          double b = double.parse(invoicecontroller
-                                  .invoiceProtectList[i].discount) /
-                              double.parse(100.toString()) *
-                              double.parse(a.toString());
-                          double c = double.parse(
-                                  invoicecontroller.invoiceProtectList[i].cva) /
-                              double.parse(100.toString()) *
-                              double.parse(a.toString());
-                          double d = a - b + c;
-                          invoicecontroller.invoiceProtectList[i].totalValue =
-                              d.toString();
-                          invoicecontroller.invoiceProtectList[i].qty =
-                              int.parse(value);
-                          invoicecontroller.totalAmountCal();
-                          invoicecontroller.update();
+                          int tempqty = int.parse(value);
+
+                          var tempCalValue = double.parse(invoicecontroller
+                                  .invoiceProtectList[i].stock) -
+                              tempqty;
+
+                          if (tempCalValue < 0) {
+                            invoicecontroller
+                                .invoiceProtectList[i].textController
+                                .clear();
+                            invoicecontroller.update();
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(outOfStockSnackBar);
+
+                                invoicecontroller.invoiceProtectList[i].totalValue =
+                                double.parse(invoicecontroller
+                                        .invoiceProtectList[i].unitPrice)
+                                    .toString();
+                            invoicecontroller.invoiceProtectList[i].qty = 1;
+                            invoicecontroller.totalAmountCal();
+                            invoicecontroller.update();
+                          } else {
+                            double a = double.parse(invoicecontroller
+                                    .invoiceProtectList[i].unitPrice) *
+                                int.parse(value);
+                            double b = double.parse(invoicecontroller
+                                    .invoiceProtectList[i].discount) /
+                                double.parse(100.toString()) *
+                                double.parse(a.toString());
+                            double c = double.parse(invoicecontroller
+                                    .invoiceProtectList[i].cva) /
+                                double.parse(100.toString()) *
+                                double.parse(a.toString());
+                            double d = a - b + c;
+                            invoicecontroller.invoiceProtectList[i].totalValue =
+                                d.toString();
+                            invoicecontroller.invoiceProtectList[i].qty =
+                                int.parse(value);
+                            invoicecontroller.totalAmountCal();
+                            invoicecontroller.update();
+                          }
                         },
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
@@ -1042,6 +1093,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                         double.parse(a.toString());
                                     double d = a - b + c;
                                     InvoiceModel invoiceModel = InvoiceModel(
+                                      textController: TextEditingController(),
                                       items: itemsApiController
                                           .pricelist![index]!.artigo,
                                       description: itemsApiController
@@ -1051,6 +1103,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                                           .pricelist![index]!.iva
                                           .toString(),
                                       qty: 1,
+                                      stock: itemsApiController
+                                          .pricelist![index]!.stock
+                                          .toString(),
                                       totalValue: d.toString(),
                                       unitPrice: itemsApiController
                                           .pricelist![index]!.price
@@ -1129,7 +1184,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                 ? "0"
                                                 : itemsApiController
                                                     .pricelist![index]!.stock
-                                                    .toString(),
+                                                    .toStringAsFixed(0),
                                             overflow: TextOverflow.ellipsis,
                                             textDirection: TextDirection.ltr,
                                             style: primaryFont.copyWith(

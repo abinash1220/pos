@@ -179,7 +179,7 @@ class _TestPrintingState extends State<TestPrinting> {
     bytes += generator.emptyLines(2);
     bytes += generator.text('Factura ${invoiceController.invoiceSerie}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('Factura/Recibo',styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text('${dt.year}-${dt.month}-${dt.day}',styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.text('${dt.day}-${dt.month}-${dt.year}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('Moeda: AKZ                     ');
     bytes += generator.emptyLines(2);
     bytes += generator.text('Rec. para client                ');
