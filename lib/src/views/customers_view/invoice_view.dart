@@ -238,80 +238,81 @@ class _InvoiceViewState extends State<InvoiceView> {
                     },
                     child: const Icon(Icons.arrow_back_ios_sharp)),
                 actions: [
-                  InkWell(
-                      onTap: () {
-                        invoicecontroller.saveController(
-                            tipodoc: "FA",
-                            context: context,
-                            serie: loginApiController.listUserData.first.serie,
-                            entidade: customerApiController
-                                .customerdatalist.first.cliente,
-                            tipoEntidade: "C",
-                            dataDoc: "${dt.year}-${dt.month}-${dt.day}",
-                            dataVenc: "${dt.year}-${dt.month}-${dt.day}",
-                            condPag: "1",
-                            nome: customerApiController
-                                .customerdatalist.first.nome,
-                            nomeFac: customerApiController
-                                .customerdatalist.first.nome,
-                            numContribuinte: customerApiController
-                                .customerdatalist.first.numContrib,
-                            numContribuinteFac: customerApiController
-                                .customerdatalist.first.numContrib,
-                            modoPag: "MB",
-                            moradafac: "9789087552");
-                        //customerApiController.customerdatalist.first.cliente
-                      },
-                      child: const Icon(Icons.save)),
+                  // InkWell(
+                  //     onTap: () {
+                  //       invoicecontroller.saveController(
+                  //           tipodoc: "FA",
+                  //           context: context,
+                  //           serie: loginApiController.listUserData.first.serie,
+                  //           entidade: customerApiController
+                  //               .customerdatalist.first.cliente,
+                  //           tipoEntidade: "C",
+                  //           dataDoc: "${dt.year}-${dt.month}-${dt.day}",
+                  //           dataVenc: "${dt.year}-${dt.month}-${dt.day}",
+                  //           condPag: "1",
+                  //           nome: customerApiController
+                  //               .customerdatalist.first.nome,
+                  //           nomeFac: customerApiController
+                  //               .customerdatalist.first.nome,
+                  //           numContribuinte: customerApiController
+                  //               .customerdatalist.first.numContrib,
+                  //           numContribuinteFac: customerApiController
+                  //               .customerdatalist.first.numContrib,
+                  //           modoPag: "MB",
+                  //           moradafac: "9789087552");
+                  //       //customerApiController.customerdatalist.first.cliente
+                  //     },
+                  //     child: const Icon(Icons.save)),
                   const SizedBox(
                     width: 15,
                   ),
                   InkWell(
-                      onTap: ()  {
-                        //  bool result = await InternetConnectionChecker().hasConnection;
-                        // if (result) {
-  
-
-  // await Future.delayed(Duration(seconds: 1));
-                            invoicecontroller.saveController(
-                            tipodoc: "FA",
-                            context: context,
-                            serie: loginApiController.listUserData.first.serie,
-                            entidade: customerApiController
-                                .customerdatalist.first.cliente,
-                            tipoEntidade: "C",
-                            dataDoc: "${dt.year}-${dt.month}-${dt.day}",
-                            dataVenc: "${dt.year}-${dt.month}-${dt.day}",
-                            condPag: "1",
-                            nome: customerApiController
-                                .customerdatalist.first.nome,
-                            nomeFac: customerApiController
-                                .customerdatalist.first.nome,
-                            numContribuinte: customerApiController
-                                .customerdatalist.first.numContrib,
-                            numContribuinteFac: customerApiController
-                                .customerdatalist.first.numContrib,
-                            modoPag: "MB",
-                            moradafac: "9789087552");
-    // setState(() {
-    //   isload = false;
-    // });
-  Get.to(const InvoicePrinting());
-// }else{
-//    Get.to(const TestPrinting());
-// }
+                      onTap: () async {
+                        bool result =
+                            await InternetConnectionChecker().hasConnection;
+                        if (result) {
+                         setState(() {
+                            isload = true;
+                          });
+                      await  invoicecontroller.saveController(
+                              tipodoc: "FA",
+                              context: context,
+                              serie:
+                                  loginApiController.listUserData.first.serie,
+                              entidade: customerApiController
+                                  .customerdatalist.first.cliente,
+                              tipoEntidade: "C",
+                              dataDoc: "${dt.year}-${dt.month}-${dt.day}",
+                              dataVenc: "${dt.year}-${dt.month}-${dt.day}",
+                              condPag: "1",
+                              nome: customerApiController
+                                  .customerdatalist.first.nome,
+                              nomeFac: customerApiController
+                                  .customerdatalist.first.nome,
+                              numContribuinte: customerApiController
+                                  .customerdatalist.first.numContrib,
+                              numContribuinteFac: customerApiController
+                                  .customerdatalist.first.numContrib,
+                              modoPag: "MB",
+                              moradafac: "9789087552");
+                          setState(() {
+                            isload = false;
+                          });
+                          Get.to(const InvoicePrinting());
+                        } else {
+                          Get.to(const InvoicePrinting());
+                        }
                         //invoicecontroller.printposInvoice();
                         // invoicecontroller.saveController(
                         //   tipodoc: "", context: context, serie: "", entidade: "", tipoEntidade: "", dataDoc: "", dataVenc: "", horaDefinida: "", calculoManual: "");
                       },
-                       
-                      child:const Padding(
-                        padding:  EdgeInsets.only(right: 7),
-                        child:  Icon(Icons.print),
+                      child: const Padding(
+                        padding: EdgeInsets.only(right: 7),
+                        child: Icon(Icons.print),
                       )),
-                       const SizedBox(
-                          width: 15,
-                          ),
+                  const SizedBox(
+                    width: 15,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(right: 15),
                     child: InkWell(
@@ -335,643 +336,663 @@ class _InvoiceViewState extends State<InvoiceView> {
           ),
         ),
       ),
-      body: isload ? Center(child: CircularProgressIndicator()) : GetBuilder<InvoiceController>(builder: (_) {
-        return ListView(
-          children: [
-            const SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  height: 45,
-                  width: size.width * 0.4,
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.7),
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
-                              topLeft: Radius.circular(10),
-                            )),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "TIPO:",
-                          style:
-                              primaryFont.copyWith(fontWeight: FontWeight.w600),
-                        ),
-                      )),
-                      Expanded(
-                          flex: 2,
-                          child: Container(
-                            height: 45,
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.2),
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                )),
-                            alignment: Alignment.center,
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2(
-                                hint: Text(
-                                  'FA',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Theme.of(context).hintColor,
-                                  ),
-                                ),
-                                items: items
-                                    .map((item) => DropdownMenuItem<String>(
-                                          value: item,
-                                          child: Text(
-                                            item,
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ))
-                                    .toList(),
-                                value: selectedValue,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedValue = value as String;
-                                  });
-                                },
-                                buttonHeight: 40,
-                                buttonWidth: 60,
-                                itemHeight: 40,
-                              ),
-                            ),
-                          ))
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 45,
-                  width: size.width * 0.4,
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.7),
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
-                              topLeft: Radius.circular(10),
-                            )),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Number:".tr.toUpperCase(),
-                          style: primaryFont.copyWith(
-                              fontWeight: FontWeight.w600, fontSize: 11),
-                        ),
-                      )),
-                      Expanded(
-                          flex: 2,
-                          child: Container(
-                            height: 45,
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.2),
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                )),
-                            alignment: Alignment.center,
-                            child: Text(
-                              "0096".toUpperCase(),
-                              style: primaryFont.copyWith(
-                                  fontWeight: FontWeight.w600, fontSize: 13),
-                            ),
-                          ))
-                    ],
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  height: 45,
-                  width: size.width * 0.4,
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.7),
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
-                              topLeft: Radius.circular(10),
-                            )),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Serie:".toUpperCase(),
-                          style:
-                              primaryFont.copyWith(fontWeight: FontWeight.w600),
-                        ),
-                      )),
-                      Expanded(
-                          flex: 2,
-                          child: Container(
-                            height: 45,
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.2),
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                )),
-                            alignment: Alignment.center,
-                            child: Text(
-                              loginApiController.listUserData.first.serie,
-                              style: primaryFont.copyWith(
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ))
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 45,
-                  width: size.width * 0.4,
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.7),
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
-                              topLeft: Radius.circular(10),
-                            )),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "DATE:".tr.toUpperCase(),
-                          style: primaryFont.copyWith(
-                              fontWeight: FontWeight.w600, fontSize: 11),
-                        ),
-                      )),
-                      Expanded(
-                          flex: 2,
-                          child: Container(
-                            height: 45,
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.2),
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                )),
-                            alignment: Alignment.center,
-                            child: Text(
-                              "${dt.day}-${dt.month}-${dt.year}".toUpperCase(),
-                              style: primaryFont.copyWith(
-                                  fontWeight: FontWeight.w600, fontSize: 13),
-                            ),
-                          ))
-                    ],
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              height: 50,
-              color: Colors.grey.withOpacity(0.2),
-              child: Row(
+      body: isload
+          ? Center(child: CircularProgressIndicator())
+          : GetBuilder<InvoiceController>(builder: (_) {
+              return ListView(
                 children: [
-                  Container(
-                    width: 70,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Item",
-                      style: primaryFont.copyWith(
-                          fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
+                  const SizedBox(
+                    height: 15,
                   ),
-                  Container(
-                    height: 50,
-                    width: 1,
-                    color: Colors.grey.withOpacity(0.7),
-                  ),
-                  Container(
-                    width: 50,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Qty",
-                      style: primaryFont.copyWith(
-                          fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 1,
-                    color: Colors.grey.withOpacity(0.7),
-                  ),
-                  Container(
-                    width: 80,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Unit Price".tr,
-                      style: primaryFont.copyWith(
-                          fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 1,
-                    color: Colors.grey.withOpacity(0.7),
-                  ),
-                  Container(
-                    width: 50,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Dis".tr,
-                      style: primaryFont.copyWith(
-                          fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 1,
-                    color: Colors.grey.withOpacity(0.7),
-                  ),
-                  Container(
-                    width: 50,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "CVA",
-                      style: primaryFont.copyWith(
-                          fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 1,
-                    color: Colors.grey.withOpacity(0.7),
-                  ),
-                  Container(
-                    width: 80,
-                    alignment: Alignment.center,
-                    child: Center(
-                      child: Text(
-                        "Total Value".tr,
-                        style: primaryFont.copyWith(
-                            fontSize: 14, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 50,
-              color: Colors.white,
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      _dialogBuilder(context, 0);
-                    },
-                    child: Container(
-                      width: 70,
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            invoicecontroller.invoiceProtectList.isEmpty
-                                ? value
-                                : invoicecontroller.invoiceProtectList[0].items,
-                            style: primaryFont.copyWith(
-                                fontSize: 13, fontWeight: FontWeight.w600),
-                          ),
-                          InkWell(
-                              onTap: () {
-                                _dialogBuilder(context, 0);
-                              },
-                              child:
-                                  const Icon(Icons.keyboard_arrow_down_rounded))
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 1,
-                    color: Colors.grey.withOpacity(0.7),
-                  ),
-                  Container(
-                    width: 50,
-                    alignment: Alignment.center,
-                    //
-                    child: TextField(
-                      controller: textEditingController,
-                      onChanged: (value) {
-                        int tempqty = int.parse(value);
-
-                        var tempCalValue = double.parse(
-                                invoicecontroller.invoiceProtectList[0].stock) -
-                            tempqty;
-                        print(tempCalValue);
-                        if (tempCalValue < 0) {
-                          textEditingController.clear();
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(outOfStockSnackBar);
-                          invoicecontroller.invoiceProtectList[0].totalValue =
-                              double.parse(invoicecontroller
-                                      .invoiceProtectList[0].unitPrice)
-                                  .toString();
-                          invoicecontroller.invoiceProtectList[0].qty = 1;
-                          invoicecontroller.totalAmountCal();
-                          invoicecontroller.update();
-                        } else {
-                          double a = double.parse(invoicecontroller
-                                  .invoiceProtectList[0].unitPrice) *
-                              int.parse(value);
-                          double b = double.parse(invoicecontroller
-                                  .invoiceProtectList[0].discount) /
-                              double.parse(100.toString()) *
-                              double.parse(a.toString());
-                          double c = double.parse(
-                                  invoicecontroller.invoiceProtectList[0].cva) /
-                              double.parse(100.toString()) *
-                              double.parse(a.toString());
-                          double d = a - b + c;
-                          invoicecontroller.invoiceProtectList[0].totalValue =
-                              d.toString();
-                          invoicecontroller.invoiceProtectList[0].qty =
-                              int.parse(value);
-                          invoicecontroller.totalAmountCal();
-                          invoicecontroller.update();
-                        }
-                      },
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      style: primaryFont.copyWith(
-                          fontSize: 13, fontWeight: FontWeight.w600),
-                      decoration:
-                          const InputDecoration.collapsed(hintText: "1"),
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 1,
-                    color: Colors.grey.withOpacity(0.7),
-                  ),
-                  Container(
-                    width: 80,
-                    alignment: Alignment.center,
-                    child: Text(
-                      invoicecontroller.invoiceProtectList.isEmpty
-                          ? ""
-                          : invoicecontroller.invoiceProtectList[0].unitPrice,
-                      style: primaryFont.copyWith(
-                          fontSize: 13, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 1,
-                    color: Colors.grey.withOpacity(0.7),
-                  ),
-                  Container(
-                    width: 50,
-                    alignment: Alignment.center,
-                    child: Text(
-                      invoicecontroller.invoiceProtectList.isEmpty
-                          ? ""
-                          : invoicecontroller.invoiceProtectList[0].discount,
-                      style: primaryFont.copyWith(
-                          fontSize: 13, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 1,
-                    color: Colors.grey.withOpacity(0.7),
-                  ),
-                  Container(
-                    width: 50,
-                    alignment: Alignment.center,
-                    child: Text(
-                      invoicecontroller.invoiceProtectList.isEmpty
-                          ? ""
-                          : invoicecontroller.invoiceProtectList[0].cva,
-                      style: primaryFont.copyWith(
-                          fontSize: 13, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 1,
-                    color: Colors.grey.withOpacity(0.7),
-                  ),
-                  Container(
-                    width: 80,
-                    alignment: Alignment.center,
-                    child: Text(
-                      invoicecontroller.invoiceProtectList.isEmpty
-                          ? ""
-                          : invoicecontroller.invoiceProtectList[0].totalValue,
-                      style: primaryFont.copyWith(
-                          fontSize: 13, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            //
-
-            for (int i = 1;
-                i < invoicecontroller.invoiceProtectList.length + 1;
-                i++)
-              Container(
-                height: 50,
-                color: i.isOdd ? Colors.grey[200] : Colors.white,
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        _dialogBuilder(context, i);
-                      },
-                      child: Container(
-                        width: 70,
-                        alignment: Alignment.center,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        height: 45,
+                        width: size.width * 0.4,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              invoicecontroller.invoiceProtectList.length == i
-                                  ? 'Select'.tr
-                                  : invoicecontroller
-                                      .invoiceProtectList[i].items,
-                              style: primaryFont.copyWith(
-                                  fontSize: 13, fontWeight: FontWeight.w600),
-                            ),
-                            InkWell(
-                                onTap: () {
-                                  _dialogBuilder(context, i);
-                                },
-                                child: const Icon(
-                                    Icons.keyboard_arrow_down_rounded))
+                            Expanded(
+                                child: Container(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.7),
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topLeft: Radius.circular(10),
+                                  )),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "TIPO:",
+                                style: primaryFont.copyWith(
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            )),
+                            Expanded(
+                                flex: 2,
+                                child: Container(
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                      )),
+                                  alignment: Alignment.center,
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton2(
+                                      hint: Text(
+                                        'FA',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Theme.of(context).hintColor,
+                                        ),
+                                      ),
+                                      items: items
+                                          .map((item) =>
+                                              DropdownMenuItem<String>(
+                                                value: item,
+                                                child: Text(
+                                                  item,
+                                                  style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ))
+                                          .toList(),
+                                      value: selectedValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedValue = value as String;
+                                        });
+                                      },
+                                      buttonHeight: 40,
+                                      buttonWidth: 60,
+                                      itemHeight: 40,
+                                    ),
+                                  ),
+                                ))
                           ],
                         ),
                       ),
+                      Container(
+                        height: 45,
+                        width: size.width * 0.4,
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Container(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.7),
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topLeft: Radius.circular(10),
+                                  )),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Number:".tr.toUpperCase(),
+                                style: primaryFont.copyWith(
+                                    fontWeight: FontWeight.w600, fontSize: 11),
+                              ),
+                            )),
+                            Expanded(
+                                flex: 2,
+                                child: Container(
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                      )),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "0096".toUpperCase(),
+                                    style: primaryFont.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        height: 45,
+                        width: size.width * 0.4,
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Container(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.7),
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topLeft: Radius.circular(10),
+                                  )),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Serie:".toUpperCase(),
+                                style: primaryFont.copyWith(
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            )),
+                            Expanded(
+                                flex: 2,
+                                child: Container(
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                      )),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    loginApiController.listUserData.first.serie,
+                                    style: primaryFont.copyWith(
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 45,
+                        width: size.width * 0.4,
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Container(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.7),
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topLeft: Radius.circular(10),
+                                  )),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "DATE:".tr.toUpperCase(),
+                                style: primaryFont.copyWith(
+                                    fontWeight: FontWeight.w600, fontSize: 11),
+                              ),
+                            )),
+                            Expanded(
+                                flex: 2,
+                                child: Container(
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                      )),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "${dt.day}-${dt.month}-${dt.year}"
+                                        .toUpperCase(),
+                                    style: primaryFont.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    height: 50,
+                    color: Colors.grey.withOpacity(0.2),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 70,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Item",
+                            style: primaryFont.copyWith(
+                                fontSize: 14, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 1,
+                          color: Colors.grey.withOpacity(0.7),
+                        ),
+                        Container(
+                          width: 50,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Qty",
+                            style: primaryFont.copyWith(
+                                fontSize: 14, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 1,
+                          color: Colors.grey.withOpacity(0.7),
+                        ),
+                        Container(
+                          width: 80,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Unit Price".tr,
+                            style: primaryFont.copyWith(
+                                fontSize: 14, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 1,
+                          color: Colors.grey.withOpacity(0.7),
+                        ),
+                        Container(
+                          width: 50,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Dis".tr,
+                            style: primaryFont.copyWith(
+                                fontSize: 14, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 1,
+                          color: Colors.grey.withOpacity(0.7),
+                        ),
+                        Container(
+                          width: 50,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "CVA",
+                            style: primaryFont.copyWith(
+                                fontSize: 14, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 1,
+                          color: Colors.grey.withOpacity(0.7),
+                        ),
+                        Container(
+                          width: 80,
+                          alignment: Alignment.center,
+                          child: Center(
+                            child: Text(
+                              "Total Value".tr,
+                              style: primaryFont.copyWith(
+                                  fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      height: 50,
-                      width: 1,
-                      color: Colors.grey.withOpacity(0.7),
-                    ),
-                    Container(
-                      width: 50,
-                      alignment: Alignment.center,
-                      child: TextField(
-                        controller: invoicecontroller.invoiceProtectList
-                                .asMap()
-                                .containsKey(i)
-                            ? invoicecontroller
-                                .invoiceProtectList[i].textController
-                            : tempTextEditingController,
-                        onChanged: (value) {
-                          int tempqty = int.parse(value);
+                  ),
+                  Container(
+                    height: 50,
+                    color: Colors.white,
+                    child: Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            _dialogBuilder(context, 0);
+                          },
+                          child: Container(
+                            width: 70,
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  invoicecontroller.invoiceProtectList.isEmpty
+                                      ? value
+                                      : invoicecontroller
+                                          .invoiceProtectList[0].items,
+                                  style: primaryFont.copyWith(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                InkWell(
+                                    onTap: () {
+                                      _dialogBuilder(context, 0);
+                                    },
+                                    child: const Icon(
+                                        Icons.keyboard_arrow_down_rounded))
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 1,
+                          color: Colors.grey.withOpacity(0.7),
+                        ),
+                        Container(
+                          width: 50,
+                          alignment: Alignment.center,
+                          //
+                          child: TextField(
+                            controller: textEditingController,
+                            onChanged: (value) {
+                              int tempqty = int.parse(value);
 
-                          var tempCalValue = double.parse(invoicecontroller
-                                  .invoiceProtectList[i].stock) -
-                              tempqty;
-
-                          if (tempCalValue < 0) {
-                            invoicecontroller
-                                .invoiceProtectList[i].textController
-                                .clear();
-                            invoicecontroller.update();
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(outOfStockSnackBar);
-
-                                invoicecontroller.invoiceProtectList[i].totalValue =
-                                double.parse(invoicecontroller
-                                        .invoiceProtectList[i].unitPrice)
+                              var tempCalValue = double.parse(invoicecontroller
+                                      .invoiceProtectList[0].stock) -
+                                  tempqty;
+                              print(tempCalValue);
+                              if (tempCalValue < 0) {
+                                textEditingController.clear();
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(outOfStockSnackBar);
+                                invoicecontroller.invoiceProtectList[0]
+                                    .totalValue = double.parse(invoicecontroller
+                                        .invoiceProtectList[0].unitPrice)
                                     .toString();
-                            invoicecontroller.invoiceProtectList[i].qty = 1;
-                            invoicecontroller.totalAmountCal();
-                            invoicecontroller.update();
-                          } else {
-                            double a = double.parse(invoicecontroller
-                                    .invoiceProtectList[i].unitPrice) *
-                                int.parse(value);
-                            double b = double.parse(invoicecontroller
-                                    .invoiceProtectList[i].discount) /
-                                double.parse(100.toString()) *
-                                double.parse(a.toString());
-                            double c = double.parse(invoicecontroller
-                                    .invoiceProtectList[i].cva) /
-                                double.parse(100.toString()) *
-                                double.parse(a.toString());
-                            double d = a - b + c;
-                            invoicecontroller.invoiceProtectList[i].totalValue =
-                                d.toString();
-                            invoicecontroller.invoiceProtectList[i].qty =
-                                int.parse(value);
-                            invoicecontroller.totalAmountCal();
-                            invoicecontroller.update();
-                          }
-                        },
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        style: primaryFont.copyWith(
-                            fontSize: 13, fontWeight: FontWeight.w600),
-                        decoration:
-                            const InputDecoration.collapsed(hintText: "1"),
-                      ),
+                                invoicecontroller.invoiceProtectList[0].qty = 1;
+                                invoicecontroller.totalAmountCal();
+                                invoicecontroller.update();
+                              } else {
+                                double a = double.parse(invoicecontroller
+                                        .invoiceProtectList[0].unitPrice) *
+                                    int.parse(value);
+                                double b = double.parse(invoicecontroller
+                                        .invoiceProtectList[0].discount) /
+                                    double.parse(100.toString()) *
+                                    double.parse(a.toString());
+                                double c = double.parse(invoicecontroller
+                                        .invoiceProtectList[0].cva) /
+                                    double.parse(100.toString()) *
+                                    double.parse(a.toString());
+                                double d = a - b + c;
+                                invoicecontroller.invoiceProtectList[0]
+                                    .totalValue = d.toString();
+                                invoicecontroller.invoiceProtectList[0].qty =
+                                    int.parse(value);
+                                invoicecontroller.totalAmountCal();
+                                invoicecontroller.update();
+                              }
+                            },
+                            textAlign: TextAlign.center,
+                            keyboardType: TextInputType.number,
+                            style: primaryFont.copyWith(
+                                fontSize: 13, fontWeight: FontWeight.w600),
+                            decoration:
+                                const InputDecoration.collapsed(hintText: "1"),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 1,
+                          color: Colors.grey.withOpacity(0.7),
+                        ),
+                        Container(
+                          width: 80,
+                          alignment: Alignment.center,
+                          child: Text(
+                            invoicecontroller.invoiceProtectList.isEmpty
+                                ? ""
+                                : invoicecontroller
+                                    .invoiceProtectList[0].unitPrice,
+                            style: primaryFont.copyWith(
+                                fontSize: 13, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 1,
+                          color: Colors.grey.withOpacity(0.7),
+                        ),
+                        Container(
+                          width: 50,
+                          alignment: Alignment.center,
+                          child: Text(
+                            invoicecontroller.invoiceProtectList.isEmpty
+                                ? ""
+                                : invoicecontroller
+                                    .invoiceProtectList[0].discount,
+                            style: primaryFont.copyWith(
+                                fontSize: 13, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 1,
+                          color: Colors.grey.withOpacity(0.7),
+                        ),
+                        Container(
+                          width: 50,
+                          alignment: Alignment.center,
+                          child: Text(
+                            invoicecontroller.invoiceProtectList.isEmpty
+                                ? ""
+                                : invoicecontroller.invoiceProtectList[0].cva,
+                            style: primaryFont.copyWith(
+                                fontSize: 13, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 1,
+                          color: Colors.grey.withOpacity(0.7),
+                        ),
+                        Container(
+                          width: 80,
+                          alignment: Alignment.center,
+                          child: Text(
+                            invoicecontroller.invoiceProtectList.isEmpty
+                                ? ""
+                                : invoicecontroller
+                                    .invoiceProtectList[0].totalValue,
+                            style: primaryFont.copyWith(
+                                fontSize: 13, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                  //
+
+                  for (int i = 1;
+                      i < invoicecontroller.invoiceProtectList.length + 1;
+                      i++)
                     Container(
                       height: 50,
-                      width: 1,
-                      color: Colors.grey.withOpacity(0.7),
-                    ),
-                    Container(
-                      width: 80,
-                      alignment: Alignment.center,
-                      child: Text(
-                        invoicecontroller.invoiceProtectList.length == i
-                            ? ""
-                            : invoicecontroller.invoiceProtectList[i].unitPrice,
-                        style: primaryFont.copyWith(
-                            fontSize: 13, fontWeight: FontWeight.w600),
+                      color: i.isOdd ? Colors.grey[200] : Colors.white,
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              _dialogBuilder(context, i);
+                            },
+                            child: Container(
+                              width: 70,
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    invoicecontroller
+                                                .invoiceProtectList.length ==
+                                            i
+                                        ? 'Select'.tr
+                                        : invoicecontroller
+                                            .invoiceProtectList[i].items,
+                                    style: primaryFont.copyWith(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  InkWell(
+                                      onTap: () {
+                                        _dialogBuilder(context, i);
+                                      },
+                                      child: const Icon(
+                                          Icons.keyboard_arrow_down_rounded))
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 50,
+                            width: 1,
+                            color: Colors.grey.withOpacity(0.7),
+                          ),
+                          Container(
+                            width: 50,
+                            alignment: Alignment.center,
+                            child: TextField(
+                              controller: invoicecontroller.invoiceProtectList
+                                      .asMap()
+                                      .containsKey(i)
+                                  ? invoicecontroller
+                                      .invoiceProtectList[i].textController
+                                  : tempTextEditingController,
+                              onChanged: (value) {
+                                int tempqty = int.parse(value);
+
+                                var tempCalValue = double.parse(
+                                        invoicecontroller
+                                            .invoiceProtectList[i].stock) -
+                                    tempqty;
+
+                                if (tempCalValue < 0) {
+                                  invoicecontroller
+                                      .invoiceProtectList[i].textController
+                                      .clear();
+                                  invoicecontroller.update();
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(outOfStockSnackBar);
+
+                                  invoicecontroller
+                                          .invoiceProtectList[i].totalValue =
+                                      double.parse(invoicecontroller
+                                              .invoiceProtectList[i].unitPrice)
+                                          .toString();
+                                  invoicecontroller.invoiceProtectList[i].qty =
+                                      1;
+                                  invoicecontroller.totalAmountCal();
+                                  invoicecontroller.update();
+                                } else {
+                                  double a = double.parse(invoicecontroller
+                                          .invoiceProtectList[i].unitPrice) *
+                                      int.parse(value);
+                                  double b = double.parse(invoicecontroller
+                                          .invoiceProtectList[i].discount) /
+                                      double.parse(100.toString()) *
+                                      double.parse(a.toString());
+                                  double c = double.parse(invoicecontroller
+                                          .invoiceProtectList[i].cva) /
+                                      double.parse(100.toString()) *
+                                      double.parse(a.toString());
+                                  double d = a - b + c;
+                                  invoicecontroller.invoiceProtectList[i]
+                                      .totalValue = d.toString();
+                                  invoicecontroller.invoiceProtectList[i].qty =
+                                      int.parse(value);
+                                  invoicecontroller.totalAmountCal();
+                                  invoicecontroller.update();
+                                }
+                              },
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.number,
+                              style: primaryFont.copyWith(
+                                  fontSize: 13, fontWeight: FontWeight.w600),
+                              decoration: const InputDecoration.collapsed(
+                                  hintText: "1"),
+                            ),
+                          ),
+                          Container(
+                            height: 50,
+                            width: 1,
+                            color: Colors.grey.withOpacity(0.7),
+                          ),
+                          Container(
+                            width: 80,
+                            alignment: Alignment.center,
+                            child: Text(
+                              invoicecontroller.invoiceProtectList.length == i
+                                  ? ""
+                                  : invoicecontroller
+                                      .invoiceProtectList[i].unitPrice,
+                              style: primaryFont.copyWith(
+                                  fontSize: 13, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Container(
+                            height: 50,
+                            width: 1,
+                            color: Colors.grey.withOpacity(0.7),
+                          ),
+                          Container(
+                            width: 50,
+                            alignment: Alignment.center,
+                            child: Text(
+                              invoicecontroller.invoiceProtectList.length == i
+                                  ? ""
+                                  : invoicecontroller
+                                      .invoiceProtectList[i].discount,
+                              style: primaryFont.copyWith(
+                                  fontSize: 13, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Container(
+                            height: 50,
+                            width: 1,
+                            color: Colors.grey.withOpacity(0.7),
+                          ),
+                          Container(
+                            width: 50,
+                            alignment: Alignment.center,
+                            child: Text(
+                              invoicecontroller.invoiceProtectList.length == i
+                                  ? ""
+                                  : invoicecontroller.invoiceProtectList[i].cva,
+                              style: primaryFont.copyWith(
+                                  fontSize: 13, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Container(
+                            height: 50,
+                            width: 1,
+                            color: Colors.grey.withOpacity(0.7),
+                          ),
+                          Container(
+                            width: 80,
+                            alignment: Alignment.center,
+                            child: Text(
+                              invoicecontroller.invoiceProtectList.length == i
+                                  ? ""
+                                  : invoicecontroller
+                                      .invoiceProtectList[i].totalValue,
+                              style: primaryFont.copyWith(
+                                  fontSize: 13, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                      height: 50,
-                      width: 1,
-                      color: Colors.grey.withOpacity(0.7),
-                    ),
-                    Container(
-                      width: 50,
-                      alignment: Alignment.center,
-                      child: Text(
-                        invoicecontroller.invoiceProtectList.length == i
-                            ? ""
-                            : invoicecontroller.invoiceProtectList[i].discount,
-                        style: primaryFont.copyWith(
-                            fontSize: 13, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Container(
-                      height: 50,
-                      width: 1,
-                      color: Colors.grey.withOpacity(0.7),
-                    ),
-                    Container(
-                      width: 50,
-                      alignment: Alignment.center,
-                      child: Text(
-                        invoicecontroller.invoiceProtectList.length == i
-                            ? ""
-                            : invoicecontroller.invoiceProtectList[i].cva,
-                        style: primaryFont.copyWith(
-                            fontSize: 13, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Container(
-                      height: 50,
-                      width: 1,
-                      color: Colors.grey.withOpacity(0.7),
-                    ),
-                    Container(
-                      width: 80,
-                      alignment: Alignment.center,
-                      child: Text(
-                        invoicecontroller.invoiceProtectList.length == i
-                            ? ""
-                            : invoicecontroller
-                                .invoiceProtectList[i].totalValue,
-                        style: primaryFont.copyWith(
-                            fontSize: 13, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            InvoiceTotalRow(
-              color: Colors.grey.withOpacity(0.2),
-              total: invoicecontroller.totolamount.toString(),
-            ),
-          ],
-        );
-      }),
+                  InvoiceTotalRow(
+                    color: Colors.grey.withOpacity(0.2),
+                    total: invoicecontroller.totolamount.toString(),
+                  ),
+                ],
+              );
+            }),
       floatingActionButton: Builder(
         builder: (context) => FabCircularMenu(
           key: fabKey,
@@ -1082,7 +1103,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                 width: 100,
                 child: GetBuilder<CreateItemsApiController>(builder: (_) {
                   return itemsApiController.pricelist!.isEmpty
-                      ?  Center(child: Text("No Data".tr))
+                      ? Center(child: Text("No Data".tr))
                       : ListView.builder(
                           shrinkWrap: true,
                           itemCount: itemsApiController.pricelist!.length,
@@ -1249,7 +1270,7 @@ class _InvoiceViewState extends State<InvoiceView> {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return  AlertDialog(
+        return AlertDialog(
           content: Text("Insuffcient stock".tr),
         );
       },

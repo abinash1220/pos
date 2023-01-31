@@ -817,8 +817,8 @@ class InvoiceController extends GetxController {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(invoicesave);
       } else {
-        Get.snackbar("", response.statusCode.toString());
-        //ScaffoldMessenger.of(context).showSnackBar(incorrect);
+        // Get.snackbar("", response.statusCode.toString());
+        // ScaffoldMessenger.of(context).showSnackBar(incorrect);
       }
     } else {
       final prefs = await SharedPreferences.getInstance();
