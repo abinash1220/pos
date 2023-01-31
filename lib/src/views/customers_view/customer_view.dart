@@ -42,7 +42,7 @@ class _CustomerSViewState extends State<CustomerSView> {
                 backgroundColor: primaryColor,
                 elevation: 0,
                 title: Text(
-                  "Customers",
+                  "Customers".tr,
                   style: primaryFont.copyWith(
                       color: Colors.white, fontWeight: FontWeight.w500),
                 ),

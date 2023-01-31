@@ -23,7 +23,7 @@ class _HomePageWithNavigationState extends State<HomePageWithNavigation> {
     50,
   );
 
-  List pages = [
+  List pages = const [
     HomeView(),
     RecentOrders(),
     CustomerSView(),
@@ -58,7 +58,7 @@ class _HomePageWithNavigationState extends State<HomePageWithNavigation> {
                   ? primaryColor
                   : primaryColor.withOpacity(0.5),
             ),
-            label: 'Home',
+            label: 'Home'.tr,
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -68,7 +68,7 @@ class _HomePageWithNavigationState extends State<HomePageWithNavigation> {
                   ? primaryColor
                   : primaryColor.withOpacity(0.5),
             ),
-            label: 'Recent Orderes',
+            label: 'Recent Orderes'.tr,
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -78,7 +78,7 @@ class _HomePageWithNavigationState extends State<HomePageWithNavigation> {
                   ? primaryColor
                   : primaryColor.withOpacity(0.5),
             ),
-            label: 'Customers',
+            label: 'Customers'.tr,
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -88,7 +88,7 @@ class _HomePageWithNavigationState extends State<HomePageWithNavigation> {
                   ? primaryColor
                   : primaryColor.withOpacity(0.5),
             ),
-            label: 'Profile',
+            label: 'Profile'.tr,
           ),
         ],
         currentIndex: _selectedIndex,

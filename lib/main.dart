@@ -10,6 +10,7 @@ import 'package:pos/src/controllers/invoice_controllers/invoice_controller.dart'
 import 'package:pos/src/controllers/login_api_controllers/login_api_controller.dart';
 import 'package:pos/src/controllers/recent_order_controller.dart';
 import 'package:pos/src/views/home_view/home_view.dart';
+import 'package:pos/src/views/profile_view/languages.dart';
 import 'package:pos/src/views/splash_view/splash_screen_view.dart';
 
 Future main() async{
@@ -100,12 +101,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      translations: Languages(),
+      locale: Get.deviceLocale,
+      fallbackLocale: const Locale('en', 'US'),
       title: 'POS',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreenView(),
+      home:const SplashScreenView(),
     );
   }
 }

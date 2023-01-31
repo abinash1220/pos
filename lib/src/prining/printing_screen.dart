@@ -12,14 +12,14 @@ import 'package:pos/src/views/customers_view/customer_view.dart';
 
 
 
-class TestPrinting extends StatefulWidget {
-  const TestPrinting({Key? key}) : super(key: key);
+class InvoicePrinting extends StatefulWidget {
+  const InvoicePrinting({Key? key}) : super(key: key);
 
   @override
-  State<TestPrinting> createState() => _TestPrintingState();
+  State<InvoicePrinting> createState() => _InvoicePrintingState();
 }
 
-class _TestPrintingState extends State<TestPrinting> {
+class _InvoicePrintingState extends State<InvoicePrinting> {
  
   final invoiceController = Get.find<InvoiceController>();
 
@@ -162,59 +162,53 @@ class _TestPrintingState extends State<TestPrinting> {
     // Xprinter XP-N160I
     final profile = await CapabilityProfile.load();
     // PaperSize.mm80 or PaperSize.mm58
-    final generator = Generator(PaperSize.mm80, profile);
-   // bytes += generator.setGlobalCodeTable('CP1252');
-    bytes += generator.text('   BEFCO INDUSTRIA,LDA', styles: const PosStyles(align: PosAlign.center));
-    bytes += generator.text('   5000444995', styles: const PosStyles(align: PosAlign.center));
-    bytes += generator.emptyLines(2);
+    final generator = Generator(PaperSize.mm58, profile,spaceBetweenRows: 10);
+    // bytes += generator.setGlobalCodeTable('CP1252');
+    bytes += generator.text('BEFCO INDUSTRIA,LDA', styles: const PosStyles(align: PosAlign.center));
+    bytes += generator.text('5000444995', styles: const PosStyles(align: PosAlign.center));
+    bytes += generator.emptyLines(1);
     bytes += generator.text('Rua IQUA BAIRRO CALEMBA 2',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('2525      - KILAMBA KIAXI',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('Tel: 928474747',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('Fax:',styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.emptyLines(2);
+    bytes += generator.emptyLines(1);
     bytes += generator.text('CIF:${invoiceController.invoiceClientId.value}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('    ${invoiceController.invoicenome.value}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('    ${invoiceController.invoicetaxid.value}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('    ${invoiceController.invoicetelephone.value}',styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.emptyLines(2);
+    bytes += generator.emptyLines(1);
     bytes += generator.text('Factura ${invoiceController.invoiceSerie}',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('Factura/Recibo',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.text('${dt.day}-${dt.month}-${dt.year}',styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text('Moeda: AKZ                     ');
-    bytes += generator.emptyLines(2);
-    bytes += generator.text('Rec. para client                ');
+    bytes += generator.text('Moeda: AKZ',styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.emptyLines(1);
+    bytes += generator.text('Rec. para client',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.hr();
     //for(var value in invoiceProtectList){}
-    bytes += generator.text('Cod. do Artigo - Descricao');
-    bytes += generator.text('  Quant.  x  Preco   IVA   Total');
+    bytes += generator.text('Cod. do Artigo - Descricao',styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.text('Quant.  x  Preco   IVA   Total',styles: const PosStyles(align: PosAlign.left));
     bytes += generator.hr();
     for(var value in invoiceController.invoiceProtectList){
     bytes += generator.text('${value.items}  ${value.description}');
-    bytes += generator.text('${value.qty.toString()}, x ${value.unitPrice}  ${value.discount}  ${value.cva}   ${value.totalValue}');
+    bytes += generator.text('${value.qty.toString()} x ${value.unitPrice}  ${value.discount}  ${value.cva}   ${value.totalValue}');
     }
     bytes += generator.hr();
-    bytes += generator.text('Cred. Develucoes   :   0.00');
-    bytes += generator.text('Total Iliquido     :   ${invoiceController.subtotal.toString()}');
-    bytes += generator.text('Total Descontos    :   0.00');
-    bytes += generator.text('Total IEC/Contrib. :   0.00');
-    bytes += generator.text('Total de IVA       :   ${invoiceController.iva}');
-    bytes += generator.text('Total              :   ${invoiceController.totolamount.toString()}');
-    //bytes += generator.text('Total Alternativo  :         6,34 USD');
-    bytes += generator.emptyLines(2);
+    bytes += generator.text('Cred. Develucoes     :   0.00');
+    bytes += generator.text('Total Iliquido       :   ${invoiceController.subtotal.toString()}');
+    bytes += generator.text('Total Descontos      :   0.00');
+    bytes += generator.text('Total IEC/Contrib.   :   0.00');
+    bytes += generator.text('Total de IVA         :   ${invoiceController.iva}');
+    bytes += generator.text('Total                :   ${invoiceController.totolamount.toString()}');
+    bytes += generator.emptyLines(1);
     bytes += generator.text('IVA',styles: const PosStyles(align: PosAlign.center));
     bytes += generator.hr();
     bytes += generator.text('Taxa Incidenia   valor   motivo');
     bytes += generator.text('${invoiceController.iva}  ${invoiceController.subtotal.toString()}   ${invoiceController.totolamount.toString()}  ');
-    bytes += generator.emptyLines(2);
-    bytes += generator.text(invoiceController.invoicevalue.toString());
-    //'Dg4s-Processado por programa validado'
-    //bytes += generator.text('n.. 41/AGT/2019 | 0s bens e/ou servicos');
-    //bytes += generator.text('foram colocados a disposicao na data');
-    //bytes += generator.text('2023-01-20');
-    bytes += generator.emptyLines(2);
-    bytes += generator.emptyLines(2);
-    bytes += generator.emptyLines(2);
+    bytes += generator.emptyLines(1);
+    bytes += generator.text(invoiceController.invoicevalue.toString());    //bytes += generator.text('n.. 41/AGT/2019 | 0s bens e/ou servicos');
+    bytes += generator.emptyLines(1);
     bytes += generator.text('MUITO OBRIGADO',styles: const PosStyles(align: PosAlign.center));
+    
     _printEscPos(bytes, generator);
   }
 

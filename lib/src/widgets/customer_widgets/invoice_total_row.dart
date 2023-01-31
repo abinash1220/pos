@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pos/src/const/app_fonts.dart';
 
 class InvoiceTotalRow extends StatefulWidget {
@@ -25,7 +26,7 @@ class _InvoiceTotalRowState extends State<InvoiceTotalRow> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Total",
+                  "Total".tr,
                   style: primaryFont.copyWith(
                       fontSize: 13, fontWeight: FontWeight.w600),
                 ),

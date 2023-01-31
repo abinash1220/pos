@@ -5,6 +5,7 @@ import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/const/app_fonts.dart';
 import 'package:pos/src/controllers/login_api_controllers/login_api_controller.dart';
 import 'package:pos/src/views/auth_view/login_view.dart';
+import 'package:pos/src/views/profile_view/language_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileView extends StatefulWidget {
@@ -31,7 +32,7 @@ class _ProfileViewState extends State<ProfileView> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
+        preferredSize: const Size.fromHeight(70),
         child: Container(
           decoration: BoxDecoration(
               color: primaryColor, borderRadius: BorderRadius.circular(16)),
@@ -54,7 +55,7 @@ class _ProfileViewState extends State<ProfileView> {
                   )
                 ],
                 title: Text(
-                  "Profile",
+                  "Profile".tr,
                   style: primaryFont.copyWith(
                       color: Colors.white, fontWeight: FontWeight.w500),
                 ),
@@ -87,7 +88,7 @@ class _ProfileViewState extends State<ProfileView> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Text(
-                      "Add Image",
+                      "Add Image".tr,
                       style: primaryFont.copyWith(
                           fontWeight: FontWeight.w600, fontSize: 13),
                     ),
@@ -109,9 +110,9 @@ class _ProfileViewState extends State<ProfileView> {
           const SizedBox(
             height: 10,
           ),
-          const Padding(
+           Padding(
             padding:  EdgeInsets.only(left: 15),
-            child:  Text("User Name",style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600),),
+            child:  Text("User Name".tr,style:const TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600),),
           ),
           const SizedBox(
             height: 10,
@@ -191,9 +192,9 @@ class _ProfileViewState extends State<ProfileView> {
           const SizedBox(
             height: 10,
           ),
-          const Padding(
-            padding:  EdgeInsets.only(left: 15),
-            child:  Text("WereHouse",style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600),),
+           Padding(
+            padding:const  EdgeInsets.only(left: 15),
+            child:  Text("WereHouse".tr,style:const TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600),),
           ),
           const SizedBox(
             height: 10,
@@ -232,9 +233,9 @@ class _ProfileViewState extends State<ProfileView> {
           const SizedBox(
             height: 10,
           ),
-          const Padding(
-            padding:  EdgeInsets.only(left: 15),
-            child:  Text("Client",style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600),),
+           Padding(
+            padding:const  EdgeInsets.only(left: 15),
+            child:  Text("Client".tr,style:const TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600),),
           ),
           const SizedBox(
             height: 10,
@@ -273,39 +274,52 @@ class _ProfileViewState extends State<ProfileView> {
           const SizedBox(
             height: 10,
           ),
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 10, right: 10),
-          //   child: Container(
-          //     height: 60,
-          //     width: size.width,
-          //     decoration: BoxDecoration(
-          //         color: Colors.white,
-          //         boxShadow: [
-          //           BoxShadow(
-          //               blurRadius: 2, color: Colors.grey.withOpacity(0.4))
-          //         ],
-          //         borderRadius: BorderRadius.circular(10)),
-          //     alignment: Alignment.centerLeft,
-          //     child: Padding(
-          //       padding: const EdgeInsets.only(left: 10, right: 10),
-          //       child: TextField(
-          //         style: primaryFont.copyWith(
-          //             color: Colors.black,
-          //             fontSize: 15,
-          //             fontWeight: FontWeight.w600),
-          //         decoration: InputDecoration.collapsed(
-          //             hintText: "New Password",
-          //             hintStyle: primaryFont.copyWith(
-          //                 color: Colors.black,
-          //                 fontSize: 15,
-          //                 fontWeight: FontWeight.w600)),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          // const SizedBox(
-          //   height: 10,
-          // ),
+           Padding(
+            padding:const  EdgeInsets.only(left: 15),
+            child:  Text("Language".tr,
+            style: const TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600),),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: InkWell(
+              onTap: () {
+               Get.to(const LanguageScreen());
+              },
+              child: Container(
+                height: 60,
+                width: size.width,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 2, color: Colors.grey.withOpacity(0.4))
+                    ],
+                    borderRadius: BorderRadius.circular(10)),
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Language".tr,
+                        style: primaryFont.copyWith(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           // Padding(
           //   padding: const EdgeInsets.only(left: 10, right: 10),
           //   child: Container(
@@ -362,7 +376,7 @@ class _ProfileViewState extends State<ProfileView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Logout",
+                        "Logout".tr,
                         style: primaryFont.copyWith(
                             color: Colors.black,
                             fontSize: 15,

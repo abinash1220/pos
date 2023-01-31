@@ -3,6 +3,7 @@ import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/const/app_fonts.dart';
 import 'package:pos/src/controllers/customer_api_controller/customer_api_controller.dart';
@@ -11,6 +12,7 @@ import 'package:pos/src/controllers/invoice_controllers/invoice_controller.dart'
 import 'package:pos/src/controllers/login_api_controllers/login_api_controller.dart';
 import 'package:pos/src/models/items_api_models/invoice_model.dart';
 import 'package:pos/src/models/items_api_models/items_list_api_model.dart';
+import 'package:pos/src/prining/printing_screen.dart';
 import 'package:pos/src/views/test_printer.dart';
 import 'package:pos/src/widgets/customer_widgets/invoice_dropdown_widget.dart';
 import 'package:pos/src/widgets/customer_widgets/invoice_row_widget.dart';
@@ -173,6 +175,8 @@ class _InvoiceViewState extends State<InvoiceView> {
 
   String value = "select";
 
+  bool isload = false;
+
   void launchWhatsapp({@required number, @required message}) async {
     String url = "whatspp://send?phone=$number&text=$message";
 
@@ -263,33 +267,47 @@ class _InvoiceViewState extends State<InvoiceView> {
                     width: 15,
                   ),
                   InkWell(
-                      onTap: () {
-                        invoicecontroller.saveController(
-                          tipodoc: "FA",
-                          context: context,
-                          serie: loginApiController.listUserData.first.serie,
-                          entidade: customerApiController.customerdatalist.first.cliente,
-                          tipoEntidade: "C",
-                          dataDoc: "2022-12-31T15:20:00",
-                          dataVenc: "${dt.day}-${dt.month}-${dt.year}",
-                          condPag: "1",
-                          nome: customerApiController.customerdatalist.first.nome,
-                          nomeFac: customerApiController.customerdatalist.first.nome,
-                          numContribuinte: customerApiController.customerdatalist.first.numContrib,
-                          numContribuinteFac: customerApiController.customerdatalist.first.numContrib,
-                          modoPag: "MB",
-                          moradafac: "9789087552"
-                          );
-                          
-                        Get.to(const TestPrinting());
+                      onTap: () async {
+                         bool result = await InternetConnectionChecker().hasConnection;
+                        if (result) {
+  setState(() {
+    isload = true;
+  });
+                         await invoicecontroller.saveController(
+    tipodoc: "FA",
+    context: context,
+    serie: loginApiController.listUserData.first.serie,
+    entidade: customerApiController.customerdatalist.first.cliente,
+    tipoEntidade: "C",
+    dataDoc: "2022-12-31T15:20:00",
+    dataVenc: "${dt.day}-${dt.month}-${dt.year}",
+    condPag: "1",
+    nome: customerApiController.customerdatalist.first.nome,
+    nomeFac: customerApiController.customerdatalist.first.nome,
+    numContribuinte: customerApiController.customerdatalist.first.numContrib,
+    numContribuinteFac: customerApiController.customerdatalist.first.numContrib,
+    modoPag: "MB",
+    moradafac: "9789087552"
+    );
+    setState(() {
+      isload = false;
+    });
+  Get.to(const TestPrinting());
+}else{
+   Get.to(const TestPrinting());
+}
                         //invoicecontroller.printposInvoice();
                         // invoicecontroller.saveController(
                         //   tipodoc: "", context: context, serie: "", entidade: "", tipoEntidade: "", dataDoc: "", dataVenc: "", horaDefinida: "", calculoManual: "");
                       },
-                      child: Icon(Icons.print)),
-                  SizedBox(
-                    width: 15,
-                  ),
+                       
+                      child:const Padding(
+                        padding:  EdgeInsets.only(right: 7),
+                        child:  Icon(Icons.print),
+                      )),
+                       const SizedBox(
+                          width: 15,
+                          ),
                   Padding(
                     padding: const EdgeInsets.only(right: 15),
                     child: InkWell(
@@ -303,7 +321,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                   )
                 ],
                 title: Text(
-                  "Invoice",
+                  "Invoice".tr,
                   style: primaryFont.copyWith(
                       color: Colors.white, fontWeight: FontWeight.w500),
                 ),
@@ -313,7 +331,7 @@ class _InvoiceViewState extends State<InvoiceView> {
           ),
         ),
       ),
-      body: GetBuilder<InvoiceController>(builder: (_) {
+      body: isload ? Center(child: CircularProgressIndicator()) : GetBuilder<InvoiceController>(builder: (_) {
         return ListView(
           children: [
             const SizedBox(
@@ -405,7 +423,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                             )),
                         alignment: Alignment.center,
                         child: Text(
-                          "Number:".toUpperCase(),
+                          "Number:".tr.toUpperCase(),
                           style: primaryFont.copyWith(
                               fontWeight: FontWeight.w600, fontSize: 11),
                         ),
@@ -495,7 +513,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                             )),
                         alignment: Alignment.center,
                         child: Text(
-                          "DATE:".toUpperCase(),
+                          "DATE:".tr.toUpperCase(),
                           style: primaryFont.copyWith(
                               fontWeight: FontWeight.w600, fontSize: 11),
                         ),
@@ -562,7 +580,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                     width: 80,
                     alignment: Alignment.center,
                     child: Text(
-                      "Unit Price",
+                      "Unit Price".tr,
                       style: primaryFont.copyWith(
                           fontSize: 14, fontWeight: FontWeight.w600),
                     ),
@@ -576,7 +594,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                     width: 50,
                     alignment: Alignment.center,
                     child: Text(
-                      "Dis",
+                      "Dis".tr,
                       style: primaryFont.copyWith(
                           fontSize: 14, fontWeight: FontWeight.w600),
                     ),
@@ -605,7 +623,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                     alignment: Alignment.center,
                     child: Center(
                       child: Text(
-                        "Total Value",
+                        "Total Value".tr,
                         style: primaryFont.copyWith(
                             fontSize: 14, fontWeight: FontWeight.w600),
                       ),
@@ -793,7 +811,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                           children: [
                             Text(
                               invoicecontroller.invoiceProtectList.length == i
-                                  ? 'Select'
+                                  ? 'Select'.tr
                                   : invoicecontroller
                                       .invoiceProtectList[i].items,
                               style: primaryFont.copyWith(
@@ -1054,13 +1072,13 @@ class _InvoiceViewState extends State<InvoiceView> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Select Items:"),
+            title: Text("Select Items:".tr),
             content: Container(
                 height: 300,
                 width: 100,
                 child: GetBuilder<CreateItemsApiController>(builder: (_) {
                   return itemsApiController.pricelist!.isEmpty
-                      ? const Center(child: Text("No Data"))
+                      ?  Center(child: Text("No Data".tr))
                       : ListView.builder(
                           shrinkWrap: true,
                           itemCount: itemsApiController.pricelist!.length,
@@ -1227,8 +1245,8 @@ class _InvoiceViewState extends State<InvoiceView> {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return const AlertDialog(
-          content: Text("Insuffcient stock"),
+        return  AlertDialog(
+          content: Text("Insuffcient stock".tr),
         );
       },
     );

@@ -35,8 +35,8 @@ class LoginApiServices extends BaseApiService{
                  return status! <= 500;
                 }),
             data: {
-          "username": username,
-          "password": password,
+          "username": username.trim(),
+          "password": password.trim(),
           "company":"XXX", 
           "instance":"DEFAULT",
           "grant_type":"password",

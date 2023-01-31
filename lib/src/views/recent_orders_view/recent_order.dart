@@ -36,258 +36,258 @@ class _RecentOrdersState extends State<RecentOrders> {
                   },
                   child: Icon(Icons.arrow_back_ios)),
                 title: Text(
-                  "recent order".toUpperCase(),
+                  "recent order".tr.toUpperCase(),
                   style: primaryFont.copyWith(
                       color: Colors.white, fontWeight: FontWeight.w500),
                 ),
-                actions: [
-                  InkWell(
-                    onTap: (){
-                     showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-        ),
-        builder: (BuildContext context) {
-          return Container(
-            height: 320,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20,left: 20,right: 20),
-              child: Obx(() =>
-                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Filter",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 22,
-                    ),
-                    ),
-                    Divider(color: Colors.grey,thickness: 2,),
-                    SizedBox(height: 10,),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15,top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: (){
-                              recentorderController.index(0);
-                            },
-                            child: Text("Today",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 22,
-                                                ),
-                                                ),
-                          ),
-                      InkWell(
-                        onTap: (){
-                          recentorderController.index(0);
-                        },
-                        child: Container(
-                          height: 25,
-                          width: 25,
-                          child: Center(
-                            child: Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                color: recentorderController.index.value == 0 ? primaryColor : Color.fromARGB(255, 233, 232, 232),
-                                borderRadius: BorderRadius.circular(10)
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            color:Color.fromARGB(255, 233, 232, 232),
-                            borderRadius: BorderRadius.circular(15)
-                          ),
-                        ),
-                      ),
-                        ],
-                      ),
-                    ),
-                     Padding(
-                      padding: const EdgeInsets.only(right: 15,top: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                             onTap: (){
-                              recentorderController.index(1);
-                            },
-                            child: Text("yesterday",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 22,
-                                                ),
-                                                ),
-                          ),
-                      InkWell(
-                        onTap: (){
-                          recentorderController.index(1);
-                        },
-                        child: Container(
-                          height: 25,
-                          width: 25,
-                          child: Center(
-                            child: Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                color:recentorderController.index.value == 1 ? primaryColor : Color.fromARGB(255, 233, 232, 232),
-                                borderRadius: BorderRadius.circular(10)
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            color:Color.fromARGB(255, 233, 232, 232),
-                            borderRadius: BorderRadius.circular(15)
-                          ),
-                        ),
-                      ),
-                        ],
-                      ),
-                    ),
-                     Padding(
-                      padding: const EdgeInsets.only(right: 15,top: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                             onTap: (){
-                              recentorderController.index(2);
-                            },
-                            child: Text("week",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 22,
-                                                ),
-                                                ),
-                          ),
-                      InkWell(
-                        onTap: (){
-                          recentorderController.index(2);
-                        },
-                        child: Container(
-                          height: 25,
-                          width: 25,
-                          child: Center(
-                            child: Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                color:recentorderController.index.value == 2 ? primaryColor : Color.fromARGB(255, 233, 232, 232),
-                                borderRadius: BorderRadius.circular(10)
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            color:  Color.fromARGB(255, 233, 232, 232),
-                            borderRadius: BorderRadius.circular(15)
-                          ),
-                        ),
-                      ),
-                        ],
-                      ),
-                    ),
-                     Padding(
-                      padding: const EdgeInsets.only(right: 15,top: 20,bottom: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                             onTap: (){
-                              recentorderController.index(3);
-                            },
-                            child: Text("Month",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 22,
-                                                ),
-                                                ),
-                          ),
-                      InkWell(
-                        onTap: (){
-                          recentorderController.index(3);
-                        },
-                        child: Container(
-                          height: 25,
-                          width: 25,
-                          child: Center(
-                            child: Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                color: recentorderController.index.value == 3 ? primaryColor : Color.fromARGB(255, 233, 232, 232),
-                                borderRadius: BorderRadius.circular(10)
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 233, 232, 232) ,
-                            borderRadius: BorderRadius.circular(15)
-                          ),
-                        ),
-                      ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          height: 35,
-                          width: 80,
-                          child: Center(
-                            child: Text("Cancel",
-                             style: TextStyle(color: primaryColor,fontSize: 15,fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: primaryColor),
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                         InkWell(
-                          onTap: (){
-                            if(recentorderController.index.value == 0){
-                              Get.to(FilterScreen(title: "Today"));
-                            }else if(recentorderController.index.value == 1){
-                              Get.to(FilterScreen(title: "Yesterday"));
-                            }else if(recentorderController.index.value == 2){
-                              Get.to(FilterScreen(title: "Week"));
-                            }else{
-                              Get.to(FilterScreen(title: "Month"));
-                            }
-                          },
-                           child: Container(
-                            height: 35,
-                            width: 80,
-                            child: Center(
-                              child: Text("Apply",
-                               style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            decoration: BoxDecoration(
-                              color: primaryColor,
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                                                 ),
-                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+        //         actions: [
+        //           InkWell(
+        //             onTap: (){
+        //              showModalBottomSheet(
+        // context: context,
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        // ),
+        // builder: (BuildContext context) {
+        //   return Container(
+        //     height: 320,
+        //     child: Padding(
+        //       padding: const EdgeInsets.only(top: 20,left: 20,right: 20),
+        //       child: Obx(() =>
+        //          Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Text("Filter",
+        //             style: TextStyle(
+        //               fontWeight: FontWeight.w600,
+        //               fontSize: 22,
+        //             ),
+        //             ),
+        //             Divider(color: Colors.grey,thickness: 2,),
+        //             SizedBox(height: 10,),
+        //             Padding(
+        //               padding: const EdgeInsets.only(right: 15,top: 10),
+        //               child: Row(
+        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                 children: [
+        //                   InkWell(
+        //                     onTap: (){
+        //                       recentorderController.index(0);
+        //                     },
+        //                     child: Text("Today",
+        //                                         style: TextStyle(
+        //                                           fontWeight: FontWeight.w400,
+        //                                           fontSize: 22,
+        //                                         ),
+        //                                         ),
+        //                   ),
+        //               InkWell(
+        //                 onTap: (){
+        //                   recentorderController.index(0);
+        //                 },
+        //                 child: Container(
+        //                   height: 25,
+        //                   width: 25,
+        //                   child: Center(
+        //                     child: Container(
+        //                       height: 20,
+        //                       width: 20,
+        //                       decoration: BoxDecoration(
+        //                         color: recentorderController.index.value == 0 ? primaryColor : Color.fromARGB(255, 233, 232, 232),
+        //                         borderRadius: BorderRadius.circular(10)
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   decoration: BoxDecoration(
+        //                     color:Color.fromARGB(255, 233, 232, 232),
+        //                     borderRadius: BorderRadius.circular(15)
+        //                   ),
+        //                 ),
+        //               ),
+        //                 ],
+        //               ),
+        //             ),
+        //              Padding(
+        //               padding: const EdgeInsets.only(right: 15,top: 20),
+        //               child: Row(
+        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                 children: [
+        //                   InkWell(
+        //                      onTap: (){
+        //                       recentorderController.index(1);
+        //                     },
+        //                     child: Text("yesterday",
+        //                                         style: TextStyle(
+        //                                           fontWeight: FontWeight.w400,
+        //                                           fontSize: 22,
+        //                                         ),
+        //                                         ),
+        //                   ),
+        //               InkWell(
+        //                 onTap: (){
+        //                   recentorderController.index(1);
+        //                 },
+        //                 child: Container(
+        //                   height: 25,
+        //                   width: 25,
+        //                   child: Center(
+        //                     child: Container(
+        //                       height: 20,
+        //                       width: 20,
+        //                       decoration: BoxDecoration(
+        //                         color:recentorderController.index.value == 1 ? primaryColor : Color.fromARGB(255, 233, 232, 232),
+        //                         borderRadius: BorderRadius.circular(10)
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   decoration: BoxDecoration(
+        //                     color:Color.fromARGB(255, 233, 232, 232),
+        //                     borderRadius: BorderRadius.circular(15)
+        //                   ),
+        //                 ),
+        //               ),
+        //                 ],
+        //               ),
+        //             ),
+        //              Padding(
+        //               padding: const EdgeInsets.only(right: 15,top: 20),
+        //               child: Row(
+        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                 children: [
+        //                   InkWell(
+        //                      onTap: (){
+        //                       recentorderController.index(2);
+        //                     },
+        //                     child: Text("week",
+        //                                         style: TextStyle(
+        //                                           fontWeight: FontWeight.w400,
+        //                                           fontSize: 22,
+        //                                         ),
+        //                                         ),
+        //                   ),
+        //               InkWell(
+        //                 onTap: (){
+        //                   recentorderController.index(2);
+        //                 },
+        //                 child: Container(
+        //                   height: 25,
+        //                   width: 25,
+        //                   child: Center(
+        //                     child: Container(
+        //                       height: 20,
+        //                       width: 20,
+        //                       decoration: BoxDecoration(
+        //                         color:recentorderController.index.value == 2 ? primaryColor : Color.fromARGB(255, 233, 232, 232),
+        //                         borderRadius: BorderRadius.circular(10)
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   decoration: BoxDecoration(
+        //                     color:  Color.fromARGB(255, 233, 232, 232),
+        //                     borderRadius: BorderRadius.circular(15)
+        //                   ),
+        //                 ),
+        //               ),
+        //                 ],
+        //               ),
+        //             ),
+        //              Padding(
+        //               padding: const EdgeInsets.only(right: 15,top: 20,bottom: 20),
+        //               child: Row(
+        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                 children: [
+        //                   InkWell(
+        //                      onTap: (){
+        //                       recentorderController.index(3);
+        //                     },
+        //                     child: Text("Month",
+        //                                         style: TextStyle(
+        //                                           fontWeight: FontWeight.w400,
+        //                                           fontSize: 22,
+        //                                         ),
+        //                                         ),
+        //                   ),
+        //               InkWell(
+        //                 onTap: (){
+        //                   recentorderController.index(3);
+        //                 },
+        //                 child: Container(
+        //                   height: 25,
+        //                   width: 25,
+        //                   child: Center(
+        //                     child: Container(
+        //                       height: 20,
+        //                       width: 20,
+        //                       decoration: BoxDecoration(
+        //                         color: recentorderController.index.value == 3 ? primaryColor : Color.fromARGB(255, 233, 232, 232),
+        //                         borderRadius: BorderRadius.circular(10)
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   decoration: BoxDecoration(
+        //                     color: Color.fromARGB(255, 233, 232, 232) ,
+        //                     borderRadius: BorderRadius.circular(15)
+        //                   ),
+        //                 ),
+        //               ),
+        //                 ],
+        //               ),
+        //             ),
+        //             Row(
+        //               mainAxisAlignment: MainAxisAlignment.end,
+        //               children: [
+        //                 Container(
+        //                   height: 35,
+        //                   width: 80,
+        //                   child: Center(
+        //                     child: Text("Cancel",
+        //                      style: TextStyle(color: primaryColor,fontSize: 15,fontWeight: FontWeight.w500),
+        //                     ),
+        //                   ),
+        //                   decoration: BoxDecoration(
+        //                     border: Border.all(color: primaryColor),
+        //                     borderRadius: BorderRadius.circular(10)
+        //                   ),
+        //                 ),
+        //                 SizedBox(width: 10,),
+        //                  InkWell(
+        //                   onTap: (){
+        //                     if(recentorderController.index.value == 0){
+        //                       Get.to(FilterScreen(title: "Today"));
+        //                     }else if(recentorderController.index.value == 1){
+        //                       Get.to(FilterScreen(title: "Yesterday"));
+        //                     }else if(recentorderController.index.value == 2){
+        //                       Get.to(FilterScreen(title: "Week"));
+        //                     }else{
+        //                       Get.to(FilterScreen(title: "Month"));
+        //                     }
+        //                   },
+        //                    child: Container(
+        //                     height: 35,
+        //                     width: 80,
+        //                     child: Center(
+        //                       child: Text("Apply",
+        //                        style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w500),
+        //                       ),
+        //                     ),
+        //                     decoration: BoxDecoration(
+        //                       color: primaryColor,
+        //                       borderRadius: BorderRadius.circular(10)
+        //                     ),
+        //                                          ),
+        //                  ),
+        //               ],
+        //             ),
+        //           ],
+        //         ),
+        //       ),
               
-            ),
-          );
-        });
-                    },
-                    child: Image(image: AssetImage("assets/icons/filtertick.png"))),
-                ],
+        //     ),
+        //   );
+        // });
+        //             },
+        //             child: Image(image: AssetImage("assets/icons/filtertick.png"))),
+        //         ],
                 centerTitle: true,
               ),
               // Padding(
@@ -324,7 +324,7 @@ class _RecentOrdersState extends State<RecentOrders> {
         ),
       ),
       body: Center(
-        child: Text("No Data"),
+        child: Text("No Data".tr),
       ),
       // body: ListView(
       //   children: [

@@ -27,10 +27,14 @@ class LoginApiController extends GetxController {
   }) async {
     loder(true);
     final prefs = await SharedPreferences.getInstance();
+
+   // Get.snackbar(username, password);
+    
     dio.Response<dynamic> response = await loginapiservice.loginApiServices(
         username: username, password: password);
     print(":::::::::::::::::authorization login Status ::::::::::::::::::");
     print(response.statusCode);
+     Get.snackbar(response.statusCode.toString(),"");
     loder(false);
     if (response.statusCode == 200) {
       await prefs.setString("username", username);

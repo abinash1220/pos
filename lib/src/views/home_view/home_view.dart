@@ -23,11 +23,11 @@ class _HomeViewState extends State<HomeView> {
   final loginApiController = Get.find<LoginApiController>();
 
   List<_SalesData> data = [
-    _SalesData('Mon', 5000),
-    _SalesData('Tue', 3000),
-    _SalesData('Wed', 4000),
-    _SalesData('Thu', 7000),
-    _SalesData('Fri', 3000)
+    _SalesData('Mon'.tr, 5000),
+    _SalesData('Tue'.tr, 3000),
+    _SalesData('Wed'.tr, 4000),
+    _SalesData('Thu'.tr, 7000),
+    _SalesData('Fri'.tr, 3000)
   ];
   
  @override
@@ -52,7 +52,7 @@ class _HomeViewState extends State<HomeView> {
                 backgroundColor: primaryColor,
                 elevation: 0,
                 title: Text(
-                  "Dashboard".toUpperCase(),
+                  "Dashboard".tr.toUpperCase(),
                   style: primaryFont.copyWith(
                       color: Colors.white, fontWeight: FontWeight.w500),
                 ),
@@ -137,7 +137,7 @@ class _HomeViewState extends State<HomeView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Total Sale",
+                        Text("Total Sale".tr,
                         style: primaryFont.copyWith(color: Colors.white,fontWeight: FontWeight.bold,
                         fontSize: 15
                         ),
@@ -228,7 +228,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         ),
                         Text(
-                          "Orders",
+                          "Orders".tr,
                           style: primaryFont.copyWith(
                               fontSize: 18, fontWeight: FontWeight.w600),
                         )
