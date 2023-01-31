@@ -9,6 +9,8 @@ import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/controllers/invoice_controllers/invoice_controller.dart';
 import 'package:pos/src/models/items_api_models/invoice_model.dart';
 import 'package:pos/src/views/customers_view/customer_view.dart';
+import 'package:pos/src/views/home_view/home_navigation_bar.dart';
+import 'package:pos/src/views/home_view/home_view.dart';
 
 
 
@@ -292,7 +294,7 @@ class _TestPrintingState extends State<TestPrinting> {
   }
 
   back(){
-    Get.to(const CustomerSView());
+    Get.offAll( HomePageWithNavigation(index: 2,));
   }
   
   @override
@@ -301,7 +303,7 @@ class _TestPrintingState extends State<TestPrinting> {
         appBar: AppBar(
           leading: InkWell(
             onTap: (){
-              Get.to(const CustomerSView());
+              Get.offAll( HomePageWithNavigation(index: 2,));
             },
             child: const Icon(Icons.arrow_back_ios)),
           backgroundColor: primaryColor,

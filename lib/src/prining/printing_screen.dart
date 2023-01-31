@@ -9,6 +9,7 @@ import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/controllers/invoice_controllers/invoice_controller.dart';
 import 'package:pos/src/models/items_api_models/invoice_model.dart';
 import 'package:pos/src/views/customers_view/customer_view.dart';
+import 'package:pos/src/views/home_view/home_navigation_bar.dart';
 
 
 
@@ -193,12 +194,12 @@ class _InvoicePrintingState extends State<InvoicePrinting> {
     bytes += generator.text('${value.qty.toString()} x ${value.unitPrice}  ${value.discount}  ${value.cva}   ${value.totalValue}');
     }
     bytes += generator.hr();
-    bytes += generator.text('Cred. Develucoes     :   0.00');
-    bytes += generator.text('Total Iliquido       :   ${invoiceController.subtotal.toString()}');
-    bytes += generator.text('Total Descontos      :   0.00');
-    bytes += generator.text('Total IEC/Contrib.   :   0.00');
-    bytes += generator.text('Total de IVA         :   ${invoiceController.iva}');
-    bytes += generator.text('Total                :   ${invoiceController.totolamount.toString()}');
+    bytes += generator.text('Cred. Develucoes    :  0.00');
+    bytes += generator.text('Total Iliquido      :  ${invoiceController.subtotal.toString()}');
+    bytes += generator.text('Total Descontos     :  0.00');
+    bytes += generator.text('Total IEC/Contrib.  :  0.00');
+    bytes += generator.text('Total de IVA        :  ${invoiceController.iva}');
+    bytes += generator.text('Total               :  ${invoiceController.totolamount.toString()}');
     bytes += generator.emptyLines(1);
     bytes += generator.text('IVA',styles: const PosStyles(align: PosAlign.center));
     bytes += generator.hr();
@@ -286,7 +287,7 @@ class _InvoicePrintingState extends State<InvoicePrinting> {
   }
 
   back(){
-    Get.to(const CustomerSView());
+    Get.offAll( HomePageWithNavigation(index: 2,));
   }
   
   @override
@@ -295,7 +296,7 @@ class _InvoicePrintingState extends State<InvoicePrinting> {
         appBar: AppBar(
           leading: InkWell(
             onTap: (){
-              Get.to(const CustomerSView());
+              Get.offAll( HomePageWithNavigation(index: 2,));
             },
             child: const Icon(Icons.arrow_back_ios)),
           backgroundColor: primaryColor,

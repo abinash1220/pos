@@ -238,64 +238,68 @@ class _InvoiceViewState extends State<InvoiceView> {
                     },
                     child: const Icon(Icons.arrow_back_ios_sharp)),
                 actions: [
-                  // InkWell(
-                  //     onTap: () {
-                  //       invoicecontroller.saveController(
-                  //           tipodoc: "FA",
-                  //           context: context,
-                  //           serie: loginApiController.listUserData.first.serie,
-                  //           entidade: customerApiController
-                  //               .customerdatalist.first.cliente,
-                  //           tipoEntidade: "C",
-                  //           dataDoc: "2022-12-31T15:20:00",
-                  //           dataVenc: "${dt.year}-${dt.month}-${dt.day}",
-                  //           condPag: "1",
-                  //           nome: customerApiController
-                  //               .customerdatalist.first.nome,
-                  //           nomeFac: customerApiController
-                  //               .customerdatalist.first.nome,
-                  //           numContribuinte: customerApiController
-                  //               .customerdatalist.first.numContrib,
-                  //           numContribuinteFac: customerApiController
-                  //               .customerdatalist.first.numContrib,
-                  //           modoPag: "MB",
-                  //           moradafac: "9789087552");
-                  //       //customerApiController.customerdatalist.first.cliente
-                  //     },
-                  //     child: const Icon(Icons.save)),
+                  InkWell(
+                      onTap: () {
+                        invoicecontroller.saveController(
+                            tipodoc: "FA",
+                            context: context,
+                            serie: loginApiController.listUserData.first.serie,
+                            entidade: customerApiController
+                                .customerdatalist.first.cliente,
+                            tipoEntidade: "C",
+                            dataDoc: "${dt.year}-${dt.month}-${dt.day}",
+                            dataVenc: "${dt.year}-${dt.month}-${dt.day}",
+                            condPag: "1",
+                            nome: customerApiController
+                                .customerdatalist.first.nome,
+                            nomeFac: customerApiController
+                                .customerdatalist.first.nome,
+                            numContribuinte: customerApiController
+                                .customerdatalist.first.numContrib,
+                            numContribuinteFac: customerApiController
+                                .customerdatalist.first.numContrib,
+                            modoPag: "MB",
+                            moradafac: "9789087552");
+                        //customerApiController.customerdatalist.first.cliente
+                      },
+                      child: const Icon(Icons.save)),
                   const SizedBox(
                     width: 15,
                   ),
                   InkWell(
-                      onTap: () async {
-                         bool result = await InternetConnectionChecker().hasConnection;
-                        if (result) {
-  setState(() {
-    isload = true;
-  });
-                         await invoicecontroller.saveController(
-    tipodoc: "FA",
-    context: context,
-    serie: loginApiController.listUserData.first.serie,
-    entidade: customerApiController.customerdatalist.first.cliente,
-    tipoEntidade: "C",
-    dataDoc: "2022-12-31T15:20:00",
-    dataVenc: "${dt.day}-${dt.month}-${dt.year}",
-    condPag: "1",
-    nome: customerApiController.customerdatalist.first.nome,
-    nomeFac: customerApiController.customerdatalist.first.nome,
-    numContribuinte: customerApiController.customerdatalist.first.numContrib,
-    numContribuinteFac: customerApiController.customerdatalist.first.numContrib,
-    modoPag: "MB",
-    moradafac: "9789087552"
-    );
-    setState(() {
-      isload = false;
-    });
-  Get.to(const TestPrinting());
-}else{
-   Get.to(const TestPrinting());
-}
+                      onTap: ()  {
+                        //  bool result = await InternetConnectionChecker().hasConnection;
+                        // if (result) {
+  
+
+  // await Future.delayed(Duration(seconds: 1));
+                            invoicecontroller.saveController(
+                            tipodoc: "FA",
+                            context: context,
+                            serie: loginApiController.listUserData.first.serie,
+                            entidade: customerApiController
+                                .customerdatalist.first.cliente,
+                            tipoEntidade: "C",
+                            dataDoc: "${dt.year}-${dt.month}-${dt.day}",
+                            dataVenc: "${dt.year}-${dt.month}-${dt.day}",
+                            condPag: "1",
+                            nome: customerApiController
+                                .customerdatalist.first.nome,
+                            nomeFac: customerApiController
+                                .customerdatalist.first.nome,
+                            numContribuinte: customerApiController
+                                .customerdatalist.first.numContrib,
+                            numContribuinteFac: customerApiController
+                                .customerdatalist.first.numContrib,
+                            modoPag: "MB",
+                            moradafac: "9789087552");
+    // setState(() {
+    //   isload = false;
+    // });
+  Get.to(const InvoicePrinting());
+// }else{
+//    Get.to(const TestPrinting());
+// }
                         //invoicecontroller.printposInvoice();
                         // invoicecontroller.saveController(
                         //   tipodoc: "", context: context, serie: "", entidade: "", tipoEntidade: "", dataDoc: "", dataVenc: "", horaDefinida: "", calculoManual: "");

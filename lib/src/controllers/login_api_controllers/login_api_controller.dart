@@ -34,7 +34,7 @@ class LoginApiController extends GetxController {
         username: username, password: password);
     print(":::::::::::::::::authorization login Status ::::::::::::::::::");
     print(response.statusCode);
-     Get.snackbar(response.statusCode.toString(),"");
+     //Get.snackbar(response.statusCode.toString(),"");
     loder(false);
     if (response.statusCode == 200) {
       await prefs.setString("username", username);

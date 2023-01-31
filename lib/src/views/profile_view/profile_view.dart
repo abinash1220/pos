@@ -27,6 +27,23 @@ class _ProfileViewState extends State<ProfileView> {
 
   final loginApiController = Get.find<LoginApiController>();
 
+  String loginname = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUsername();
+  }
+
+  getUsername () async {
+    final prefs = await SharedPreferences.getInstance();
+       String? username = prefs.getString("username");
+       setState(() {
+         loginname = username!;
+       });
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -139,7 +156,7 @@ class _ProfileViewState extends State<ProfileView> {
                       fontSize: 15,
                       fontWeight: FontWeight.w600),
                   decoration: InputDecoration.collapsed(
-                      hintText: "saadmin",
+                      hintText: loginname,
                       hintStyle: primaryFont.copyWith(
                           color: Colors.black,
                           fontSize: 15,
