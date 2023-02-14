@@ -47,9 +47,6 @@ class _CustomerSViewState extends State<CustomerSView> {
                       color: Colors.white, fontWeight: FontWeight.w500),
                 ),
                 centerTitle: true,
-                actions: [
-                 
-                ],
               ),
               
             ],

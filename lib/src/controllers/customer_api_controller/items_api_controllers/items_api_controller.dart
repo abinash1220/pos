@@ -59,7 +59,7 @@ class CreateItemsApiController extends GetxController {
         index: 0,
       ));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(incorrect);
+       ScaffoldMessenger.of(context).showSnackBar(incorrect);
     }
   }
 

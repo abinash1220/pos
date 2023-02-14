@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pos_printer_platform/flutter_pos_printer_platform.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -19,7 +20,10 @@ import 'package:pos/src/widgets/customer_widgets/invoice_row_widget.dart';
 import 'package:pos/src/widgets/customer_widgets/invoice_total_row.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pos/src/widgets/snackbar_widgets/out_of_stock.dart';
+import 'package:pos/src/widgets/snackbar_widgets/select_product.dart';
+import 'package:pos/src/widgets/snackbar_widgets/tipo.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/items_api_models/item_pricelist_model.dart';
 import '../../widgets/snackbar_widgets/incorrect.dart';
@@ -188,7 +192,6 @@ class _InvoiceViewState extends State<InvoiceView> {
   final List<String> items = [
     'FA',
     'FR',
-    'NC',
   ];
   String? selectedValue;
 
@@ -197,6 +200,7 @@ class _InvoiceViewState extends State<InvoiceView> {
   String unitPrice = "";
   String cva = "";
   String totalValue = "";
+  String invalnum = "";
 
   @override
   void initState() {
@@ -214,6 +218,17 @@ class _InvoiceViewState extends State<InvoiceView> {
     initTts();
     changedLanguageDropDownItem('en-us');
     invoicecontroller.invoiceProtectList.clear();
+    invoiceval();
+    customerApiController.customer(context: context);
+    Get.find<InvoiceController>().getOfflineSavedInvoices();
+  }
+
+  invoiceval()async{
+    final prefs = await SharedPreferences.getInstance();
+       String? inval = prefs.getString("inval");
+       setState(() {
+         invalnum = inval!;
+       });
   }
 
   DateTime dt = DateTime.now();
@@ -241,7 +256,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                   // InkWell(
                   //     onTap: () {
                   //       invoicecontroller.saveController(
-                  //           tipodoc: "FA",
+                  //           tipodoc: selectedValue.toString(),
                   //           context: context,
                   //           serie: loginApiController.listUserData.first.serie,
                   //           entidade: customerApiController
@@ -268,40 +283,48 @@ class _InvoiceViewState extends State<InvoiceView> {
                   ),
                   InkWell(
                       onTap: () async {
-                        bool result =
-                            await InternetConnectionChecker().hasConnection;
-                        if (result) {
-                         setState(() {
-                            isload = true;
-                          });
-                      await  invoicecontroller.saveController(
-                              tipodoc: "FA",
-                              context: context,
-                              serie:
-                                  loginApiController.listUserData.first.serie,
-                              entidade: customerApiController
-                                  .customerdatalist.first.cliente,
-                              tipoEntidade: "C",
-                              dataDoc: "${dt.year}-${dt.month}-${dt.day}",
-                              dataVenc: "${dt.year}-${dt.month}-${dt.day}",
-                              condPag: "1",
-                              nome: customerApiController
-                                  .customerdatalist.first.nome,
-                              nomeFac: customerApiController
-                                  .customerdatalist.first.nome,
-                              numContribuinte: customerApiController
-                                  .customerdatalist.first.numContrib,
-                              numContribuinteFac: customerApiController
-                                  .customerdatalist.first.numContrib,
-                              modoPag: "MB",
-                              moradafac: "9789087552");
-                          setState(() {
-                            isload = false;
-                          });
-                          Get.to(const InvoicePrinting());
-                        } else {
-                          Get.to(const InvoicePrinting());
-                        }
+                        if (invoicecontroller.invoiceProtectList.isNotEmpty) {
+  if (selectedValue!= null) {
+    bool result =
+        await InternetConnectionChecker().hasConnection;
+    if (result) {
+     setState(() {
+        isload = true;
+      });
+  await  invoicecontroller.saveController(
+          tipodoc: selectedValue.toString(),
+          context: context,
+          serie:
+              loginApiController.listUserData.first.serie,
+          entidade: customerApiController
+              .customerdatalist.first.cliente,
+          tipoEntidade: "C",
+          dataDoc: "${dt.year}-${dt.month}-${dt.day}",
+          dataVenc: "${dt.year}-${dt.month}-${dt.day}",
+          condPag: "1",
+          nome: customerApiController
+              .customerdatalist.first.nome,
+          nomeFac: customerApiController
+              .customerdatalist.first.nome,
+          numContribuinte: customerApiController
+              .customerdatalist.first.numContrib,
+          numContribuinteFac: customerApiController
+              .customerdatalist.first.numContrib,
+          modoPag: "MB",
+          moradafac: "9789087552");
+      setState(() {
+        isload = false;
+      });
+      Get.to(const TestPrinting());
+    } else {
+      Get.to(const TestPrinting());
+    }
+  }else{
+    ScaffoldMessenger.of(context).showSnackBar(selectTipo);
+  }
+}else{
+  ScaffoldMessenger.of(context).showSnackBar(selectProduct);
+}
                         //invoicecontroller.printposInvoice();
                         // invoicecontroller.saveController(
                         //   tipodoc: "", context: context, serie: "", entidade: "", tipoEntidade: "", dataDoc: "", dataVenc: "", horaDefinida: "", calculoManual: "");
@@ -337,7 +360,7 @@ class _InvoiceViewState extends State<InvoiceView> {
         ),
       ),
       body: isload
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : GetBuilder<InvoiceController>(builder: (_) {
               return ListView(
                 children: [
@@ -449,8 +472,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       )),
                                   alignment: Alignment.center,
                                   child: Text(
-                                    "0096".toUpperCase(),
+                                    invalnum.toUpperCase(),
                                     style: primaryFont.copyWith(
+                                      color: Colors.black,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 13),
                                   ),
@@ -1203,7 +1227,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                 fontSize: 13,
                                                 fontWeight: FontWeight.w600),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                           Container(

@@ -17,6 +17,8 @@ import 'package:pos/src/models/items_api_models/invoice_data_model.dart';
 import 'package:pos/src/models/items_api_models/invoice_model.dart';
 import 'package:pos/src/services/invoice_api_services/invoice_offline_sync_api_services.dart';
 import 'package:pos/src/services/invoice_api_services/invoice_save_api_service.dart';
+import 'package:pos/src/widgets/snackbar_widgets/incorrect.dart';
+import 'package:pos/src/widgets/snackbar_widgets/invoice_local_save.dart';
 import 'package:pos/src/widgets/snackbar_widgets/invoice_save.dart';
 import 'package:printing/printing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -787,6 +789,9 @@ class InvoiceController extends GetxController {
     // var isChacheExist = await APICacheManager().isAPICacheKeyExist(saveinvoiceKey);
 
     bool result = await InternetConnectionChecker().hasConnection;
+    final prefs = await SharedPreferences.getInstance();
+
+   // Get.snackbar(tipodoc, "tipo val");
 
     if (result) {
       dio.Response<dynamic> response = await invoiceSaveApiService.invoiceSave(
@@ -812,10 +817,19 @@ class InvoiceController extends GetxController {
           //invoiceClientId (invoicedata.results[2]);
 
 
-     
+         
 
       if (response.statusCode == 200) {
+
+        String invoicecountval = invoicedata.results[1].split("/").last;
+
+        int inval = int.parse(invoicecountval) + 1;
+
+        await prefs.setString("inval", inval.toString());
+
         ScaffoldMessenger.of(context).showSnackBar(invoicesave);
+
+
       } else {
         // Get.snackbar("", response.statusCode.toString());
         // ScaffoldMessenger.of(context).showSnackBar(incorrect);
@@ -825,7 +839,7 @@ class InvoiceController extends GetxController {
 
       List<String> tempDataList = [];
 
-      tempDataList = prefs.getStringList(saveinvoiceKey)!;
+      tempDataList = prefs.getStringList(saveinvoiceKey) ?? [];
 
       String data = json.encode({
         "Tipodoc": tipodoc,
@@ -847,6 +861,10 @@ class InvoiceController extends GetxController {
       tempDataList.add(data);
 
       await prefs.setStringList(saveinvoiceKey, tempDataList);
+      
+      //Get.snackbar("localy", "invoice saved");
+      ScaffoldMessenger.of(context).showSnackBar(invoicelocalsave);
+
 
       // print("String localy:::::");
       // String data = json.encode({
@@ -881,6 +899,8 @@ class InvoiceController extends GetxController {
       List<String> tempDataList = [];
 
       tempDataList = prefs.getStringList(saveinvoiceKey)!;
+       
+      //Get.snackbar(tempDataList.length.toString(), "list length");
 
       for (int i = 0; i < tempDataList.length; i++) {
         var data = json.decode(tempDataList[i]);
