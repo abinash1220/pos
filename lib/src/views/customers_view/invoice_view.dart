@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pos_printer_platform/flutter_pos_printer_platform.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -1097,7 +1098,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(25)),
                 child: Center(
-                  child: Icon(Icons.whatsapp, color: primaryColor),
+                  child: Icon(Icons.chat, color: primaryColor),
                 ),
               ),
             ),

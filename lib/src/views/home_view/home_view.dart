@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/const/app_fonts.dart';
 import 'package:pos/src/controllers/home_controllers.dart';
+import 'package:pos/src/controllers/location_and_firebase_controllers/location_and_firabse_controller.dart';
 import 'package:pos/src/controllers/login_api_controllers/login_api_controller.dart';
+import 'package:pos/src/models/staff_model.dart';
 import 'package:pos/src/views/home_view/home_navigation_bar.dart';
 import 'package:pos/src/views/item_details_view/item_details_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -21,6 +23,7 @@ class _HomeViewState extends State<HomeView> {
   final homeController = Get.find<HomeController>();
 
   final loginApiController = Get.find<LoginApiController>();
+  final locationandFirebaseControll = Get.find<LocationAndFirebaseController>();
 
   List<_SalesData> data = [
     _SalesData('Mon'.tr, 5000),
@@ -29,8 +32,8 @@ class _HomeViewState extends State<HomeView> {
     _SalesData('Thu'.tr, 7000),
     _SalesData('Fri'.tr, 3000)
   ];
-  
- @override
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -133,19 +136,24 @@ class _HomeViewState extends State<HomeView> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 10,left: 10,right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 10, left: 10, right: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Total Sale".tr,
-                        style: primaryFont.copyWith(color: Colors.white,fontWeight: FontWeight.bold,
-                        fontSize: 15
+                        Text(
+                          "Total Sale".tr,
+                          style: primaryFont.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
                         ),
-                        ),
-                        Text("\$12,000",
-                        style: primaryFont.copyWith(color: Colors.white,fontWeight: FontWeight.bold,
-                        fontSize: 15
-                        ),
+                        Text(
+                          "\$12,000",
+                          style: primaryFont.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
                         ),
                       ],
                     ),
@@ -155,34 +163,35 @@ class _HomeViewState extends State<HomeView> {
                     child: Container(
                       height: 150,
                       child: SfCartesianChart(
-                        
-                            // Chart title
-                            // Enable legend
-                           // legend: Legend(isVisible: true,),
-                            // Enable tooltip
-                            tooltipBehavior: TooltipBehavior(enable: true,),
-                            series: <ChartSeries<_SalesData, String>>[
-                              StackedLineSeries<_SalesData, String>(
-                                color: Colors.white,
-                                  dataSource: data,
-                                  xValueMapper: (_SalesData sales, _) => sales.year,
-                                  yValueMapper: (_SalesData sales, _) => sales.sales,
-                                 // name: 'Sales',
-                                  markerSettings: MarkerSettings(isVisible: true)
-                                  )
-                                  // Enable data label
-                                  //dataLabelSettings: DataLabelSettings(isVisible: true,color: Colors.amber))
-                            ],
-                            primaryXAxis: CategoryAxis(
-                              labelStyle: TextStyle(color: Colors.white)
-                            ),
-                            primaryYAxis:CategoryAxis(
-                              labelStyle: TextStyle(color: Colors.white),
-                              minimum: 0,
-                              maximum: 10000,
-                              desiredIntervals: 5,
-                            ), 
-                            ),
+                        // Chart title
+                        // Enable legend
+                        // legend: Legend(isVisible: true,),
+                        // Enable tooltip
+                        tooltipBehavior: TooltipBehavior(
+                          enable: true,
+                        ),
+                        series: <ChartSeries<_SalesData, String>>[
+                          StackedLineSeries<_SalesData, String>(
+                              color: Colors.white,
+                              dataSource: data,
+                              xValueMapper: (_SalesData sales, _) => sales.year,
+                              yValueMapper: (_SalesData sales, _) =>
+                                  sales.sales,
+                              // name: 'Sales',
+                              markerSettings:
+                                  const MarkerSettings(isVisible: true))
+                          // Enable data label
+                          //dataLabelSettings: DataLabelSettings(isVisible: true,color: Colors.amber))
+                        ],
+                        primaryXAxis: CategoryAxis(
+                            labelStyle: const TextStyle(color: Colors.white)),
+                        primaryYAxis: CategoryAxis(
+                          labelStyle: const TextStyle(color: Colors.white),
+                          minimum: 0,
+                          maximum: 10000,
+                          desiredIntervals: 5,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -191,6 +200,76 @@ class _HomeViewState extends State<HomeView> {
           ),
           const SizedBox(
             height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5, right: 7),
+                    child: InkWell(
+                      onTap: () {
+                        inConfirmationDialog(context);
+                      },
+                      child: Container(
+                        height: 60,
+                        width: size.width,
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 2,
+                                  color: Colors.grey.withOpacity(0.2))
+                            ],
+                            borderRadius: BorderRadius.circular(12)),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "In",
+                          style: primaryFont.copyWith(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 7, right: 5),
+                    child: InkWell(
+                      onTap: () {
+                        outConfirmationDialog(context);
+                      },
+                      child: Container(
+                        height: 60,
+                        width: size.width,
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 2,
+                                  color: Colors.grey.withOpacity(0.2))
+                            ],
+                            borderRadius: BorderRadius.circular(12)),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Out",
+                          style: primaryFont.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
@@ -452,6 +531,76 @@ class _HomeViewState extends State<HomeView> {
           // ),
         ],
       ),
+    );
+  }
+
+  inConfirmationDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("No"),
+      onPressed: () {
+        Get.back();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Yes"),
+      onPressed: () {
+        locationandFirebaseControll.markAsIn();
+        Get.back();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Are you sure ?"),
+      content: const Text("This will mark you as IN"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  outConfirmationDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("No"),
+      onPressed: () {
+        Get.back();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Yes"),
+      onPressed: () {
+        locationandFirebaseControll.markAsOut();
+        Get.back();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Are you sure ?"),
+      content: const Text("This will mark you as OUT"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

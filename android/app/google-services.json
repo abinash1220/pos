@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "319151783560",
-    "project_id": "posa-fc355",
-    "storage_bucket": "posa-fc355.appspot.com"
+    "project_number": "108525957",
+    "project_id": "pos-app-40932",
+    "storage_bucket": "pos-app-40932.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:319151783560:android:17aa061a704f0cdb61293d",
+        "mobilesdk_app_id": "1:108525957:android:b3daa0d8309181d5dc6cec",
         "android_client_info": {
-          "package_name": "com.example.pos"
+          "package_name": "com.pos.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "319151783560-4cng4qcu2rgvbfvrkqc9e7ba3du5jcis.apps.googleusercontent.com",
+          "client_id": "108525957-abjegeddqo7cerlq4gcmm88g2dcdefug.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAwoXHhi1uPZosE5TEc6e6To8SgzaEvrIo"
+          "current_key": "AIzaSyCiecB50cGZH7jT3O2h3jWuSi6c6kYsnWc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "319151783560-4cng4qcu2rgvbfvrkqc9e7ba3du5jcis.apps.googleusercontent.com",
+              "client_id": "108525957-abjegeddqo7cerlq4gcmm88g2dcdefug.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pos/src/const/api_cachekey.dart';
+import 'package:pos/src/controllers/location_and_firebase_controllers/location_and_firabse_controller.dart';
 import 'package:pos/src/models/items_api_models/list_user_serie_model.dart';
 import 'package:pos/src/models/list_user_model.dart';
 import 'package:pos/src/services/login_api_sevices/list_user_serie_api_service.dart';
 import 'package:pos/src/services/login_api_sevices/login_api_service.dart';
+import 'package:pos/src/views/auth_view/login_view.dart';
 import 'package:pos/src/views/home_view/home_navigation_bar.dart';
 import 'package:pos/src/widgets/snackbar_widgets/invalid.dart';
 import 'package:pos/src/widgets/snackbar_widgets/something_wrong.dart';
@@ -28,17 +30,18 @@ class LoginApiController extends GetxController {
     loder(true);
     final prefs = await SharedPreferences.getInstance();
 
-   // Get.snackbar(username, password);
-    
+    // Get.snackbar(username, password);
+
     dio.Response<dynamic> response = await loginapiservice.loginApiServices(
         username: username, password: password);
     print(":::::::::::::::::authorization login Status ::::::::::::::::::");
     print(response.statusCode);
-     //Get.snackbar(response.statusCode.toString(),"");
+    //Get.snackbar(response.statusCode.toString(),"");
     loder(false);
     if (response.statusCode == 200) {
-      await prefs.setString("username", username);
+      await prefs.setString("username", username.trim());
       await prefs.setString("auth_token", response.data["access_token"]);
+      Get.find<LocationAndFirebaseController>().checkIfTheUserIsAvailable();
 
       Get.offAll(HomePageWithNavigation());
     } else if (response.statusCode == 400) {
@@ -49,8 +52,9 @@ class LoginApiController extends GetxController {
     }
   }
 
-  //list user serie controller
+  
 
+  //list user serie controller
   ListUserSerieService listuserService = ListUserSerieService();
 
   List<ListUserData> listUserData = [];
@@ -67,7 +71,7 @@ class LoginApiController extends GetxController {
       print(response.statusCode);
 
       if (response.statusCode == 200) {
-        APICacheDBModel cacheDBModel = new APICacheDBModel(
+        APICacheDBModel cacheDBModel = APICacheDBModel(
             key: listuserSerieKey, syncData: jsonEncode(response.data));
 
         await APICacheManager().addCacheData(cacheDBModel);
@@ -78,8 +82,9 @@ class LoginApiController extends GetxController {
         update();
       } else if (response.statusCode == 500) {
         print("An error has occurred.");
-      } else {
-        print("Something went wrong");
+      } else if (response.statusCode == 401) {
+        print("Toke Expiered");
+        logOutUser();
       }
     } else {
       var cacheData = await APICacheManager().getCacheData(listuserSerieKey);
@@ -91,4 +96,13 @@ class LoginApiController extends GetxController {
       update();
     }
   }
+
+  logOutUser() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString("auth_token", "null");
+
+    Get.offAll(() => LoginView());
+  }
+
 }

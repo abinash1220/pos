@@ -50,7 +50,7 @@ dependencies:
   fab_circular_menu: ^1.0.2
   share_plus: ^6.3.0
   url_launcher: ^6.1.7
-  firebase_core: ^2.4.1
+  firebase_core: ^2.5.0
   firebase_messaging: ^14.2.1
   awesome_notifications: ^0.7.4+1
   flutter_tts: ^3.5.3
@@ -58,6 +58,12 @@ dependencies:
   flutter_pos_printer_platform: ^1.0.12
   api_cache_manager: ^1.0.2
   internet_connection_checker: ^1.0.0+1
+  background_location:
+    git:
+      url: https://github.com/Almoullim/background_location
+      ref: master
+  cloud_firestore: ^4.3.2
+  location: ^4.4.0
 
 
 

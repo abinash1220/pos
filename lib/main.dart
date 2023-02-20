@@ -13,63 +13,63 @@ import 'package:pos/src/views/home_view/home_view.dart';
 import 'package:pos/src/views/profile_view/languages.dart';
 import 'package:pos/src/views/splash_view/splash_screen_view.dart';
 
-Future main() async{
+import 'src/controllers/location_and_firebase_controllers/location_and_firabse_controller.dart';
+
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   AwesomeNotifications().initialize(
-  // set the icon to null if you want to use the default app icon
-  null,
-  [
-    NotificationChannel(
-        channelGroupKey: 'basic_channel_group',
-        channelKey: 'basic_channel',
-        channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for basic tests',
-        defaultColor: Color(0xFF9D50DD),
-        importance:NotificationImportance.High,
-        playSound: true,
-        ledColor: Colors.white)
-  ],
-  // Channel groups are only visual and are not required
-  channelGroups: [
-    NotificationChannelGroup(
-        channelGroupKey: 'basic_channel_group',
-        channelGroupName: 'Basic group')
-  ],
-  debug: true
-);
+      // set the icon to null if you want to use the default app icon
+      null,
+      [
+        NotificationChannel(
+            channelGroupKey: 'basic_channel_group',
+            channelKey: 'basic_channel',
+            channelName: 'Basic notifications',
+            channelDescription: 'Notification channel for basic tests',
+            defaultColor: Color(0xFF9D50DD),
+            importance: NotificationImportance.High,
+            playSound: true,
+            ledColor: Colors.white)
+      ],
+      // Channel groups are only visual and are not required
+      channelGroups: [
+        NotificationChannelGroup(
+            channelGroupKey: 'basic_channel_group',
+            channelGroupName: 'Basic group')
+      ],
+      debug: true);
 
-AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-  if (!isAllowed) {
-    // This is just a basic example. For real apps, you must show some
-    // friendly dialog box before call the request method.
-    // This is very important to not harm the user experience
-    AwesomeNotifications().requestPermissionToSendNotifications();
-  }
-});
+  AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    if (!isAllowed) {
+      // This is just a basic example. For real apps, you must show some
+      // friendly dialog box before call the request method.
+      // This is very important to not harm the user experience
+      AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+  });
 
-firebaseNotification();
+  firebaseNotification();
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  print('Got a message whilst in the foreground!');
-  print('Message data: ${message.data}');
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
 
-  if (message.notification != null) {
-    print('Message also contained a notification: ${message.notification}');
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
 
-     AwesomeNotifications().createNotification(
-                  content: NotificationContent(
-                  id: 10,
-                  channelKey: 'basic_channel',
-                  title: message.notification!.title,
-                  body: message.notification!.body,
-                  actionType: ActionType.Default
-               ),
-              );
-  }
-});
-
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: 10,
+            channelKey: 'basic_channel',
+            title: message.notification!.title,
+            body: message.notification!.body,
+            actionType: ActionType.Default),
+      );
+    }
+  });
+  Get.put(LocationAndFirebaseController());
   Get.put(HomeController());
   Get.put(RecentOrderController());
   Get.put(LoginApiController());
@@ -79,20 +79,20 @@ firebaseNotification();
   runApp(const MyApp());
 }
 
-firebaseNotification()async{
+firebaseNotification() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-NotificationSettings settings = await messaging.requestPermission(
-  alert: true,
-  announcement: false,
-  badge: true,
-  carPlay: false,
-  criticalAlert: false,
-  provisional: false,
-  sound: true,
-);
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
 
-print('User granted permission: ${settings.authorizationStatus}');
+  print('User granted permission: ${settings.authorizationStatus}');
 }
 
 class MyApp extends StatelessWidget {
@@ -109,7 +109,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:const SplashScreenView(),
+      home: const SplashScreenView(),
     );
   }
 }
