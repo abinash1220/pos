@@ -10,6 +10,7 @@ import 'package:pos/src/controllers/login_api_controllers/login_api_controller.d
 import 'package:pos/src/models/staff_model.dart';
 import 'package:pos/src/views/home_view/home_navigation_bar.dart';
 import 'package:pos/src/views/item_details_view/item_details_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomeView extends StatefulWidget {
@@ -25,6 +26,9 @@ class _HomeViewState extends State<HomeView> {
   final loginApiController = Get.find<LoginApiController>();
   final locationandFirebaseControll = Get.find<LocationAndFirebaseController>();
 
+  int isUserIn = 0;
+  bool isLoading = false;
+
   List<_SalesData> data = [
     _SalesData('Mon'.tr, 5000),
     _SalesData('Tue'.tr, 3000),
@@ -38,6 +42,37 @@ class _HomeViewState extends State<HomeView> {
     // TODO: implement initState
     super.initState();
     loginApiController.listUserSerie();
+    setInOutState();
+  }
+
+  setInOutState() async {
+    setState(() {
+      isLoading = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString("username");
+
+    List<EmployeeModel> todaysList = await locationandFirebaseControll
+        .generateUserHistory(username!.trim(), DateTime.now());
+    setState(() {
+      isLoading = false;
+    });
+    if (todaysList.isEmpty) {
+      setState(() {
+        isUserIn = 0;
+      });
+    } else {
+      if (todaysList.last.isIn == true && todaysList.last.isOut == false) {
+        setState(() {
+          isUserIn = 1;
+        });
+      } else if (todaysList.last.isIn == true &&
+          todaysList.last.isOut == true) {
+        setState(() {
+          isUserIn = 3;
+        });
+      }
+    }
   }
 
   @override
@@ -203,70 +238,117 @@ class _HomeViewState extends State<HomeView> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 5, right: 7),
-                    child: InkWell(
-                      onTap: () {
-                        inConfirmationDialog(context);
-                      },
-                      child: Container(
-                        height: 60,
-                        width: size.width,
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            boxShadow: [
-                              BoxShadow(
-                                  blurRadius: 2,
-                                  color: Colors.grey.withOpacity(0.2))
-                            ],
-                            borderRadius: BorderRadius.circular(12)),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "In",
-                          style: primaryFont.copyWith(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
+            child: isLoading
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [CircularProgressIndicator()],
+                  )
+                : Column(
+                    children: [
+                      if (isUserIn == 0)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5, right: 7),
+                          child: InkWell(
+                            onTap: () {
+                              inConfirmationDialog(context);
+                            },
+                            child: Container(
+                              height: 60,
+                              width: size.width,
+                              decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        blurRadius: 2,
+                                        color: Colors.grey.withOpacity(0.2))
+                                  ],
+                                  borderRadius: BorderRadius.circular(12)),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "In",
+                                style: primaryFont.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 7, right: 5),
-                    child: InkWell(
-                      onTap: () {
-                        outConfirmationDialog(context);
-                      },
-                      child: Container(
-                        height: 60,
-                        width: size.width,
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            boxShadow: [
-                              BoxShadow(
-                                  blurRadius: 2,
-                                  color: Colors.grey.withOpacity(0.2))
-                            ],
-                            borderRadius: BorderRadius.circular(12)),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Out",
-                          style: primaryFont.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18),
+                      if (isUserIn == 1)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 7, right: 5),
+                          child: InkWell(
+                            onTap: () {
+                              outConfirmationDialog(context);
+                            },
+                            child: Container(
+                              height: 60,
+                              width: size.width,
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        blurRadius: 2,
+                                        color: Colors.grey.withOpacity(0.2))
+                                  ],
+                                  borderRadius: BorderRadius.circular(12)),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Out",
+                                style: primaryFont.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      if (isUserIn == 3)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.check_circle,
+                                    size: 16,
+                                    color: Colors.green,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "In & Out Completed",
+                                    style: primaryFont.copyWith(
+                                        color: primaryColor),
+                                  ),
+                                ],
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  editConfirmationDialog(context);
+                                },
+                                child: Container(
+                                  height: 25,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Colors.blue),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Edit",
+                                    style: primaryFont.copyWith(
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
           const SizedBox(
             height: 10,
@@ -534,6 +616,45 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  editConfirmationDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("No"),
+      onPressed: () {
+        Get.back();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Yes"),
+      onPressed: () {
+        // locationandFirebaseControll.markAsIn();
+        setState(() {
+          isUserIn = 0;
+        });
+        Get.back();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Are you sure ?"),
+      content: const Text(
+          "This will Enable you to Re-enter todays \"In\" and \"out\""),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   inConfirmationDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = TextButton(
@@ -546,6 +667,9 @@ class _HomeViewState extends State<HomeView> {
       child: Text("Yes"),
       onPressed: () {
         locationandFirebaseControll.markAsIn();
+        setState(() {
+          isUserIn = 1;
+        });
         Get.back();
       },
     );
@@ -581,6 +705,9 @@ class _HomeViewState extends State<HomeView> {
       child: Text("Yes"),
       onPressed: () {
         locationandFirebaseControll.markAsOut();
+        setState(() {
+          isUserIn = 3;
+        });
         Get.back();
       },
     );

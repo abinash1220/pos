@@ -61,7 +61,8 @@ class LocationAndFirebaseController extends GetxController {
         .doc(employeeModel.username)
         .set(employeeModel.toJson())
         .then((value) {
-      Get.snackbar("Your IN Now", "Don't kill the app while its running in background",
+      Get.snackbar(
+          "Your IN Now", "Don't kill the app while its running in background",
           colorText: Colors.white,
           backgroundColor: Colors.green,
           snackPosition: SnackPosition.BOTTOM);
@@ -251,7 +252,8 @@ class LocationAndFirebaseController extends GetxController {
         FirebaseFirestore.instance.collection(employeeCollection);
     String? username = prefs.getString("username");
 
-    var employee = await employeee.where("userName", isEqualTo: username?.trim()).get();
+    var employee =
+        await employeee.where("userName", isEqualTo: username?.trim()).get();
     print("::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
     print(employee.docs.length);
     if (employee.docs.isEmpty) {
@@ -272,5 +274,35 @@ class LocationAndFirebaseController extends GetxController {
     } else {
       print(":::::::::::::::::::old Employeeee:::::::::::::::");
     }
+  }
+
+  Future<List<EmployeeModel>> generateUserHistory(
+      String username, DateTime date) async {
+    List<EmployeeModel> tempHistoryList = [];
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(dailyAttendanceCollection)
+        .doc("${date.day}-${date.month}-${date.year}")
+        .collection(emplyeeAttendanceCollection)
+        .where("userName", isEqualTo: username)
+        .get();
+    tempHistoryList.clear();
+    print("__________-------${querySnapshot.docs.length}----$date--__________");
+    for (var doc in querySnapshot.docs) {
+      EmployeeModel employeeModel = EmployeeModel(
+        name: doc["name"],
+        username: doc["userName"],
+        userID: doc["userID"],
+        outTime: DateTime.parse(doc["outTime"]),
+        inLocation: List<LatLongModel>.from(doc["inLocation"].map((x) =>
+            LatLongModel(latitude: x["latitude"], longitude: x["longitude"]))),
+        inTime: DateTime.parse(doc["inTime"]),
+        isIn: doc["isIn"],
+        isOut: doc["isOut"],
+        outLocation: List<LatLongModel>.from(doc["outLocation"].map((x) =>
+            LatLongModel(latitude: x["latitude"], longitude: x["longitude"]))),
+      );
+      tempHistoryList.add(employeeModel);
+    }
+    return tempHistoryList;
   }
 }
