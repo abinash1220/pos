@@ -18,6 +18,7 @@ class CustomerCardWidget extends StatelessWidget {
   TextEditingController moradafacEditingController = TextEditingController();
 
   final invoiceController = Get.find<InvoiceController>();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +92,7 @@ class CustomerCardWidget extends StatelessWidget {
                     //       title: "Customer Details",
                     //     ));
                   },
-                  child: Icon(Icons.remove_red_eye,size: 25,)
+                  child:const Icon(Icons.remove_red_eye,size: 25,)
                 )
               ],
             ),
@@ -173,7 +174,6 @@ class CustomerCardWidget extends StatelessWidget {
           actions: <Widget>[
            InkWell(
             onTap: (){
-              
               invoiceController.invoicenome(nomeEditingController.text);
               invoiceController.invoicetaxid(numContribuinteEditingController.text);
               invoiceController.invoicetelephone(moradafacEditingController.text);

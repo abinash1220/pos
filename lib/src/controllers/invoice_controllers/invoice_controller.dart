@@ -818,9 +818,9 @@ class InvoiceController extends GetxController {
 
 
          
-
+       Get.snackbar(response.statusCode.toString(), "save");
       if (response.statusCode == 200) {
-
+         
         String invoicecountval = invoicedata.results[1].split("/").last;
 
         int inval = int.parse(invoicecountval) + 1;
@@ -831,7 +831,7 @@ class InvoiceController extends GetxController {
 
 
       } else {
-        // Get.snackbar("", response.statusCode.toString());
+         Get.snackbar("wrong sts", response.statusCode.toString());
         // ScaffoldMessenger.of(context).showSnackBar(incorrect);
       }
     } else {

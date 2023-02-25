@@ -9,25 +9,51 @@ import 'package:dio/dio.dart' as dio;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pos/src/const/api_cachekey.dart';
 import 'package:pos/src/models/items_api_models/items_list_api_model.dart';
+import 'package:pos/src/models/recent_order_model.dart';
 import 'package:pos/src/services/items_api_services/create_items_api_service.dart';
 import 'package:pos/src/services/items_api_services/item_pricelist_api_service.dart';
-import 'package:pos/src/services/items_api_services/list_items_api_service.dart';
+import 'package:pos/src/services/recent_order_api_services/recent_order_api_serive.dart';
 import 'package:pos/src/views/home_view/home_navigation_bar.dart';
 import 'package:pos/src/widgets/snackbar_widgets/incorrect.dart';
 
-import '../../../models/items_api_models/item_pricelist_model.dart';
-import '../../../models/items_api_models/product_list_model.dart';
 
 class CreateItemsApiController extends GetxController {
   CreateItemsApiServices createItemsApiServices = CreateItemsApiServices();
   //ListItemsApiService listItemsApiService = ListItemsApiService();
   ItemPriceListService itemPriceListService = ItemPriceListService();
+  RecentOrderApiSevice recentOrderApiService = RecentOrderApiSevice();
 
   //List<ItemData?>? itemdata = [];
 
   List<ItemPrice?>? pricelist = [];
 
+  List<ListData> listdata = [];
+
   RxString item = "null".obs;
+
+  
+  //recent order list
+  recentOrder({
+    required String series,
+    required String fromdate,
+    required String todate,
+  }) async {
+
+    dio.Response<dynamic> response = await recentOrderApiService.recentOrderList(
+      series: series,
+      fromdate: fromdate,
+      todate: todate
+    );
+
+    if(response.statusCode == 200){
+      RecentOrderList recentOrderList = RecentOrderList.fromJson(response.data);
+      listdata = recentOrderList.data;
+    }else{
+      Get.snackbar(response.statusCode.toString(), "something went wrong");
+    }
+    
+  }
+
 
   itemsCreate({
     required BuildContext context,
@@ -54,6 +80,7 @@ class CreateItemsApiController extends GetxController {
     );
     print(":::::::::::::::::Create items Status ::::::::::::::::::");
     print(response.statusCode);
+    Get.snackbar(response.statusCode.toString(), "create items");
     if (response.statusCode == 204) {
       Get.offAll(HomePageWithNavigation(
         index: 0,
@@ -88,7 +115,7 @@ class CreateItemsApiController extends GetxController {
     if (result) {
       dio.Response<dynamic> response = await itemPriceListService.itempricelist(
           client: client, wareHouse: wareHouse);
-
+       Get.snackbar(response.statusCode.toString(), "items api");
       if (response.statusCode == 200) {
         APICacheDBModel cacheDBModel = new APICacheDBModel(
             key: pricelistKey, syncData: jsonEncode(response.data));

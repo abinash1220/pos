@@ -64,6 +64,7 @@ dependencies:
       ref: master
   cloud_firestore: ^4.3.2
   location: ^4.4.0
+  date_format: ^2.0.7
 
 
 

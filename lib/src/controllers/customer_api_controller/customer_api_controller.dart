@@ -33,7 +33,8 @@ class CustomerApiController extends GetxController{
       //q Get.snackbar("", "available internet");
         
        dio.Response<dynamic> response = await customerapiservice.customerList();
-     
+
+     Get.snackbar(response.statusCode.toString(), "customer");
      if(response.statusCode == 200){
 
       APICacheDBModel cacheDBModel = new APICacheDBModel(

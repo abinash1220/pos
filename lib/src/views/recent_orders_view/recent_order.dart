@@ -1,7 +1,9 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/const/app_fonts.dart';
+import 'package:pos/src/controllers/customer_api_controller/items_api_controllers/items_api_controller.dart';
 import 'package:pos/src/controllers/recent_order_controller.dart';
 import 'package:pos/src/views/recent_orders_view/filter_screen.dart';
 
@@ -15,6 +17,78 @@ class RecentOrders extends StatefulWidget {
 class _RecentOrdersState extends State<RecentOrders> {
   
   final recentorderController = Get.find<RecentOrderController>();
+
+  final itemController = Get.find<CreateItemsApiController>();
+
+  DateTime date = DateTime.now();
+
+  String selectdt = "Select From Date";
+
+  String selectdt1 = "Select To Date";
+
+    _showDatePicker(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2030),
+        builder: ((context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme:  ColorScheme.light(
+                primary: primaryColor,
+                onPrimary: Colors.white,
+                onSurface: Colors.blue,
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  primary: Color.fromARGB(255, 42, 59, 158),
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        }));
+
+    if (picked != null) {
+      setState(() {
+        date = picked;
+        selectdt = formatDate(date, [dd, "/", mm, "/", yyyy]);
+      });
+    }
+  }
+
+  _showDatePicker1(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2030),
+        builder: ((context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme:  ColorScheme.light(
+                primary: primaryColor,
+                onPrimary: Colors.white,
+                onSurface: Colors.blue,
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  primary: Color.fromARGB(255, 42, 59, 158),
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        }));
+
+    if (picked != null) {
+      setState(() {
+        date = picked;
+        selectdt1 = formatDate(date, [dd, "/", mm, "/", yyyy]);
+      });
+    }
+  }
  
   @override
   Widget build(BuildContext context) {
@@ -34,12 +108,22 @@ class _RecentOrdersState extends State<RecentOrders> {
                   onTap: (){
                     Get.back();
                   },
-                  child: Icon(Icons.arrow_back_ios)),
+                  child:const Icon(Icons.arrow_back_ios)),
                 title: Text(
                   "recent order".tr.toUpperCase(),
                   style: primaryFont.copyWith(
                       color: Colors.white, fontWeight: FontWeight.w500),
                 ),
+                // actions: [
+                //   Padding(
+                //     padding: const EdgeInsets.only(right: 25),
+                //     child: InkWell(
+                //       onTap: (){
+                //         _showDatePicker(context);
+                //       },
+                //       child:const Icon(Icons.date_range)),
+                //   ),
+                // ],
         //         actions: [
         //           InkWell(
         //             onTap: (){
@@ -323,8 +407,76 @@ class _RecentOrdersState extends State<RecentOrders> {
           ),
         ),
       ),
-      body: Center(
-        child: Text("No Data".tr),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: (){
+                _showDatePicker(context);
+              },
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(selectdt),
+                      const Icon(Icons.date_range_outlined,color: Colors.grey,),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding:const EdgeInsets.only(left: 8,right: 8,),
+            child: InkWell(
+              onTap: (){
+                _showDatePicker1(context);
+              },
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(selectdt1),
+                      const Icon(Icons.date_range_outlined,color: Colors.grey,),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            height: 500,
+            child: ListView.builder(
+              itemCount: itemController.listdata.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Container(
+                    height: 150,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 5.0,
+                        ),
+                      ]
+                    ),
+                    child: Column(
+                      children: [
+                        Text(itemController.listdata[index].tipodoc),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+          )
+        ],
       ),
       // body: ListView(
       //   children: [

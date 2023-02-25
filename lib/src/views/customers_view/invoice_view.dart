@@ -207,6 +207,7 @@ class _InvoiceViewState extends State<InvoiceView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    invoicecontroller.totolamount = "0".obs;
     itemsApiController.listOfitems(
         client: widget.client,
         wareHouse: loginApiController.listUserData.first.warehouse == "CAR1"
@@ -1297,6 +1298,104 @@ class _InvoiceViewState extends State<InvoiceView> {
       builder: (BuildContext context) {
         return AlertDialog(
           content: Text("Insuffcient stock".tr),
+        );
+      },
+    );
+  }
+
+  //
+   Future<void> dialogBuilders(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+           title: const Text('Enter Customer Details'),
+          content: SizedBox(
+            height: 155,
+            child: Column(
+              children: [
+                 Container(
+                  height: 45,
+                  child: TextField(
+                   // controller: nomeEditingController,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: primaryColor,
+                        )),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: primaryColor,
+                        )),
+                        hintText: 'Enter Nome',
+                        labelStyle: primaryFont.copyWith(color: primaryColor)),
+                  ),
+                ),
+                const SizedBox(height: 10,),
+                 Container(
+                  height: 45,
+                  child: TextField(
+                   // controller: numContribuinteEditingController,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: primaryColor,
+                        )),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: primaryColor,
+                        )),
+                        hintText: 'Enter NIF Number',
+                        labelStyle: primaryFont.copyWith(color: primaryColor)),
+                  ),
+                ),
+                const SizedBox(height: 10,),
+                 Container(
+                  height: 45,
+                  child: TextField(
+                   // controller: moradafacEditingController,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: primaryColor,
+                        )),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: primaryColor,
+                        )),
+                        hintText: 'Enter Mobile Number',
+                        labelStyle: primaryFont.copyWith(color: primaryColor)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+           InkWell(
+            onTap: (){
+              
+              
+            },
+             child: Container(
+              height: 30,
+              width: 65,
+              decoration: BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.circular(2),
+              ),
+              child:const  Center(
+                child: Text("Submit",
+                style: TextStyle(color: Colors.white),),
+              ),
+             ),
+           ),
+                   const SizedBox(width: 20,),
+                   const SizedBox(height: 10,),
+          ],
+          
         );
       },
     );
