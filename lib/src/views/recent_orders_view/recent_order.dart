@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/const/app_fonts.dart';
 import 'package:pos/src/controllers/customer_api_controller/items_api_controllers/items_api_controller.dart';
+import 'package:pos/src/controllers/login_api_controllers/login_api_controller.dart';
 import 'package:pos/src/controllers/recent_order_controller.dart';
 import 'package:pos/src/views/recent_orders_view/filter_screen.dart';
 
@@ -19,6 +20,8 @@ class _RecentOrdersState extends State<RecentOrders> {
   final recentorderController = Get.find<RecentOrderController>();
 
   final itemController = Get.find<CreateItemsApiController>();
+
+  final loginApiController = Get.find<LoginApiController>();
 
   DateTime date = DateTime.now();
 
@@ -88,6 +91,16 @@ class _RecentOrdersState extends State<RecentOrders> {
         selectdt1 = formatDate(date, [dd, "/", mm, "/", yyyy]);
       });
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    itemController.recentOrder(
+      series: loginApiController.listUserData.first.serie,
+      fromdate: selectdt,
+      todate: selectdt1);
   }
  
   @override
