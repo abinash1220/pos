@@ -818,7 +818,7 @@ class InvoiceController extends GetxController {
 
 
          
-       Get.snackbar(response.statusCode.toString(), "save");
+      // Get.snackbar(response.statusCode.toString(), "save");
       if (response.statusCode == 200) {
          
         String invoicecountval = invoicedata.results[1].split("/").last;

@@ -26,7 +26,6 @@ class LoginApiServices extends BaseApiService {
           options: Options(
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Bearer $secondToken'
               },
               followRedirects: false,
               validateStatus: (status) {

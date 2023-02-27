@@ -16,7 +16,6 @@ import 'package:pos/src/services/recent_order_api_services/recent_order_api_seri
 import 'package:pos/src/views/home_view/home_navigation_bar.dart';
 import 'package:pos/src/widgets/snackbar_widgets/incorrect.dart';
 
-
 class CreateItemsApiController extends GetxController {
   CreateItemsApiServices createItemsApiServices = CreateItemsApiServices();
   //ListItemsApiService listItemsApiService = ListItemsApiService();
@@ -31,29 +30,26 @@ class CreateItemsApiController extends GetxController {
 
   RxString item = "null".obs;
 
-  
   //recent order list
   recentOrder({
     required String series,
     required String fromdate,
     required String todate,
   }) async {
+    dio.Response<dynamic> response =
+        await recentOrderApiService.recentOrderList(
+            series: series,
+            fromdate: "$fromdate 00:00:00",
+            todate: "$todate 00:00:00");
 
-    dio.Response<dynamic> response = await recentOrderApiService.recentOrderList(
-      series: series,
-      fromdate: fromdate,
-      todate: todate
-    );
-
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       RecentOrderList recentOrderList = RecentOrderList.fromJson(response.data);
       listdata = recentOrderList.data;
-    }else{
+    } else {
       Get.snackbar(response.statusCode.toString(), "something went wrong");
     }
-    
+    update();
   }
-
 
   itemsCreate({
     required BuildContext context,
@@ -80,13 +76,13 @@ class CreateItemsApiController extends GetxController {
     );
     print(":::::::::::::::::Create items Status ::::::::::::::::::");
     print(response.statusCode);
-    Get.snackbar(response.statusCode.toString(), "create items");
+   // Get.snackbar(response.statusCode.toString(), "create items");
     if (response.statusCode == 204) {
       Get.offAll(HomePageWithNavigation(
         index: 0,
       ));
     } else {
-       ScaffoldMessenger.of(context).showSnackBar(incorrect);
+      ScaffoldMessenger.of(context).showSnackBar(incorrect);
     }
   }
 
@@ -115,7 +111,7 @@ class CreateItemsApiController extends GetxController {
     if (result) {
       dio.Response<dynamic> response = await itemPriceListService.itempricelist(
           client: client, wareHouse: wareHouse);
-       Get.snackbar(response.statusCode.toString(), "items api");
+      Get.snackbar(response.statusCode.toString(), "items api");
       if (response.statusCode == 200) {
         APICacheDBModel cacheDBModel = new APICacheDBModel(
             key: pricelistKey, syncData: jsonEncode(response.data));
