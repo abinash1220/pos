@@ -30,7 +30,7 @@ class InvoiceController extends GetxController {
 
   List<InvoiceModel> invoiceProtectList = [];
 
-  RxBool select = false.obs;
+  RxBool select = true.obs;
 
   RxString totolamount = "0".obs;
   RxString subtotal = "0".obs;
@@ -47,8 +47,10 @@ class InvoiceController extends GetxController {
   RxString invoicenome = "".obs;
   RxString invoicetaxid = "".obs;
   RxString invoicetelephone = "".obs;
-  
 
+
+   TextEditingController multicaxiaTextEditingController =
+      TextEditingController();
 
   totalAmountCal() {
     double tempTolAmt = 0.0;
@@ -758,8 +760,7 @@ class InvoiceController extends GetxController {
   }
 
   saveController(
-      {required BuildContext context,
-      required String tipodoc,
+      {required String tipodoc,
       required String serie,
       required String entidade,
       required String tipoEntidade,
@@ -794,9 +795,15 @@ class InvoiceController extends GetxController {
     bool result = await InternetConnectionChecker().hasConnection;
     final prefs = await SharedPreferences.getInstance();
 
-   // Get.snackbar(tipodoc, "tipo val");
+    // Get.snackbar(tipodoc, "tipo val");
 
     if (result) {
+      print("::::::----------------on save---------------------::::::::::::");
+      print(nome);
+      print(nomeFac);
+      print(numContribuinte);
+      print(numContribuinteFac);
+      print(cduMCXID);
       dio.Response<dynamic> response = await invoiceSaveApiService.invoiceSave(
           tipodoc: tipodoc,
           serie: serie,
@@ -812,30 +819,30 @@ class InvoiceController extends GetxController {
           numContribuinte: numContribuinte,
           numContribuinteFac: numContribuinteFac,
           moradafac: moradafac,
-          cduMCXID: cduMCXID
-          );
+          cduMCXID: cduMCXID);
 
-          InvoiceData invoicedata = InvoiceData.fromJson(response.data);
-          invoicevalue (invoicedata.results.first.split(":").last); 
-          invoiceSerie (invoicedata.results[1]);
-          //invoiceClientId (invoicedata.results[2]);
+      print(response.data);
+      Get.snackbar("Invoice Saved", "",
+          colorText: Colors.white,
+          backgroundColor: Colors.green,
+          snackPosition: SnackPosition.BOTTOM);
+      InvoiceData invoicedata = InvoiceData.fromJson(response.data);
+      invoicevalue(invoicedata.results.first.split(":").last);
+      invoiceSerie(invoicedata.results[1]);
+      //invoiceClientId (invoicedata.results[2]);
 
-
-         
       // Get.snackbar(response.statusCode.toString(), "save");
       if (response.statusCode == 200) {
-         
         String invoicecountval = invoicedata.results[1].split("/").last;
 
         int inval = int.parse(invoicecountval) + 1;
 
         await prefs.setString("inval", inval.toString());
 
-        ScaffoldMessenger.of(context).showSnackBar(invoicesave);
-
-
+        // ScaffoldMessenger.of(context).showSnackBar(invoicesave);
+       
       } else {
-         Get.snackbar("wrong sts", response.statusCode.toString());
+        Get.snackbar("wrong sts", response.statusCode.toString());
         // ScaffoldMessenger.of(context).showSnackBar(incorrect);
       }
     } else {
@@ -865,10 +872,13 @@ class InvoiceController extends GetxController {
       tempDataList.add(data);
 
       await prefs.setStringList(saveinvoiceKey, tempDataList);
-      
-      //Get.snackbar("localy", "invoice saved");
-      ScaffoldMessenger.of(context).showSnackBar(invoicelocalsave);
 
+      //Get.snackbar("localy", "invoice saved");
+      // ScaffoldMessenger.of(context).showSnackBar(invoicelocalsave);
+        Get.snackbar("Invoice Saved", "",
+          colorText: Colors.white,
+          backgroundColor: Colors.green,
+          snackPosition: SnackPosition.BOTTOM);
 
       // print("String localy:::::");
       // String data = json.encode({
@@ -903,7 +913,7 @@ class InvoiceController extends GetxController {
       List<String> tempDataList = [];
 
       tempDataList = prefs.getStringList(saveinvoiceKey)!;
-       
+
       //Get.snackbar(tempDataList.length.toString(), "list length");
 
       for (int i = 0; i < tempDataList.length; i++) {

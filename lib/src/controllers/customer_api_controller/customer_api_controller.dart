@@ -25,6 +25,11 @@ class CustomerApiController extends GetxController{
    //new
    List<CustomerListData> customerlistdata = [];
 
+
+   var nomeController = TextEditingController();
+   var numContribController = TextEditingController();
+   var numbContribFacController = TextEditingController();
+
   //  Future customer ({
   //    required BuildContext context,
   //  }) async {

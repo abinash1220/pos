@@ -111,10 +111,10 @@ class CreateItemsApiController extends GetxController {
     bool result = await InternetConnectionChecker().hasConnection;
  
     if (result) {
-      Get.snackbar(client, wareHouse);
+      // Get.snackbar(client, wareHouse);
       dio.Response<dynamic> response = await itemPriceListService.itempricelist(
           client: client, wareHouse: wareHouse);
-      Get.snackbar(response.statusCode.toString(), client);
+      // Get.snackbar(response.statusCode.toString(), client);
       if (response.statusCode == 200) {
         APICacheDBModel cacheDBModel = new APICacheDBModel(
             key: pricelistKey, syncData: jsonEncode(response.data));

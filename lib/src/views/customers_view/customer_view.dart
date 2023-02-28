@@ -35,9 +35,11 @@ class _CustomerSViewState extends State<CustomerSView> {
   getUsername () async {
     final prefs = await SharedPreferences.getInstance();
        String? username = prefs.getString("username");
-       Get.snackbar(username.toString(), "");
+      //  Get.snackbar(username.toString(), "");
        customerapicontroller.customerlist(context: context, userid: username!);
   }
+
+  
 
   @override
   Widget build(BuildContext context) {

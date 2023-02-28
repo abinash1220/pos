@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos/src/const/app_colors.dart';
 import 'package:pos/src/const/app_fonts.dart';
+import 'package:pos/src/controllers/customer_api_controller/customer_api_controller.dart';
 import 'package:pos/src/controllers/invoice_controllers/invoice_controller.dart';
 import 'package:pos/src/views/customers_view/customer_details_view.dart';
 import 'package:pos/src/views/customers_view/invoice_view.dart';
@@ -11,14 +12,25 @@ class CustomerCardWidget extends StatelessWidget {
   String name;
   String number;
   String clientId;
-  CustomerCardWidget({super.key, required this.name, required this.number, required this.clientId});
+  CustomerCardWidget(
+      {super.key,
+      required this.name,
+      required this.number,
+      required this.clientId});
 
   TextEditingController nomeEditingController = TextEditingController();
-  TextEditingController numContribuinteEditingController = TextEditingController();
+  TextEditingController numContribuinteEditingController =
+      TextEditingController();
   TextEditingController moradafacEditingController = TextEditingController();
 
   final invoiceController = Get.find<InvoiceController>();
-  
+  final customerController = Get.find<CustomerApiController>();
+
+  setDefault() {
+    customerController.nomeController.clear();
+    customerController.numContribController.clear();
+    customerController.numbContribFacController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +42,14 @@ class CustomerCardWidget extends StatelessWidget {
           invoiceController.invoiceClientId(clientId);
           invoiceController.isUnauthClient(false);
           print("client id: $clientId");
-          if("${clientId[0]}${clientId[1]}" == "FR"){
+          if ("${clientId[0]}${clientId[1]}" == "FR") {
             _dialogBuilder(context);
-          }else
-          {
-            
+          } else {
             invoiceController.invoicenome(name);
-              invoiceController.invoicetaxid(number);
-              invoiceController.invoicetelephone("");
+            invoiceController.invoicetaxid(number);
+            invoiceController.invoicetelephone("");
             Get.to(() => InvoiceView(client: clientId));
-            }
+          }
         },
         child: Container(
           height: 70,
@@ -87,13 +97,15 @@ class CustomerCardWidget extends StatelessWidget {
                   ],
                 ),
                 InkWell(
-                  onTap: () {
-                    // Get.to(() => CustomerDetailsView(
-                    //       title: "Customer Details",
-                    //     ));
-                  },
-                  child:const Icon(Icons.remove_red_eye,size: 25,)
-                )
+                    onTap: () {
+                      // Get.to(() => CustomerDetailsView(
+                      //       title: "Customer Details",
+                      //     ));
+                    },
+                    child: const Icon(
+                      Icons.remove_red_eye,
+                      size: 25,
+                    ))
               ],
             ),
           ),
@@ -101,21 +113,22 @@ class CustomerCardWidget extends StatelessWidget {
       ),
     );
   }
- 
- Future<void> _dialogBuilder(BuildContext context) {
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    setDefault();
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-           title: const Text('Enter Customer Details'),
+          title: const Text('Enter Customer Details'),
           content: SizedBox(
             height: 155,
             child: Column(
               children: [
-                 Container(
+                Container(
                   height: 45,
                   child: TextField(
-                    controller: nomeEditingController,
+                    controller: customerController.nomeController,
                     decoration: InputDecoration(
                         isDense: true,
                         enabledBorder: OutlineInputBorder(
@@ -130,11 +143,13 @@ class CustomerCardWidget extends StatelessWidget {
                         labelStyle: primaryFont.copyWith(color: primaryColor)),
                   ),
                 ),
-                const SizedBox(height: 10,),
-                 Container(
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
                   height: 45,
                   child: TextField(
-                    controller: numContribuinteEditingController,
+                    controller: customerController.numContribController,
                     decoration: InputDecoration(
                         isDense: true,
                         enabledBorder: OutlineInputBorder(
@@ -149,11 +164,13 @@ class CustomerCardWidget extends StatelessWidget {
                         labelStyle: primaryFont.copyWith(color: primaryColor)),
                   ),
                 ),
-                const SizedBox(height: 10,),
-                 Container(
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
                   height: 45,
                   child: TextField(
-                    controller: moradafacEditingController,
+                    controller: customerController.numbContribFacController,
                     decoration: InputDecoration(
                         isDense: true,
                         enabledBorder: OutlineInputBorder(
@@ -172,36 +189,43 @@ class CustomerCardWidget extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
-           InkWell(
-            onTap: (){
-              invoiceController.invoicenome(nomeEditingController.text);
-              invoiceController.invoicetaxid(numContribuinteEditingController.text);
-              invoiceController.invoicetelephone(moradafacEditingController.text);
-              invoiceController.isUnauthClient(true);
-              invoiceController.invoiceClientId(clientId);
-              nomeEditingController.clear();
-              numContribuinteEditingController.clear();
-              moradafacEditingController.clear();
-              Get.back();
-              Get.to(InvoiceView(client: clientId));
-            },
-             child: Container(
-              height: 30,
-              width: 65,
-              decoration: BoxDecoration(
-                color: primaryColor,
-                borderRadius: BorderRadius.circular(2),
+            InkWell(
+              onTap: () {
+                invoiceController.invoicenome(nomeEditingController.text);
+                invoiceController
+                    .invoicetaxid(numContribuinteEditingController.text);
+                invoiceController
+                    .invoicetelephone(moradafacEditingController.text);
+                invoiceController.isUnauthClient(true);
+                invoiceController.invoiceClientId(clientId);
+                nomeEditingController.clear();
+                numContribuinteEditingController.clear();
+                moradafacEditingController.clear();
+                Get.back();
+                Get.to(InvoiceView(client: clientId));
+              },
+              child: Container(
+                height: 30,
+                width: 65,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                child: const Center(
+                  child: Text(
+                    "Submit",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
-              child:const  Center(
-                child: Text("Submit",
-                style: TextStyle(color: Colors.white),),
-              ),
-             ),
-           ),
-                   const SizedBox(width: 20,),
-                   const SizedBox(height: 10,),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
           ],
-          
         );
       },
     );

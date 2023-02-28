@@ -50,7 +50,6 @@ class _InvoiceViewState extends State<InvoiceView> {
 
   TextEditingController textEditingController = TextEditingController();
   TextEditingController tempTextEditingController = TextEditingController();
-  TextEditingController multicaxiaTextEditingController = TextEditingController();
 
   String? _newVoiceText;
   int? _inputLength;
@@ -225,12 +224,12 @@ class _InvoiceViewState extends State<InvoiceView> {
     Get.find<InvoiceController>().getOfflineSavedInvoices();
   }
 
-  invoiceval()async{
+  invoiceval() async {
     final prefs = await SharedPreferences.getInstance();
-       String? inval = prefs.getString("inval");
-       setState(() {
-         invalnum = inval!;
-       });
+    String? inval = prefs.getString("inval");
+    setState(() {
+      invalnum = inval!;
+    });
   }
 
   DateTime dt = DateTime.now();
@@ -284,13 +283,21 @@ class _InvoiceViewState extends State<InvoiceView> {
                     width: 15,
                   ),
                   InkWell(
-                      onTap: (){
-                        dialogBuilder1(context);
+                      onTap: () async {
+                        if (invoicecontroller.invoiceProtectList.isNotEmpty) {
+                          dialogBuilder1(context);
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(selectProduct);
+                        }
+                        //invoicecontroller.printposInvoice();
+                        // invoicecontroller.saveController(
+                        //   tipodoc: "", context: context, serie: "", entidade: "", tipoEntidade: "", dataDoc: "", dataVenc: "", horaDefinida: "", calculoManual: "");
                       },
-                              child: const Padding(
-                                    padding: EdgeInsets.only(right: 7),
-                                    child: Icon(Icons.print),
-                                 )),
+                      child: const Padding(
+                        padding: EdgeInsets.only(right: 7),
+                        child: Icon(Icons.print),
+                      )),
                   const SizedBox(
                     width: 15,
                   ),
@@ -432,7 +439,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   child: Text(
                                     invalnum.toUpperCase(),
                                     style: primaryFont.copyWith(
-                                      color: Colors.black,
+                                        color: Colors.black,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 13),
                                   ),
@@ -1142,7 +1149,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       localizacao: loginApiController
                                           .listUserData.first.warehouse,
                                     );
-                                     Get.snackbar("test2", "");
+
                                     if (invoicecontroller.invoiceProtectList
                                         .asMap()
                                         .containsKey(itemIndex)) {
@@ -1153,15 +1160,13 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       invoicecontroller.invoiceProtectList
                                           .insert(itemIndex, invoiceModel);
                                     }
-                                    Get.snackbar("test", "");
+
                                     invoicecontroller.totalAmountCal();
 
                                     invoicecontroller.update();
-                                    
+
                                     Get.back();
-                                    
                                   }
-                                  Get.back();
                                 },
                                 child: Container(
                                   height: 30,
@@ -1262,20 +1267,20 @@ class _InvoiceViewState extends State<InvoiceView> {
   }
 
   //
-   Future<void> dialogBuilders(BuildContext context) {
+  Future<void> dialogBuilders(BuildContext context) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-           title: const Text('Enter Customer Details'),
+          title: const Text('Enter Customer Details'),
           content: SizedBox(
             height: 155,
             child: Column(
               children: [
-                 Container(
+                Container(
                   height: 45,
                   child: TextField(
-                   // controller: nomeEditingController,
+                    // controller: nomeEditingController,
                     decoration: InputDecoration(
                         isDense: true,
                         enabledBorder: OutlineInputBorder(
@@ -1290,11 +1295,13 @@ class _InvoiceViewState extends State<InvoiceView> {
                         labelStyle: primaryFont.copyWith(color: primaryColor)),
                   ),
                 ),
-                const SizedBox(height: 10,),
-                 Container(
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
                   height: 45,
                   child: TextField(
-                   // controller: numContribuinteEditingController,
+                    // controller: numContribuinteEditingController,
                     decoration: InputDecoration(
                         isDense: true,
                         enabledBorder: OutlineInputBorder(
@@ -1309,11 +1316,13 @@ class _InvoiceViewState extends State<InvoiceView> {
                         labelStyle: primaryFont.copyWith(color: primaryColor)),
                   ),
                 ),
-                const SizedBox(height: 10,),
-                 Container(
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
                   height: 45,
                   child: TextField(
-                   // controller: moradafacEditingController,
+                    // controller: moradafacEditingController,
                     decoration: InputDecoration(
                         isDense: true,
                         enabledBorder: OutlineInputBorder(
@@ -1332,127 +1341,154 @@ class _InvoiceViewState extends State<InvoiceView> {
             ),
           ),
           actions: <Widget>[
-           InkWell(
-            onTap: (){
-              
-              
-            },
-             child: Container(
-              height: 30,
-              width: 65,
-              decoration: BoxDecoration(
-                color: primaryColor,
-                borderRadius: BorderRadius.circular(2),
+            InkWell(
+              onTap: () {},
+              child: Container(
+                height: 30,
+                width: 65,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                child: const Center(
+                  child: Text(
+                    "Submit",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
-              child:const  Center(
-                child: Text("Submit",
-                style: TextStyle(color: Colors.white),),
-              ),
-             ),
-           ),
-                   const SizedBox(width: 20,),
-                   const SizedBox(height: 10,),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
           ],
-          
         );
       },
     );
   }
+
   Future<void> dialogBuilder1(BuildContext context) {
+    invoicecontroller.multicaxiaTextEditingController.clear();
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return  AlertDialog(
+        return AlertDialog(
           content: Container(
             height: 60,
-            child: Obx( (() => 
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: ()async{
-                      invoicecontroller.select(true);
-                      //
-                      Get.back();
-                        if (invoicecontroller.invoiceProtectList.isNotEmpty) {
-                        if (selectedValue!= null) {
-                         bool result = await InternetConnectionChecker().hasConnection;
-                        if (result) {
-                         setState(() {
-                           isload = true;
-                            });
-                             await  invoicecontroller.saveController(
-                             tipodoc: selectedValue.toString(),
-                             context: context,
-                             serie: loginApiController.listUserData.first.serie,
-                             entidade: customerApiController.customerlistdata.first.cliente,
-                             tipoEntidade: "C",
-                             dataDoc: "${dt.year}-${dt.month}-${dt.day}",
-                             dataVenc: "${dt.year}-${dt.month}-${dt.day}",
-                             condPag: "1",
-                             nome: customerApiController.customerlistdata.first.nome,
-                             nomeFac: customerApiController.customerlistdata.first.nome,
-                             numContribuinte: customerApiController.customerlistdata.first.numContrib,
-                             numContribuinteFac: customerApiController.customerlistdata.first.numContrib,
-                             modoPag: "MB",
-                             moradafac: "9789087552",
-                             cduMCXID: multicaxiaTextEditingController.text
-                              );
-                              setState(() {
-                                isload = false;
-                                   });
-                              Get.to(const TestPrinting());
+            child: Obx(
+              (() => Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          invoicecontroller.select(true);
+                          //
+                          Navigator.pop(context);
+                          if (invoicecontroller.invoiceProtectList.isNotEmpty) {
+                            if (selectedValue != null) {
+                              bool result = await InternetConnectionChecker()
+                                  .hasConnection;
+                              if (result) {
+                                setState(() {
+                                  isload = true;
+                                });
+                                await invoicecontroller.saveController(
+                                    tipodoc: selectedValue.toString(),
+                                    serie: loginApiController
+                                        .listUserData.first.serie,
+                                    entidade: customerApiController
+                                        .customerlistdata.first.cliente,
+                                    tipoEntidade: "C",
+                                    dataDoc: "${dt.year}-${dt.month}-${dt.day}",
+                                    dataVenc:
+                                        "${dt.year}-${dt.month}-${dt.day}",
+                                    condPag: "1",
+                                    nome: customerApiController
+                                        .nomeController.text,
+                                    nomeFac: customerApiController
+                                        .nomeController.text,
+                                    numContribuinte: customerApiController
+                                        .numContribController.text,
+                                    numContribuinteFac: customerApiController
+                                        .numbContribFacController.text,
+                                    modoPag: "MB",
+                                    moradafac: "9789087552",
+                                    cduMCXID: invoicecontroller
+                                        .multicaxiaTextEditingController.text);
+                                setState(() {
+                                  isload = false;
+                                });
+                                Get.to(const TestPrinting());
                               } else {
-                              Get.to(const TestPrinting());
+                                Get.to(const TestPrinting());
                               }
-                              }else{
-                              ScaffoldMessenger.of(context).showSnackBar(selectTipo);
-                              }
-                              }else{
-                              ScaffoldMessenger.of(context).showSnackBar(selectProduct);
-                              }
-                              
-                    },
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 18,
-                          width: 18,
-                          decoration: BoxDecoration(
-                            color: invoicecontroller.select == true ? primaryColor : Colors.white,
-                            border: Border.all(color: primaryColor),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(selectTipo);
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(selectProduct);
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 18,
+                              width: 18,
+                              decoration: BoxDecoration(
+                                color: invoicecontroller.select == true
+                                    ? primaryColor
+                                    : Colors.white,
+                                border: Border.all(color: primaryColor),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Text(
+                              "Cash",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 5,),
-                        const Text("Cash",style: TextStyle(fontSize: 20),),
-                      ],
-                    ),
-                  ),
-                  InkWell(
-                    onTap: (){
-                      invoicecontroller.select(false);
-                      textfield(context);
-                    },
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 18,
-                          width: 18,
-                          decoration: BoxDecoration(
-                            color:invoicecontroller.select == false ?primaryColor : Colors.white,
-                            border: Border.all(color: primaryColor),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          invoicecontroller.select(false);
+                          Navigator.pop(context);
+                          textfield(context);
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 18,
+                              width: 18,
+                              decoration: BoxDecoration(
+                                color: invoicecontroller.select == false
+                                    ? primaryColor
+                                    : Colors.white,
+                                border: Border.all(color: primaryColor),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Text(
+                              "Multicaixa",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 5,),
-                        const Text("Multicaxia",style: TextStyle(fontSize: 20),),
-                      ],
-                    ),
-                  ),
-                ],
-             ) ),
+                      ),
+                    ],
+                  )),
             ),
           ),
         );
@@ -1470,69 +1506,84 @@ class _InvoiceViewState extends State<InvoiceView> {
             height: 120,
             child: Column(
               children: [
-                Text("Multicaxia".tr),
-                const SizedBox(height: 10,),
+                Text("Multicaixa".tr),
+                const SizedBox(
+                  height: 10,
+                ),
                 Container(
                   height: 45,
                   child: TextField(
-                    controller: multicaxiaTextEditingController,
+                    controller:
+                        invoicecontroller.multicaxiaTextEditingController,
                     decoration: InputDecoration(
-                        isDense: true,
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: primaryColor,
-                        )),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: primaryColor,
-                        )),
-                        hintText: 'Enter CDU_MCXID',
-                        //labelStyle: primaryFont.copyWith(color: Colors.blue)
-                        ),
+                      isDense: true,
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: primaryColor,
+                      )),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: primaryColor,
+                      )),
+                      hintText: 'Referência Multicaixa',
+                      //labelStyle: primaryFont.copyWith(color: Colors.blue)
+                    ),
                   ),
                 ),
-                const SizedBox(height: 15,),
+                const SizedBox(
+                  height: 15,
+                ),
                 InkWell(
                   onTap: () async {
-                    Get.back();
-                        if (invoicecontroller.invoiceProtectList.isNotEmpty) {
-                        if (selectedValue!= null) {
-                         bool result = await InternetConnectionChecker().hasConnection;
-                        if (result) {
-                         setState(() {
-                           isload = true;
+                    if (invoicecontroller
+                        .multicaxiaTextEditingController.text.isNotEmpty) {
+                      Get.back();
+                      if (invoicecontroller.invoiceProtectList.isNotEmpty) {
+                        if (selectedValue != null) {
+                          bool result =
+                              await InternetConnectionChecker().hasConnection;
+                          if (result) {
+                            setState(() {
+                              isload = true;
                             });
-                             await  invoicecontroller.saveController(
-                             tipodoc: selectedValue.toString(),
-                             context: context,
-                             serie: loginApiController.listUserData.first.serie,
-                             entidade: customerApiController.customerlistdata.first.cliente,
-                             tipoEntidade: "C",
-                             dataDoc: "${dt.year}-${dt.month}-${dt.day}",
-                             dataVenc: "${dt.year}-${dt.month}-${dt.day}",
-                             condPag: "1",
-                             nome: customerApiController.customerlistdata.first.nome,
-                             nomeFac: customerApiController.customerlistdata.first.nome,
-                             numContribuinte: customerApiController.customerlistdata.first.numContrib,
-                             numContribuinteFac: customerApiController.customerlistdata.first.numContrib,
-                             modoPag: "MB",
-                             moradafac: "9789087552",
-                             cduMCXID: ""
-                              );
-                              setState(() {
-                                isload = false;
-                                   });
-                              Get.to(const TestPrinting());
-                              } else {
-                              Get.to(const TestPrinting());
-                              }
-                              }else{
-                              ScaffoldMessenger.of(context).showSnackBar(selectTipo);
-                              }
-                              }else{
-                              ScaffoldMessenger.of(context).showSnackBar(selectProduct);
-                              }
-                              },
+                            await invoicecontroller.saveController(
+                                tipodoc: selectedValue.toString(),
+                                serie:
+                                    loginApiController.listUserData.first.serie,
+                                entidade: customerApiController
+                                    .customerlistdata.first.cliente,
+                                tipoEntidade: "C",
+                                dataDoc: "${dt.year}-${dt.month}-${dt.day}",
+                                dataVenc: "${dt.year}-${dt.month}-${dt.day}",
+                                condPag: "1",
+                                nome: customerApiController.nomeController.text,
+                                nomeFac:
+                                    customerApiController.nomeController.text,
+                                numContribuinte: customerApiController
+                                    .numContribController.text,
+                                numContribuinteFac: customerApiController
+                                    .numbContribFacController.text,
+                                modoPag: "MB",
+                                moradafac: "9789087552",
+                                cduMCXID: invoicecontroller
+                                    .multicaxiaTextEditingController.text);
+                            setState(() {
+                              isload = false;
+                            });
+                            Get.to(const TestPrinting());
+                          } else {
+                            Get.to(const TestPrinting());
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(selectTipo);
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(selectProduct);
+                      }
+                    }
+                  },
                   child: Container(
                     height: 30,
                     width: 80,
@@ -1540,9 +1591,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    child:const Center(
-                      child: Text("Submit",
-                      style: TextStyle(color: Colors.white),
+                    child: const Center(
+                      child: Text(
+                        "Submit",
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
