@@ -13,7 +13,6 @@ import 'package:pos/src/views/auth_view/login_view.dart';
 import 'package:pos/src/views/customers_view/customer_view.dart';
 import 'package:pos/src/views/home_view/home_navigation_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../services/customer_api_services/customer_list_api_service.dart';
 import '../../widgets/snackbar_widgets/something_wrong.dart';
 
