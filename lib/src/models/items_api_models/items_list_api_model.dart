@@ -45,7 +45,7 @@ class ItemPrice {
 
     String artigo;
     String descricao;
-    String? marca;
+    dynamic marca;
     dynamic price;
     String iva;
     dynamic discount;

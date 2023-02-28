@@ -46,6 +46,8 @@ class LoginApiController extends GetxController {
       Get.offAll(HomePageWithNavigation());
     } else if (response.statusCode == 400) {
       ScaffoldMessenger.of(context).showSnackBar(invalidlogin);
+    } else if(response.statusCode == 500){
+      Get.snackbar(response.statusCode.toString(), "Server error");
     } else {
       print("Something went wrong");
       //ScaffoldMessenger.of(context).showSnackBar(somethingwrong);

@@ -30,6 +30,8 @@ class InvoiceController extends GetxController {
 
   List<InvoiceModel> invoiceProtectList = [];
 
+  RxBool select = false.obs;
+
   RxString totolamount = "0".obs;
   RxString subtotal = "0".obs;
   RxString iva = "0".obs;
@@ -769,6 +771,7 @@ class InvoiceController extends GetxController {
       required String numContribuinte,
       required String numContribuinteFac,
       required String moradafac,
+      required String cduMCXID,
       required String modoPag}) async {
     List<dynamic> templist = [];
 
@@ -808,7 +811,8 @@ class InvoiceController extends GetxController {
           nomeFac: nomeFac,
           numContribuinte: numContribuinte,
           numContribuinteFac: numContribuinteFac,
-          moradafac: moradafac
+          moradafac: moradafac,
+          cduMCXID: cduMCXID
           );
 
           InvoiceData invoicedata = InvoiceData.fromJson(response.data);

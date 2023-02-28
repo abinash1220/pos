@@ -210,9 +210,7 @@ class _InvoiceViewState extends State<InvoiceView> {
     invoicecontroller.totolamount = "0".obs;
     itemsApiController.listOfitems(
         client: widget.client,
-        wareHouse: loginApiController.listUserData.first.warehouse == "CAR1"
-            ? "SAADMIN"
-            : loginApiController.listUserData.first.warehouse);
+        wareHouse: loginApiController.listUserData.first.warehouse);
     dropdownValue = list.first;
     setState(() {
       speakLang = "you have received";
@@ -221,7 +219,8 @@ class _InvoiceViewState extends State<InvoiceView> {
     changedLanguageDropDownItem('en-us');
     invoicecontroller.invoiceProtectList.clear();
     invoiceval();
-    customerApiController.customer(context: context);
+    //customerApiController.customer(context: context);
+    //customerApiController.customerlist(context: context, userid: "");
     Get.find<InvoiceController>().getOfflineSavedInvoices();
   }
 
@@ -286,6 +285,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                   InkWell(
                       onTap: () async {
                         if (invoicecontroller.invoiceProtectList.isNotEmpty) {
+                          dialogBuilder1(context);
   if (selectedValue!= null) {
     bool result =
         await InternetConnectionChecker().hasConnection;
@@ -299,21 +299,23 @@ class _InvoiceViewState extends State<InvoiceView> {
           serie:
               loginApiController.listUserData.first.serie,
           entidade: customerApiController
-              .customerdatalist.first.cliente,
+              .customerlistdata.first.cliente,
           tipoEntidade: "C",
           dataDoc: "${dt.year}-${dt.month}-${dt.day}",
           dataVenc: "${dt.year}-${dt.month}-${dt.day}",
           condPag: "1",
           nome: customerApiController
-              .customerdatalist.first.nome,
+              .customerlistdata.first.nome,
           nomeFac: customerApiController
-              .customerdatalist.first.nome,
+              .customerlistdata.first.nome,
           numContribuinte: customerApiController
-              .customerdatalist.first.numContrib,
+              .customerlistdata.first.numContrib,
           numContribuinteFac: customerApiController
-              .customerdatalist.first.numContrib,
+              .customerlistdata.first.numContrib,
           modoPag: "MB",
-          moradafac: "9789087552");
+          moradafac: "9789087552",
+          cduMCXID: ""
+          );
       setState(() {
         isload = false;
       });
@@ -1139,7 +1141,6 @@ class _InvoiceViewState extends State<InvoiceView> {
                               child: InkWell(
                                 onTap: () async {
                                   //List<ItemPrice?>? pricelist = await itemsApiController.listOfitems(client: widget.client , wareHouse: loginApiController.listUserData[index].warehouse);
-
                                   if (itemsApiController
                                           .pricelist![index]!.stock <=
                                       0) {
@@ -1187,7 +1188,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       localizacao: loginApiController
                                           .listUserData.first.warehouse,
                                     );
-
+                                     Get.snackbar("test2", "");
                                     if (invoicecontroller.invoiceProtectList
                                         .asMap()
                                         .containsKey(itemIndex)) {
@@ -1198,12 +1199,15 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       invoicecontroller.invoiceProtectList
                                           .insert(itemIndex, invoiceModel);
                                     }
-
+                                    Get.snackbar("test", "");
                                     invoicecontroller.totalAmountCal();
 
                                     invoicecontroller.update();
+                                    
                                     Get.back();
+                                    
                                   }
+                                  Get.back();
                                 },
                                 child: Container(
                                   height: 30,
@@ -1396,6 +1400,67 @@ class _InvoiceViewState extends State<InvoiceView> {
                    const SizedBox(height: 10,),
           ],
           
+        );
+      },
+    );
+  }
+  Future<void> dialogBuilder1(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return  AlertDialog(
+          content: Container(
+            height: 60,
+            child: Obx( (() => 
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: (){
+                          invoicecontroller.select(true);
+                        },
+                        child: Container(
+                          height: 18,
+                          width: 18,
+                          decoration: BoxDecoration(
+                            color: invoicecontroller.select == true ? Colors.blue : Colors.white,
+                            border: Border.all(color: Colors.blue),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 5,),
+                      const Text("Cash",style: TextStyle(fontSize: 20),),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: (){
+                          invoicecontroller.select(false);
+                         // textfield(context);
+                        },
+                        child: Container(
+                          height: 18,
+                          width: 18,
+                          decoration: BoxDecoration(
+                            color:invoicecontroller.select == false ?Colors.blue : Colors.white,
+                            border: Border.all(color: Colors.blue),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 5,),
+                      const Text("MultiCash",style: TextStyle(fontSize: 20),),
+                    ],
+                  ),
+                ],
+             ) ),
+            ),
+          ),
         );
       },
     );

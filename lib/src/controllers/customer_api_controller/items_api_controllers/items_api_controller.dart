@@ -36,6 +36,7 @@ class CreateItemsApiController extends GetxController {
     required String fromdate,
     required String todate,
   }) async {
+    Get.snackbar(fromdate, todate);
     dio.Response<dynamic> response =
         await recentOrderApiService.recentOrderList(
             series: series,
@@ -45,6 +46,7 @@ class CreateItemsApiController extends GetxController {
     if (response.statusCode == 200) {
       RecentOrderList recentOrderList = RecentOrderList.fromJson(response.data);
       listdata = recentOrderList.data;
+      update();
     } else {
       Get.snackbar(response.statusCode.toString(), "something went wrong");
     }
@@ -76,7 +78,7 @@ class CreateItemsApiController extends GetxController {
     );
     print(":::::::::::::::::Create items Status ::::::::::::::::::");
     print(response.statusCode);
-   // Get.snackbar(response.statusCode.toString(), "create items");
+    Get.snackbar(response.statusCode.toString(), "create items");
     if (response.statusCode == 204) {
       Get.offAll(HomePageWithNavigation(
         index: 0,
@@ -107,11 +109,12 @@ class CreateItemsApiController extends GetxController {
       {required String client, required String wareHouse}) async {
     // var isChacheExist = await APICacheManager().isAPICacheKeyExist(pricelistKey);
     bool result = await InternetConnectionChecker().hasConnection;
-
+ 
     if (result) {
+      Get.snackbar(client, wareHouse);
       dio.Response<dynamic> response = await itemPriceListService.itempricelist(
           client: client, wareHouse: wareHouse);
-      Get.snackbar(response.statusCode.toString(), "items api");
+      Get.snackbar(response.statusCode.toString(), client);
       if (response.statusCode == 200) {
         APICacheDBModel cacheDBModel = new APICacheDBModel(
             key: pricelistKey, syncData: jsonEncode(response.data));

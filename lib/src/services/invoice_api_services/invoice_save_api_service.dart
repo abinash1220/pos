@@ -18,6 +18,7 @@ class InvoiceSaveApiService extends BaseApiService{
        required String numContribuinte,
        required String numContribuinteFac,
        required String moradafac,
+       required String cduMCXID,
        required List<dynamic> products
    }) async {
 
@@ -55,6 +56,7 @@ class InvoiceSaveApiService extends BaseApiService{
                 "NumContribuinte": numContribuinte,
                 "NumContribuinteFac": numContribuinteFac,
                 "MoradaFac":moradafac,
+                "CDU_MCXID":cduMCXID,
                 "Linhas": products,
 
 
